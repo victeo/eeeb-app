@@ -12,6 +12,7 @@ import {FireAuthService} from "../../services/fire-auth/fire-auth.service";
 // Models
 import {User} from "../../models/user";
 import {UserCredential} from "@angular/fire/auth";
+import {ShortLinkModel} from "../../module_short-link/models/short-link.model";
 
 @Component({
   selector: 'app-register',
@@ -43,9 +44,16 @@ export class RegisterComponent implements OnInit {
       });
     this.fireAuthService.listenToAuthStateChanges()
 
-    this.firestoreService.createDocument("teste/Teste", {
-      name: "Victor",
-      Sobrenome: "Teooro"
+    const shortLink: ShortLinkModel = {
+      slug:"",
+      url:"",
+      createdAt:"",
+      qrCodeUrl:"",
+      userId:""
+    }
+
+    this.firestoreService.createDocument("shortLinks/links", {
+      shortLink
     }).then(() => {
       console.log('Document created successfully');
     })

@@ -1,0 +1,7 @@
+<form (ngSubmit)="createShortLink()">
+  <input type="text" [(ngModel)]="url" placeholder="Insira a URL" name="url" required>
+  <input type="text" [(ngModel)]="slug" placeholder="Slug desejado" name="slug" required>
+  <button type="submit">Encurtar URL</button>
+</form>
+
+<img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
