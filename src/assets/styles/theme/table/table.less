@@ -1,0 +1,23 @@
+@import "../../_global.less";
+
+.mixin-table();
+
+.screen-custom({
+    .actionItens {
+        justify-content: right;
+    }
+
+    .actionItens::before {
+        content: "Ações";
+        color: @color-blue-light;
+
+    }
+}, 640px);
+
+.p-datatable-frequency{
+    .p-datatable-wrapper{
+        overflow:unset;
+    }
+}
+
+

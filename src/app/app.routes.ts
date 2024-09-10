@@ -5,7 +5,14 @@ import {RegisterComponent} from "./pages/register/register.component";
 import {RedirectComponent} from "./module_short-link/redirect/redirect.component";
 import {ShortLinkComponent} from "./module_short-link/short-link.component";
 
+// Componentes
+import {HomeComponent} from "./pages/home/home.component";
+
 export const routes: Routes = [
+  {
+    path: "",
+    component: HomeComponent
+  },
   {
     path: 'registro',
     component: RegisterComponent

@@ -1,0 +1,130 @@
+@import "../../_global.less";
+
+.w-100 {
+    width: 100%;
+}
+
+.justify-content-center {
+    .mixin-flex-justify-content(center);
+}
+
+.justify-content-space-between {
+    .mixin-flex-justify-content(space-between);
+}
+
+.justify-content-end {
+    .mixin-flex-justify-content(end);
+}
+
+.card {
+    .p-card {
+        box-shadow: none;
+
+        .title-box {
+            justify-content: space-between;
+            align-items: center;
+            height: min-content;
+
+            .courseCreateButton {
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .flex {
+            .mixin-flex-justify-content(space-between);
+        }
+
+    }
+
+    .p-card-body {
+        padding-top: 0;
+
+    }
+
+
+    // Cor da título das páginas
+    .title-box {
+        border-bottom: 1px solid @theme__color__secondary;
+        margin-bottom: @indent__m;
+
+        .page-title-wrapper {
+            .mixin-display(flex);
+        }
+    }
+
+
+    .page-title {
+        color: @theme__color__secondary;
+    }
+}
+
+
+// Inputs
+
+.formGroup {
+    .p-autocomplete {
+        width: 100%;
+
+        input {
+            width: 100%;
+        }
+    }
+
+    label {
+        color: @theme__color__secondary;
+        font-weight: @font-weight__bold;
+        margin-top: @indent__xxs;
+    }
+
+    .inputGroup {
+        .mixin-display();
+        .mixin-gap(@indent__xxs);
+        .mixin-flex-grow(1);
+        .mixin-flex-justify-content(space-evenly);
+
+        .flex {
+            width: 100%;
+        }
+    }
+
+    .has-error {
+        input {
+            border-color: @theme__color__danger;
+        }
+
+        .p-dropdown {
+            border-color: @theme__color__danger;
+        }
+
+        .error-message {
+            .mixin-display(flex);
+            .mixin-gap(@indent__xxs);
+            color: @theme__color__danger;
+
+        }
+    }
+}
+
+// Formulário Perfil do usuário
+.w-full {
+    .p-calendar {
+        width: 100%;
+    }
+}
+
+.button_input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+// Dropdown
+.p-dropdown {
+    width: 100%;
+}
+
+// Table
+.p-datatable .p-datatable-header {
+    background: @color-white;
+    border: unset;
+}
