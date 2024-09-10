@@ -7,11 +7,22 @@ import {ShortLinkComponent} from "./module_short-link/short-link.component";
 
 // Componentes
 import {HomeComponent} from "./pages/home/home.component";
+import {PainelComponent} from "./admin/painel/painel.component";
+
+// Services
+import {UserGuard} from "./services/guards/user.guard";
 
 export const routes: Routes = [
   {
     path: "",
     component: HomeComponent
+  },
+  {
+    path: "painel",
+    component: PainelComponent,
+    canActivate: [UserGuard],
+
+    children: []
   },
   {
     path: 'registro',

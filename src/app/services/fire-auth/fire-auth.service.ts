@@ -11,7 +11,7 @@ export class FireAuthService {
   constructor(
     private auth: Auth
   ) {
-    this.listenToAuthStateChanges();
+    // this.listenToAuthStateChanges();
   }
 
   // Listent to auth state changes
