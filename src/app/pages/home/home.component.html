@@ -1,0 +1,19 @@
+<main class="home-component">
+  <p-card class="box">
+    <div class="box-info">
+      <h2 class="box-info_title">Identifique-se</h2>
+      <img src="/assets/img/login.png" alt="imagem de login">
+    </div>
+    <div class="field">
+      <p-floatLabel>
+        <input id="username" type="text" pInputText/>
+        <label for="username">Email de acesso</label>
+      </p-floatLabel>
+      <p-floatLabel>
+
+        <p-password id="password" pInputText  [toggleMask]="true" [feedback]="false"/>
+        <label for="password">Password</label>
+      </p-floatLabel>
+    </div>
+  </p-card>
+</main>
