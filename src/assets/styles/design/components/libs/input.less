@@ -2,10 +2,22 @@
 
 .p-inputtext {
   background-color: @theme__color__secondary;
+  color:@theme__color__primary;
   margin: unset;
   width: 100%;
   border-radius: @indent__m;
   padding-left: @indent__m;
+
+  + label {
+    color: @theme__color__primary;
+    left: @indent__m;
+  }
+}
+
+.p-password, .p-password-mask {
+  width: 100%;
+  color:@theme__color__primary;
+
 
   + label {
     color: @theme__color__primary;

@@ -5,15 +5,34 @@
       <img src="/assets/img/login.png" alt="imagem de login">
     </div>
     <div class="field">
-      <p-floatLabel>
-        <input id="username" type="text" pInputText/>
-        <label for="username">Email de acesso</label>
-      </p-floatLabel>
-      <p-floatLabel>
+      <form
+        [formGroup]="formControl"
+        (submit)="onSubmit()"
+        class="matriculation_form formGroup"
+      >
+        <p-floatLabel>
+          <input id="username" type="email" pInputText formControlName="email"/>
+          <label for="username">Email de acesso</label>
+        </p-floatLabel>
+        <div class="mt-4">
+          <p-floatLabel>
+            <p-password id="password" [toggleMask]="true" [feedback]="false" formControlName="password"/>
+            <label for="password">Password</label>
+          </p-floatLabel>
+        </div>
+        <div class="button_login">
+          <p-button
 
-        <p-password id="password" pInputText  [toggleMask]="true" [feedback]="false"/>
-        <label for="password">Password</label>
-      </p-floatLabel>
+            label="Acessar"
+            icon="pi pi-save"
+            size="small"
+            severity="primary"
+            type="submit"
+          ></p-button>
+        </div>
+      </form>
+
     </div>
+
   </p-card>
 </main>

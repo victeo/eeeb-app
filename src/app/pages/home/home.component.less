@@ -4,7 +4,7 @@
   width: 100%; /* A largura da div será 100% do seu contêiner pai */
   max-width: 600px; /* Limita a largura máxima da div (opcional) */
   height: auto; /* A altura da div será ajustada automaticamente */
-  overflow: hidden; /* Garante que o conteúdo extra da imagem seja ocultado, se necessário */
+  margin: 0 auto;
 
   .box {
     .mixin-display(flex);
@@ -20,6 +20,9 @@
         height: auto; /* Mantém a proporção da imagem */
         display: block; /* Remove os espaços ao redor da imagem */
       }
+    }
+    .button_login{
+      margin-top: @indent__m;
     }
   }
 
