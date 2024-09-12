@@ -17,6 +17,7 @@ import {AuthService} from "../../services/auth/auth.service";
 
 // Models
 import {Login} from "../../models/login";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -44,6 +45,8 @@ export class HomeComponent implements OnInit {
     private fireAuthService: FireAuthService,
     private messageService: MessageService,
     private authService: AuthService,
+    private router: Router
+
   ) {
   }
 
@@ -82,6 +85,7 @@ export class HomeComponent implements OnInit {
             summary: 'Bem-vindo',
             detail: `Login realizado com sucesso!`,
           });
+          this.router.navigate(['/painel']);
         })
         .catch((error) => {
           console.error('Erro ao fazer login:', error);
