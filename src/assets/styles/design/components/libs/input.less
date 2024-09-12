@@ -1,26 +1,47 @@
 @import "../theme.less";
-
-.p-inputtext {
-  background-color: @theme__color__secondary;
-  color:@theme__color__primary;
+//
+//.p-inputtext {
+//  background-color: @theme__color__secondary;
+//  color:@theme__color__primary;
+//  margin: unset;
+//  width: 100%;
+//  border-radius: @indent__m;
+//  padding-left: @indent__m;
+//
+//  + label {
+//    color: @theme__color__primary;
+//    left: @indent__m;
+//  }
+//}
+//
+//.p-password, .p-password-mask {
+//  width: 100%;
+//  color:@theme__color__primary;
+//
+//
+//  + label {
+//    color: @theme__color__primary;
+//    left: @indent__m;
+//  }
+//}
+.inputMixin(@backgroundColor, @textColor, @borderRadius, @paddingLeft, @labelColor, @labelLeft) {
+  background-color: @backgroundColor;
+  color: @textColor;
   margin: unset;
   width: 100%;
-  border-radius: @indent__m;
-  padding-left: @indent__m;
+  border-radius: @borderRadius;
+  padding-left: @paddingLeft;
 
   + label {
-    color: @theme__color__primary;
-    left: @indent__m;
+    color: @labelColor;
+    left: @labelLeft;
   }
 }
 
+.p-inputtext {
+  .inputMixin(@theme__color__secondary, @theme__color__primary, @indent__m, @indent__m, @theme__color__primary, @indent__m);
+}
+
 .p-password, .p-password-mask {
-  width: 100%;
-  color:@theme__color__primary;
-
-
-  + label {
-    color: @theme__color__primary;
-    left: @indent__m;
-  }
+  .inputMixin(null, @theme__color__primary, null, null, @theme__color__primary, @indent__m);
 }

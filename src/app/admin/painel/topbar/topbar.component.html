@@ -1,0 +1,24 @@
+<p-toolbar class="topbar">
+  <div class="container">
+    <div class="root flex">
+      <div class="col-6">
+
+        <div class="p-toolbar-group-start">
+
+          <p-button icon="pi pi-bars" [rounded]="true" [text]="true" (onClick)="toggleClass()"/>
+
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="p-toolbar-group-end">
+          <p-splitButton
+            label="Primary"
+            [model]="items"
+            (onClick)="save('info')"
+            text/>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</p-toolbar>

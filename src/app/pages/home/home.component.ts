@@ -65,7 +65,6 @@ export class HomeComponent implements OnInit {
    *
    */
   onSubmit(): void {
-    console.log(this.formControl);
     if (this.formControl.valid) {
       const email = this.formControl.get('email')?.value;
       const password = this.formControl.get('password')?.value;

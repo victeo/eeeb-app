@@ -1,0 +1,39 @@
+
+.p-toolbar {
+  padding: unset;
+  background-color: @theme__color__primary-alt;
+  box-shadow: unset;
+  border: unset;
+
+  .p-toolbar-group-end {
+    .mixin-flex-justify-content(end)
+  }
+}
+
+.sidebar {
+
+  .opened {
+    opacity: 1;
+    transition: max-height 0.5s ease, opacity 0.5s ease, background-color 0.5s ease;
+    .screen-custom({
+      position: fixed;
+      background: @theme__color__primary;
+      top: 80px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-height: 100%; // Ocupa toda a altura da tela
+      z-index: 100; // Garante que fica por cima de tudo
+      padding: 20px; // Ajuste o padding para mobile se necessário
+    }, 425px);
+
+
+  }
+
+  .closed {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    width: 0;
+  }
+}

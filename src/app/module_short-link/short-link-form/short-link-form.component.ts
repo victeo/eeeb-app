@@ -3,13 +3,21 @@ import {ShortLinkService} from '../short-link.service';
 import {ShortLinkModel} from '../models/short-link.model';
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
+import {InputGroupModule} from "primeng/inputgroup";
+import {InputGroupAddonModule} from "primeng/inputgroupaddon";
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-short-link-form',
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    InputGroupModule,
+    InputGroupAddonModule,
+    InputTextModule,
+    ButtonModule
   ],
   templateUrl: './short-link-form.component.html',
   styleUrl: './short-link-form.component.less'

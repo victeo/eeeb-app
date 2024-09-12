@@ -21,14 +21,15 @@ export const routes: Routes = [
     path: "painel",
     component: PainelComponent,
     canActivate: [UserGuard],
+    children: [
+      {path: 'criar-links', component: ShortLinkComponent},
 
-    children: []
+    ]
   },
   {
     path: 'registro',
     component: RegisterComponent
   },
-  {path: 'criar-links', component: ShortLinkComponent},
   {path: ':slug', component: RedirectComponent},
 
 ];

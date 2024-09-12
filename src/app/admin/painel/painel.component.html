@@ -1,1 +1,13 @@
-<p>painel works!</p>
+<div class="layout-wrapper" [ngClass]="">
+  <app-topbar></app-topbar>
+  <div class="flex dashboard">
+    <aside class="sidebar">
+      <app-sidebar></app-sidebar>
+
+    </aside>
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  <app-footer></app-footer>
+</div>

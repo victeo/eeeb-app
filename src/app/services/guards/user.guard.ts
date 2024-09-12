@@ -16,7 +16,7 @@ export class UserGuard implements CanActivate {
     if (identity != null) {
       return true;
     } else {
-      this._router.navigate(['/registro']);
+      this._router.navigate(['/']);
       return false;
     }
   }

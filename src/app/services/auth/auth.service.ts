@@ -12,14 +12,27 @@ export class AuthService {
   private isLoggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private loggedInUserData: any = null;
 
+  constructor() {}
 
-  //https://github.com/agatha-soft/angular-18-firebase-boilerplate/blob/main/src/app/services/firestorage.service.ts
-
+  // Função para verificar se está no navegador
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  }
   // Salva os dados do usuário logado
   saveUserData(user: UserCredential): void {
+    const userData = {
+      uid: user.user?.uid,
+      email: user.user?.email,
+      displayName: user.user?.displayName,
+      role: 'admin'
+    };
+
     this.loggedInUserData = user;
-    this.isLoggedInSubject.next(true); // Atualiza o estado para logado
-    localStorage.setItem('user', JSON.stringify(user)); // Salva os dados no localStorage (opcional)
+    this.isLoggedInSubject.next(true);
+
+    if (this.isBrowser()) { // Verifica se o localStorage está disponível
+      localStorage.setItem('user', JSON.stringify(userData));
+    }
   }
 
   // Retorna os dados do usuário logado
@@ -27,11 +40,15 @@ export class AuthService {
     if (this.loggedInUserData) {
       return this.loggedInUserData;
     }
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      this.loggedInUserData = JSON.parse(storedUser);
-      this.isLoggedInSubject.next(true);
+
+    if (this.isBrowser()) { // Verifica se o localStorage está disponível
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        this.loggedInUserData = JSON.parse(storedUser);
+        this.isLoggedInSubject.next(true);
+      }
     }
+
     return this.loggedInUserData;
   }
 
@@ -44,7 +61,10 @@ export class AuthService {
   logout(): void {
     this.loggedInUserData = null;
     this.isLoggedInSubject.next(false);
-    localStorage.removeItem('user'); // Remove os dados do localStorage
+
+    if (this.isBrowser()) { // Verifica se o localStorage está disponível
+      localStorage.removeItem('user');
+    }
   }
 
 
