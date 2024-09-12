@@ -90,12 +90,13 @@ export class SidebarComponent implements OnInit {
         ]
       },
       {
-        label: 'Devices',
+        label: 'Serviços',
         icon: 'pi pi-desktop',
         items: [
           {
-            label: 'Phone',
-            icon: 'pi pi-mobile'
+            label: 'Encurtador',
+            icon: 'pi pi-mobile',
+            routerLink: ['/painel/criar-links'],
           },
           {
             label: 'Desktop',
