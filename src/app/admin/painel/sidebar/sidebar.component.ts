@@ -27,7 +27,6 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.layoutService.classState$.subscribe((state) => {
-      console.log(state)
       this.isActive = state ? 'opened' : 'closed';
     });
     this.items = [

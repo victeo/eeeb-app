@@ -1,136 +1,148 @@
 @import "../../_global.less";
 
+body {
+  background-color: @them__color_body;
+}
+
 .w-100 {
-    width: 100%;
+  width: 100%;
 }
 
 .justify-content-center {
-    .mixin-flex-justify-content(center);
+  .mixin-flex-justify-content(center);
 }
 
 .justify-content-space-between {
-    .mixin-flex-justify-content(space-between);
+  .mixin-flex-justify-content(space-between);
 }
 
 .justify-content-end {
-    .mixin-flex-justify-content(end);
+  .mixin-flex-justify-content(end);
 }
 
 .card {
-    .p-card {
-        box-shadow: none;
+  .p-card {
+    box-shadow: none;
 
-        .title-box {
-            justify-content: space-between;
-            align-items: center;
-            height: min-content;
-
-            .courseCreateButton {
-                align-items: center;
-                justify-content: center;
-            }
-        }
-
-        .flex {
-            .mixin-flex-justify-content(space-between);
-        }
-
-    }
-
-    .p-card-body {
-        padding-top: 0;
-
-    }
-
-
-    // Cor da título das páginas
     .title-box {
-        border-bottom: 1px solid @theme__color__secondary;
-        margin-bottom: @indent__m;
+      justify-content: space-between;
+      align-items: center;
+      height: min-content;
 
-        .page-title-wrapper {
-            .mixin-display(flex);
-        }
+      .courseCreateButton {
+        align-items: center;
+        justify-content: center;
+      }
     }
 
-
-    .page-title {
-        color: @theme__color__secondary;
+    .flex {
+      .mixin-flex-justify-content(space-between);
     }
+
+  }
+
+  .p-card-body {
+    border-radius: @indent__m;
+    min-height: 400px;
+
+    .p-card-content {
+      padding: unset;
+
+    }
+
+  }
+
+
+  // Cor da título das páginas
+  .title-box {
+    border-bottom: 1px solid @theme__color__secondary;
+    margin-bottom: @indent__m;
+
+    .page-title-wrapper {
+      .mixin-display(flex);
+    }
+  }
+
+
+  .page-title {
+    color: @theme__color__primary;
+    margin: unset;
+    margin-bottom: @indent__sx;
+  }
 }
 
 
 // Inputs
 
 .formGroup {
-    .p-autocomplete {
-        width: 100%;
+  .p-autocomplete {
+    width: 100%;
 
-        input {
-            width: 100%;
-        }
+    input {
+      width: 100%;
+    }
+  }
+
+  label {
+    //color: @theme__color__secondary;
+    //font-weight: @font-weight__bold;
+    //margin-top: @indent__xxs;
+  }
+
+  .inputGroup {
+    .mixin-display();
+    .mixin-gap(@indent__xxs);
+    .mixin-flex-grow(1);
+    .mixin-flex-justify-content(space-evenly);
+
+    .flex {
+      width: 100%;
+    }
+  }
+
+  .has-error {
+    input {
+      border-color: @theme__color__danger;
     }
 
-    label {
-        //color: @theme__color__secondary;
-        //font-weight: @font-weight__bold;
-        //margin-top: @indent__xxs;
+    .p-dropdown {
+      border-color: @theme__color__danger;
     }
 
-    .inputGroup {
-        .mixin-display();
-        .mixin-gap(@indent__xxs);
-        .mixin-flex-grow(1);
-        .mixin-flex-justify-content(space-evenly);
+    .error-message {
+      .mixin-display(flex);
+      .mixin-gap(@indent__xxs);
+      color: @theme__color__danger;
 
-        .flex {
-            width: 100%;
-        }
     }
-
-    .has-error {
-        input {
-            border-color: @theme__color__danger;
-        }
-
-        .p-dropdown {
-            border-color: @theme__color__danger;
-        }
-
-        .error-message {
-            .mixin-display(flex);
-            .mixin-gap(@indent__xxs);
-            color: @theme__color__danger;
-
-        }
-    }
+  }
 }
 
 // Formulário Perfil do usuário
 .w-full {
-    .p-calendar {
-        width: 100%;
-    }
+  .p-calendar {
+    width: 100%;
+  }
 }
 
 .button_input {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 // Dropdown
 .p-dropdown {
-    width: 100%;
+  width: 100%;
 }
 
 // Table
 .p-datatable .p-datatable-header {
-    background: @color-white;
-    border: unset;
+  background: @color-white;
+  border: unset;
 }
 
 
-.short-link{
+.short-link {
   .p-inputtext {
     .inputMixin(@primary__color__lighter, @theme__color__primary, 0, @indent__m, @theme__color__primary, @indent__m);
   }
