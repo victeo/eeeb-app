@@ -1,0 +1,86 @@
+@primary-color: #3498db;
+@hover-color: darken(@primary-color, 10%);
+@text-color: #2c3e50;
+@background-color: #ecf0f1;
+@border-radius: 8px;
+@transition-time: 0.3s;
+
+// Estilo do Container de Links
+.links-container {
+  position: relative;  // Permite posicionamento absoluto do botão dentro do container
+  text-align: center;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: @border-radius;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+// Título e Descrição
+.links-container h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: @text-color;
+}
+
+.links-container p {
+  font-size: 16px;
+  color: darken(@text-color, 20%);
+  margin-bottom: 20px;
+}
+
+// Botões de Link
+.link-button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px;
+  background-color: @primary-color;
+  color: #fff;
+  text-decoration: none;
+  border-radius: @border-radius;
+  font-size: 18px;
+  transition: all @transition-time ease;
+
+  &:hover {
+    background-color: @hover-color;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Botão "Editar Links" no canto superior direito
+.edit-button {
+  position: absolute;
+  top: 100px;
+  right: 10px;
+  background-color: @primary-color;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color @transition-time ease;
+
+  &:hover {
+    background-color: @hover-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// Responsividade: Ajustes para telas menores
+@media (max-width: 600px) {
+  .links-container {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .link-button {
+    font-size: 16px;
+  }
+}

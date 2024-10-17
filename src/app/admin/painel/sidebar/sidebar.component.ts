@@ -98,6 +98,11 @@ export class SidebarComponent implements OnInit {
             routerLink: ['/painel/criar-links'],
           },
           {
+            label: 'Links',
+            icon: 'pi pi-sitemap',
+            routerLink: ['/painel/links']
+          },
+          {
             label: 'Desktop',
             icon: 'pi pi-desktop'
           },
@@ -108,6 +113,8 @@ export class SidebarComponent implements OnInit {
         ]
       }
     ]
+    console.log(this.items);
   }
+  
 
 }

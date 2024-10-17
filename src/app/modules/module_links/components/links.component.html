@@ -1,0 +1,11 @@
+<div *ngFor="let link of links">
+  <h3>{{ link.titulo }}</h3>
+  <p>{{ link.descricao }}</p>
+  <a [href]="link.url" target="_blank">Acessar</a>
+
+  <!-- Botão para remover link -->
+  <button (click)="removerLink(link.id)">Remover</button>
+
+  <!-- Botão para atualizar link -->
+  <button (click)="atualizarLink(link.id)">Atualizar</button>
+</div>

@@ -1,2 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
+
+// Variáveis Globais
+@primary-color: #3498db;
+@text-color: #2c3e50;
+@background-color: #ecf0f1;
+@border-radius: 8px;
+
+// Estilo Global do Corpo
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: @background-color;
+  color: @text-color;
+}
+
+// Estilo para Links (opcional)
+a {
+  color: @primary-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
