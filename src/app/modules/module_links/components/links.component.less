@@ -84,3 +84,98 @@
     font-size: 16px;
   }
 }
+/* Variáveis de cores */
+@primary-color: #007BFF;
+@primary-hover: #cfe9ff;
+@danger-color: #ff4d4d;
+@danger-hover: #ff1a1a;
+@success-color: #4CAF50;
+@success-hover: #45a049;
+@bg-color: #f9f9f9;
+@border-color: #ddd;
+@shadow-color: rgba(0, 0, 0, 0.1);
+
+/* Mixin para botões */
+.button-mixin(@bg-color, @hover-color) {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-right: 10px;
+  background-color: @bg-color;
+  color: white;
+  transition: background-color 0.3s, transform 0.1s;
+
+  &:hover {
+    background-color: @hover-color;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Container geral do link */
+.link-container {
+  border: 1px solid @border-color;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  background-color: @bg-color;
+  box-shadow: 0 4px 8px @shadow-color;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* Título do link */
+.link-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid @border-color;
+}
+
+/* Descrição do link */
+.link-description {
+  font-size: 1rem;
+  color: #555;
+  margin: 12px 0;
+}
+
+/* Estilo para o link em si */
+.link-url {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 1rem;
+  color: @primary-color;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  background-color: @primary-hover;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: darken(@primary-hover, 10%);
+  }
+}
+
+/* Grupo de botões */
+.button-group {
+  margin-top: 20px;
+}
+
+/* Aplicando o mixin de botões */
+.remove-btn {
+  .button-mixin(@danger-color, @danger-hover);
+}
+
+.update-btn {
+  .button-mixin(@success-color, @success-hover);
+}
+

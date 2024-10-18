@@ -1,11 +1,32 @@
-<div *ngFor="let link of links">
-  <h3>{{ link.titulo }}</h3>
-  <p>{{ link.descricao }}</p>
-  <a [href]="link.url" target="_blank">Acessar</a>
+<div *ngFor="let item of links; let i = index" class="link-container">
+  <h3 class="link-title">{{ item.titulo }}</h3>
+  <p class="link-description">{{ item.descricao }}</p>
+  <a class="link-url" [href]="item.url" target="_blank">Acessar</a>
 
-  <!-- Botão para remover link -->
-  <button (click)="removerLink(link.id)">Remover</button>
+  <div class="button-group">
+    <!-- Botão para remover link -->
+    <button class="btn remove-btn" (click)="removerLink(item.id)">Remover</button>
 
-  <!-- Botão para atualizar link -->
-  <button (click)="atualizarLink(link.id)">Atualizar</button>
+    <!-- Botão para atualizar link -->
+    <button class="btn update-btn" (click)="atualizarLink(item.id, item)">Atualizar</button>
+  </div>
 </div>
+<hr>
+<form [formGroup]="linkForm" (ngSubmit)="onSubmit()">
+  <div class="flex flex-column gap-2">
+    <label for="title_bt">Título do botão</label>
+    <input type="text" formControlName="titulo" pInputText id="title_bt" aria-describedby="username-help" />
+  </div>
+
+  <div class="flex flex-column gap-2">
+    <label for="url_bt">url</label>
+    <input type="text" pInputText id="url_bt" formControlName="url" aria-describedby="username-help" />
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="descricao_bt">Descrição</label>
+    <input type="text" pInputText id="descricao_bt" formControlName="descricao" aria-describedby="username-help" />
+  </div>
+
+  <button [disabled]="linkForm.invalid" type="submit">Salvar</button>
+
+</form>
