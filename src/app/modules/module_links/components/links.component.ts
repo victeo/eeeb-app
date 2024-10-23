@@ -24,6 +24,8 @@ export class LinksComponent implements OnInit {
 
   links: Links[] = [];
   linkForm: FormGroup;
+  secondStep: boolean = false;
+
 
   constructor(
     private linksService: LinksService,
@@ -40,11 +42,24 @@ export class LinksComponent implements OnInit {
     this.carregarLinks();
   }
 
+  addInfo(): void{
+    const title = this.linkForm.get('title')
+    const urlSlug = this.linkForm.get('url_slug')
+
+    if(title?.valid && urlSlug?.valid){
+      console.log(urlSlug.value);
+      console.log(title.value);
+
+      urlSlug.disable()
+      title.disable()
+    }else{
+      console.error('Preencha os campos')
+    }
+
+  }
+
   carregarLinks() {
-    this.linksService.listarLinks().subscribe((links: Links[]) => {
-      this.links = links;
-      console.log('Links carregados:', this.links);
-    });
+
   }
 
   // Getter para acessar o FormArray de botões
@@ -64,48 +79,16 @@ export class LinksComponent implements OnInit {
 
   // Método para criar um novo linktree
   onCreate() {
-    if (this.linkForm.valid) {
-      const formValue = this.linkForm.value;
-      const linktreeData: Links = {
-        title: formValue.title,
-        url_slug: formValue.url_slug,
-        buttons: this.buttonsArray.value
-      };
-  
-      this.linksService.adicionarLink(linktreeData)
-        .then(() => {
-          console.log('Linktree criada com sucesso:', linktreeData);
-          this.linkForm.reset();
-          this.buttonsArray.clear();
-          this.carregarLinks(); // Recarregar a lista de links
-        })
-        .catch(error => {
-          console.error('Erro ao criar o linktree:', error);
-        });
-    }
+
   }
 
   // Método para remover um link
   removerLink(id: string) {
-    this.linksService.removerLink(id)
-      .then(() => {
-        console.log('Link removido com sucesso!');
-        this.links = this.links.filter(link => link.id !== id);
-      })
-      .catch(error => {
-        console.error('Erro ao remover o link:', error);
-      });
+
   }
 
   // Método para atualizar um link
   atualizarLink(id: string, updatedLink: Links) {
-    this.linksService.atualizarLink(id, updatedLink)
-      .then(() => {
-        console.log('Link atualizado com sucesso!');
-        this.carregarLinks(); // Recarregar a lista de links
-      })
-      .catch(error => {
-        console.error('Erro ao atualizar o link:', error);
-      });
+
   }
 }

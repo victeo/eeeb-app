@@ -5,53 +5,63 @@
   <!-- Título da Página -->
   <div class="flex flex-column gap-2">
     <label for="page_title">Título da Página</label>
-    <input type="text" pInputText id="page_title" formControlName="title" aria-describedby="page-title-help" />
+    <input type="text" pInputText id="page_title" formControlName="title" aria-describedby="page-title-help"/>
   </div>
 
   <!-- URL da Página -->
   <div class="flex flex-column gap-2">
     <label for="page_url">URL da página</label>
-    <input type="text" pInputText id="page_url" formControlName="url_slug" aria-describedby="page-url-help" />
+    <input type="text" pInputText id="page_url" formControlName="url_slug" aria-describedby="page-url-help"/>
   </div>
+  <p-button label="Salvar"
+            [raised]="true"
+            (click)="addInfo()"
+            severity="info"
+            type="button">
+  </p-button>
+
   <hr>
 
-  <!-- Seção para Criar Botões -->
-  <h2>Crie agora os botões</h2>
+  @if (secondStep) {
+    <!-- Seção para Criar Botões -->
+    <h2>Crie agora os botões</h2>
 
-  <div *ngFor="let button of buttonsArray.controls; let i = index" [formGroupName]="i" class="button-group">
-    <!-- Campos do botão -->
-    <div class="flex flex-column gap-2">
-      <label for="button_title_{{i}}">Título do botão</label>
-      <input type="text" formControlName="titulo" pInputText id="button_title_{{i}}" aria-describedby="button-title-help" />
+    <div *ngFor="let button of buttonsArray.controls; let i = index" [formGroupName]="i" class="button-group">
+      <!-- Campos do botão -->
+      <div class="flex flex-column gap-2">
+        <label for="button_title_{{i}}">Título do botão</label>
+        <input type="text" formControlName="titulo" pInputText id="button_title_{{i}}"
+               aria-describedby="button-title-help"/>
+      </div>
+
+      <div class="flex flex-column gap-2">
+        <label for="button_url_{{i}}">URL</label>
+        <input type="text" formControlName="url" pInputText id="button_url_{{i}}" aria-describedby="button-url-help"/>
+      </div>
     </div>
 
-    <div class="flex flex-column gap-2">
-      <label for="button_url_{{i}}">URL</label>
-      <input type="text" formControlName="url" pInputText id="button_url_{{i}}" aria-describedby="button-url-help" />
+    <!-- Botão para Adicionar Novo Botão -->
+    <div class="save-container">
+      <p-button label="Adicionar Botão" [raised]="true" (click)="addButton()" severity="info" type="button"></p-button>
     </div>
-  </div>
 
-  <!-- Botão para Adicionar Novo Botão -->
-  <div class="save-container">
-    <p-button label="Adicionar Botão" [raised]="true" (click)="addButton()" severity="info" type="button"></p-button>
-  </div>
+    <!-- Botão para Salvar -->
+    <div class="save-container">
+      <p-button label="Salvar Página" [raised]="true" severity="success" [disabled]="linkForm.invalid" type="submit">
+      </p-button>
+    </div>
+  }
 
-  <!-- Botão para Salvar -->
-  <div class="save-container">
-    <p-button label="Salvar Página" [raised]="true" severity="success" [disabled]="linkForm.invalid" type="submit">
-    </p-button>
-  </div>
 </form>
 
-<hr>
 
 <!-- Exibição dos Botões Criados -->
-<div class="box flex gap-5">
-  <div *ngFor="let item of links; let i = index" class="link-container">
-    <!-- Grupo de texto -->
-    <div class="text-content">
-      <h3 class="link-title">{{ item.titulo }}</h3>
-      <p class="link-description">{{ item.url }}</p>
-    </div>
-  </div>
-</div>
+<!--<div class="box flex gap-5">-->
+<!--  <div *ngFor="let item of links; let i = index" class="link-container">-->
+<!--    &lt;!&ndash; Grupo de texto &ndash;&gt;-->
+<!--    <div class="text-content">-->
+<!--      <h3 class="link-title">{{ item?.title }}</h3>-->
+<!--      <p class="link-description">{{ item?.url_slug }}</p>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
