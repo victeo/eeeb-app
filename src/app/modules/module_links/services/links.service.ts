@@ -1,6 +1,5 @@
-import { FireAuthService } from './../../../services/fire-auth/fire-auth.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Links } from '../models/links.model';
 
 @Injectable({
@@ -9,18 +8,26 @@ import { Links } from '../models/links.model';
 export class LinksService {
   private collectionPath = 'links';
 
-  constructor(fireAuthService: FireAuthService) {} // Certifique-se de que o AngularFirestore está injetado corretamente
+  constructor(private firestore: AngularFirestore) {}
 
-  //  listarLinks():  {
-      
-  //  }
+  // Método para listar links
+  listarLinks() {
+    return this.firestore.collection<Links>(this.collectionPath).valueChanges({ idField: 'id' });
+  }
 
-  //  adicionarLink(links: Links):void {
-  //  }
+  // Método para adicionar um novo link
+  adicionarLink(linktreeData: Links): Promise<void> {
+    const id = this.firestore.createId();
+    return this.firestore.collection(this.collectionPath).doc(id).set(linktreeData);
+  }
 
-  //  atualizarLink(id: string, links: Links): {
-  //  }
+  // Método para atualizar um link existente
+  atualizarLink(id: string, links: Links): Promise<void> {
+    return this.firestore.collection(this.collectionPath).doc(id).update(links);
+  }
 
-  //  removerLink(id: string) {
-  //  }
+  // Método para remover um link existente
+  removerLink(id: string): Promise<void> {
+    return this.firestore.collection(this.collectionPath).doc(id).delete();
+  }
 }
