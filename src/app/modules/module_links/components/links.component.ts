@@ -1,24 +1,29 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+
 import { LinksService } from '../services/links.service';
 import { Links } from '../models/links.model';
-import { CommonModule } from '@angular/common';
 
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
   standalone: true,
   selector: 'app-links',
   templateUrl: './links.component.html',
+  styleUrls: ['./links.component.less'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    InputTextModule
+    InputTextModule,
+    ButtonModule
   ]
 })
 export class LinksComponent implements OnInit {
-  
+
+
   links: Links[] = []
 
   linkForm: FormGroup = new FormGroup({}); // Inicializando o FormGroup vazio
@@ -43,28 +48,29 @@ export class LinksComponent implements OnInit {
    */
   private initForm(): void {
     this.linkForm = this.fb.group({
-      titulo: ['', Validators.required], 
-      url: ['', Validators.required], 
-      descricao: ['', Validators.required], 
+      title: ['', Validators.required],
+      url_slug: ['', Validators.required],
+      buttons: this.fb.array([]) // Inicializa o FormArray vazio
     });
+
+  }
+  get buttonsArray(): FormArray {
+    return this.linkForm.get('buttons') as FormArray;
   }
 
-  onSubmit() {
-
-    if (this.linkForm.valid) {
-
-      
-
-      this.links.push(this.linkForm.value)
-      console.log(this.links);
-
-      this.id_negoco ++
-
-      // Aqui você pode enviar os dados ou fazer o que for necessário com eles
-    } else {
-      console.error('Formulário inválido');
-    }
+  onCreate() {
   }
+  // Método para adicionar um novo botão ao FormArray
+  addButton() {
+    const buttonsArray = this.linkForm.get('buttons') as FormArray;
+    buttonsArray.push(
+      this.fb.group({
+        titulo: ['', Validators.required],
+        url: ['', Validators.required]
+      })
+    );
+  }
+
   /**
    * Método para remover um link
    * @param id 
