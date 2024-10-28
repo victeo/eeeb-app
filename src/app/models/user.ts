@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  id?: string;
   name: string;
   email: string;
   whatsapp?: string; // Opcional
@@ -9,4 +9,5 @@ export interface User {
     state: string;
     postalCode: string;
   };
+  Role: string,
 }

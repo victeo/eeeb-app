@@ -19,17 +19,15 @@ export const routes: Routes = [
   },
   {
     path: "painel",
-    component: PainelComponent,
-    canActivate: [UserGuard],
-    children: [
-      {path: 'criar-links', component: ShortLinkComponent},
-
-    ]
+    loadChildren: () => import('./admin/painel/painel.module').then(m => m.PainelModule),
+    canActivate: [UserGuard]
   },
   {
     path: 'registro',
     component: RegisterComponent
   },
   {path: ':slug', component: RedirectComponent},
+  // {path: '**', redirectTo: ''} // Redireciona rotas inválidas para a página principal
+
 
 ];

@@ -1,0 +1,29 @@
+<p-card class="card register">
+  <div class="flex title-box">
+    <div class="page-title-wrapper">
+      <h1 class="page-title">Criar novo usuário</h1>
+    </div>
+  </div>
+  <div class="forms">
+    <form [formGroup]="formControl"
+          (submit)="onSubmit()">
+      <div class="box">
+        <label class="box-label" for="name">Nome</label>
+        <div class="box-field">
+          <input
+            pInputText
+            id="name"
+            aria-describedby="name-help"
+            formControlName="name"/>
+          <small id="name-help">
+            Enter your username to reset your password.
+          </small>
+        </div>
+      </div>
+
+      <input formControlName="email" placeholder="Email" />
+
+    </form>
+  </div>
+
+</p-card>
