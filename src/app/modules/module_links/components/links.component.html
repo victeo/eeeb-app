@@ -13,6 +13,7 @@
     <label for="page_url">URL da página</label>
     <input type="text" pInputText id="page_url" formControlName="url_slug" aria-describedby="page-url-help"/>
   </div>
+  
   <p-button label="Salvar"
             [raised]="true"
             (click)="addInfo()"
@@ -22,21 +23,24 @@
 
   <hr>
 
-  @if (secondStep) {
-    <!-- Seção para Criar Botões -->
+  <!-- Seção para Criar Botões (exibida apenas se 'secondStep' for true) -->
+  <div *ngIf="secondStep">
     <h2>Crie agora os botões</h2>
 
-    <div *ngFor="let button of buttonsArray.controls; let i = index" [formGroupName]="i" class="button-group">
-      <!-- Campos do botão -->
-      <div class="flex flex-column gap-2">
-        <label for="button_title_{{i}}">Título do botão</label>
-        <input type="text" formControlName="titulo" pInputText id="button_title_{{i}}"
-               aria-describedby="button-title-help"/>
-      </div>
+    <!-- FormArray para os botões -->
+    <div formArrayName="buttons">
+      <div *ngFor="let button of buttonsArray.controls; let i = index" [formGroupName]="i" class="button-group">
+        <!-- Campos do botão -->
+        <div class="flex flex-column gap-2">
+          <label for="button_title_{{i}}">Título do botão</label>
+          <input type="text" formControlName="titulo" pInputText id="button_title_{{i}}"
+                 aria-describedby="button-title-help"/>
+        </div>
 
-      <div class="flex flex-column gap-2">
-        <label for="button_url_{{i}}">URL</label>
-        <input type="text" formControlName="url" pInputText id="button_url_{{i}}" aria-describedby="button-url-help"/>
+        <div class="flex flex-column gap-2">
+          <label for="button_url_{{i}}">URL</label>
+          <input type="text" formControlName="url" pInputText id="button_url_{{i}}" aria-describedby="button-url-help"/>
+        </div>
       </div>
     </div>
 
@@ -50,10 +54,8 @@
       <p-button label="Salvar Página" [raised]="true" severity="success" [disabled]="linkForm.invalid" type="submit">
       </p-button>
     </div>
-  }
-
+  </div>
 </form>
-
 
 <!-- Exibição dos Botões Criados -->
 <!--<div class="box flex gap-5">-->

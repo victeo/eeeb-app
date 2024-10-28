@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/compat/firestore';
-import {Links} from '../models/links.model';
+import { Injectable } from '@angular/core';
+import { FirestoreService } from '../../../services/fire-store/firestore.service';
+import { Links } from '../models/links.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,23 +8,44 @@ import {Links} from '../models/links.model';
 export class LinksService {
   private collectionPath = 'links';
 
-  constructor() {
+  constructor(private firestoreService: FirestoreService) {}
+
+  // Método para adicionar um novo link
+  async adicionarLink(linktreeData: Links): Promise<string> {
+    // Adiciona um novo documento à coleção 'links' usando o FirestoreService
+    try {
+      const docId = await this.firestoreService.addDocument(this.collectionPath, linktreeData);
+      return docId;
+    } catch (error) {
+      console.error('Erro ao adicionar link:', error);
+      throw error; // Propaga o erro para o componente tratar
+    }
   }
 
   // Método para listar links
   listarLinks() {
-  }
-
-  // Método para adicionar um novo link
-  adicionarLink(linktreeData: Links) {
-
+    // Implemente este método conforme necessário, utilizando o FirestoreService
   }
 
   // Método para atualizar um link existente
-  atualizarLink(id: string, links: Links) {
+  async atualizarLink(id: string, links: Links): Promise<void> {
+    try {
+      const docPath = `${this.collectionPath}/${id}`;
+      await this.firestoreService.updateDocument(docPath, links);
+    } catch (error) {
+      console.error('Erro ao atualizar link:', error);
+      throw error;
+    }
   }
 
   // Método para remover um link existente
-  removerLink(id: string) {
+  async removerLink(id: string): Promise<void> {
+    try {
+      const docPath = `${this.collectionPath}/${id}`;
+      await this.firestoreService.deleteDocument(docPath);
+    } catch (error) {
+      console.error('Erro ao remover link:', error);
+      throw error;
+    }
   }
 }
