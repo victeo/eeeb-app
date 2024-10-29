@@ -1,1 +1,87 @@
-<p>register works!</p>
+<div class="container-form">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Nome e Sobrenome -->
+      <div class="form-row">
+        <div class="form-group">
+          <p-floatLabel>
+            <input pInputText id="name" formControlName="name" required />
+            <label for="name">Nome</label>
+          </p-floatLabel>
+        </div>
+        <div class="form-group">
+          <p-floatLabel>
+            <input pInputText id="surname" formControlName="surname" required />
+            <label for="surname">Sobrenome</label>
+          </p-floatLabel>
+        </div>
+      </div>
+  
+      <!-- Email e WhatsApp -->
+      <div class="form-row">
+        <div class="form-group">
+          <p-floatLabel>
+            <input pInputText id="email" formControlName="email" required />
+            <label for="email">Seu email</label>
+          </p-floatLabel>
+        </div>
+        <div class="form-group">
+          <p-floatLabel>
+            <input pInputText id="Whatsapp" formControlName="Whatsapp" required />
+            <label for="Whatsapp">Whatsapp</label>
+          </p-floatLabel>
+        </div>
+      </div>
+  
+      <!-- Endereço -->
+      <fieldset formGroupName="address">
+        <legend>Endereço</legend>
+  
+        <!-- Cidade e Estado -->
+        <div class="form-row">
+          <div class="form-group">
+            <p-floatLabel>
+              <input pInputText id="City" formControlName="City" required />
+              <label for="City">Cidade</label>
+            </p-floatLabel>
+          </div>
+          <div class="form-group">
+            <p-floatLabel>
+              <input pInputText id="State" formControlName="State" required />
+              <label for="State">Estado</label>
+            </p-floatLabel>
+          </div>
+        </div>
+  
+        <!-- Rua e CEP -->
+        <div class="form-row">
+          <div class="form-group together">
+            <p-floatLabel>
+              <input pInputText id="Street" formControlName="Street" required />
+              <label for="Street">Rua</label>
+            </p-floatLabel>
+          </div>
+          <div class="form-group together">
+            <p-floatLabel>
+              <input pInputText id="PostalCode" formControlName="PostalCode" required />
+              <label for="PostalCode">CEP</label>
+            </p-floatLabel>
+          </div>
+        </div>
+      </fieldset>
+  
+      <!-- Campo de Função (múltipla escolha) -->
+      <div class="form-group">
+        <p-dropdown 
+          [options]="roles" 
+          formControlName="role" 
+          placeholder="Selecione a função">
+        </p-dropdown>
+      </div>
+  
+      <!-- Botão de envio -->
+      <div class="button-group">
+        <button type="submit" [disabled]="registerForm.invalid">Registrar</button>
+      </div>
+    </form>
+  </div>
+  

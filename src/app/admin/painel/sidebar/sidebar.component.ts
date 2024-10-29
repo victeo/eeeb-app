@@ -104,6 +104,11 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Tablet',
             icon: 'pi pi-tablet'
+          },
+          {
+            label: 'Cadastro',
+            icon: 'pi pi-users',
+            routerLink: ['/painel/register']
           }
         ]
       }
