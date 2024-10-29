@@ -1,8 +1,9 @@
+import { RegisterComponent } from './../../pages/register/register.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PainelComponent } from './painel.component';
-import {ShortLinkComponent} from "../../module_short-link/short-link.component";
-import {RegisterComponent} from "../register/register.component";
+import { ShortLinkComponent} from "../../module_short-link/short-link.component";
+import { RegisterComponent as signUp} from "../../modules/module_register/components/register/register.component"
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
     children: [
       { path: 'criar-links', component: ShortLinkComponent },
       { path: 'novo-usuario', component: RegisterComponent },
+      { path: 'register', component: signUp}
     ]
   }
 ];
