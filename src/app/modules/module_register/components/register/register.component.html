@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h1 class="title">Cadastro de Usuários</h1>
 
 <div class="container-form">
@@ -106,3 +107,62 @@
 </div>
 
 <p-toast></p-toast>
+=======
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Campo para o nome -->
+    <div>
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name" required/>
+        <label for="username">Username</label>
+    </p-floatLabel>
+    
+    </div>
+  
+    <!-- Campo para o email -->
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email" required>
+    </div>
+  
+    <!-- Campo para o WhatsApp -->
+    <div>
+      <label for="whatsapp">WhatsApp:</label>
+      <input type="text" id="whatsapp" formControlName="whatsapp">
+    </div>
+  
+    <!-- Campos para endereço -->
+    <fieldset formGroupName="address">
+      <legend>Endereço</legend>
+  
+      <div>
+        <label for="street">Rua:</label>
+        <input type="text" id="street" formControlName="street">
+      </div>
+  
+      <div>
+        <label for="city">Cidade:</label>
+        <input type="text" id="city" formControlName="city">
+      </div>
+  
+      <div>
+        <label for="state">Estado:</label>
+        <input type="text" id="state" formControlName="state">
+      </div>
+  
+      <div>
+        <label for="postalCode">CEP:</label>
+        <input type="text" id="postalCode" formControlName="postalCode">
+      </div>
+    </fieldset>
+  
+    <!-- Campo para o Role -->
+    <div>
+      <label for="role">Função:</label>
+      <input type="text" id="role" formControlName="Role" required>
+    </div>
+  
+    <!-- Botão de envio -->
+    <button type="submit" [disabled]="registerForm.invalid">Registrar</button>
+  </form>
+  
+>>>>>>> 9d0a7137ee5756e88036a6f2bd66d56009388625

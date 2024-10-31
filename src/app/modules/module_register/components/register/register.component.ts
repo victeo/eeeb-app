@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, OnInit, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -13,10 +14,16 @@ import { PasswordModule } from 'primeng/password';
 const whatsappRegex = /^\(\d{2}\)9\d{8}$/;
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const CEPRegex = /^\d{5}-\d{3}$/;
+=======
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
+>>>>>>> 9d0a7137ee5756e88036a6f2bd66d56009388625
 
 @Component({
-  selector: 'app-register',
   standalone: true,
+<<<<<<< HEAD
   imports: [
     DropdownModule,
     PasswordModule,
@@ -26,10 +33,19 @@ const CEPRegex = /^\d{5}-\d{3}$/;
     InputTextModule
   ],
   providers: [MessageService], // Adicione o MessageService aos provedores
+=======
+  selector: 'app-register',
+  imports: [
+    ReactiveFormsModule, // Adicione isto
+    InputTextModule,
+    FloatLabelModule
+  ],
+>>>>>>> 9d0a7137ee5756e88036a6f2bd66d56009388625
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.less']
 })
 export class RegisterComponent implements OnInit {
+<<<<<<< HEAD
   registerForm!: FormGroup;
   roles: SelectItem[] = [];
   Users: any[] = [];
@@ -118,6 +134,45 @@ export class RegisterComponent implements OnInit {
       }
     } else {
       this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Por favor, preencha todos os campos corretamente.' });
+=======
+  registerForm: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) {
+    this.registerForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      whatsapp: [''],
+      address: this.formBuilder.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        postalCode: ['']
+      }),
+      Role: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+    this.registerForm.patchValue({
+      name: 'Usuário Exemplo',
+      email: 'usuario@example.com',
+      whatsapp: '11999999999',
+      address: {
+        street: 'Rua Exemplo',
+        city: 'Cidade Exemplo',
+        state: 'Estado Exemplo',
+        postalCode: '00000-000'
+      },
+      Role: 'User'
+    });
+  }
+
+  onSubmit(): void {
+    if (this.registerForm.valid) {
+      console.log('Usuário registrado:', this.registerForm.value);
+    } else {
+      console.log('Formulário inválido!');
+>>>>>>> 9d0a7137ee5756e88036a6f2bd66d56009388625
     }
   }
 }
