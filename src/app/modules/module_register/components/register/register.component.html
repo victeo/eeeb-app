@@ -1,87 +1,108 @@
+<h1 class="title">Cadastro de Usuários</h1>
+
 <div class="container-form">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Nome e Sobrenome -->
-      <div class="form-row">
-        <div class="form-group">
-          <p-floatLabel>
-            <input pInputText id="name" formControlName="name" required />
-            <label for="name">Nome</label>
-          </p-floatLabel>
-        </div>
-        <div class="form-group">
-          <p-floatLabel>
-            <input pInputText id="surname" formControlName="surname" required />
-            <label for="surname">Sobrenome</label>
-          </p-floatLabel>
-        </div>
-      </div>
-  
-      <!-- Email e WhatsApp -->
-      <div class="form-row">
-        <div class="form-group">
-          <p-floatLabel>
-            <input pInputText id="email" formControlName="email" required />
-            <label for="email">Seu email</label>
-          </p-floatLabel>
-        </div>
-        <div class="form-group">
-          <p-floatLabel>
-            <input pInputText id="Whatsapp" formControlName="Whatsapp" required />
-            <label for="Whatsapp">Whatsapp</label>
-          </p-floatLabel>
-        </div>
-      </div>
-  
-      <!-- Endereço -->
-      <fieldset formGroupName="address">
-        <legend>Endereço</legend>
-  
-        <!-- Cidade e Estado -->
-        <div class="form-row">
-          <div class="form-group">
-            <p-floatLabel>
-              <input pInputText id="City" formControlName="City" required />
-              <label for="City">Cidade</label>
-            </p-floatLabel>
-          </div>
-          <div class="form-group">
-            <p-floatLabel>
-              <input pInputText id="State" formControlName="State" required />
-              <label for="State">Estado</label>
-            </p-floatLabel>
-          </div>
-        </div>
-  
-        <!-- Rua e CEP -->
-        <div class="form-row">
-          <div class="form-group together">
-            <p-floatLabel>
-              <input pInputText id="Street" formControlName="Street" required />
-              <label for="Street">Rua</label>
-            </p-floatLabel>
-          </div>
-          <div class="form-group together">
-            <p-floatLabel>
-              <input pInputText id="PostalCode" formControlName="PostalCode" required />
-              <label for="PostalCode">CEP</label>
-            </p-floatLabel>
-          </div>
-        </div>
-      </fieldset>
-  
-      <!-- Campo de Função (múltipla escolha) -->
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Nome e Sobrenome -->
+    <div class="form-row">
       <div class="form-group">
-        <p-dropdown 
-          [options]="roles" 
-          formControlName="role" 
-          placeholder="Selecione a função">
-        </p-dropdown>
+        <p-floatLabel>
+          <input pInputText id="name" formControlName="name" required />
+          <label for="name">Nome</label>
+        </p-floatLabel>
       </div>
-  
-      <!-- Botão de envio -->
-      <div class="button-group">
-        <button type="submit" [disabled]="registerForm.invalid">Registrar</button>
+      <div class="form-group">
+        <p-floatLabel>
+          <input pInputText id="surname" formControlName="surname" required />
+          <label for="surname">Sobrenome</label>
+        </p-floatLabel>
       </div>
-    </form>
-  </div>
-  
+    </div>
+
+    <!-- Campo de Senha com Medidor de Força -->
+    <div class="form-group">
+      <p-floatLabel>
+        <p-password 
+          id="password" 
+          formControlName="password" 
+          [feedback]="true"
+          [toggleMask]="true"
+          promptLabel="Digite uma senha"
+          weakLabel="Fraca"
+          mediumLabel="Média"
+          strongLabel="Forte">
+        </p-password>
+        <label for="password">Senha</label>
+      </p-floatLabel>
+    </div>
+
+    <!-- Email e WhatsApp -->
+    <div class="form-row">
+      <div class="form-group">
+        <p-floatLabel>
+          <input pInputText id="email" formControlName="email" required />
+          <label for="email">Seu email</label>
+        </p-floatLabel>
+      </div>
+      <div class="form-group">
+        <p-floatLabel>
+          <input pInputText id="whatsapp" formControlName="whatsapp" required />
+          <label for="whatsapp">Whatsapp</label>
+        </p-floatLabel>
+      </div>
+    </div>
+
+    <!-- Endereço -->
+    <fieldset formGroupName="address">
+      <legend>Endereço</legend>
+
+      <!-- Cidade e Estado -->
+      <div class="form-row">
+        <div class="form-group">
+          <p-floatLabel>
+            <input pInputText id="city" formControlName="city" required />
+            <label for="city">Cidade</label>
+          </p-floatLabel>
+        </div>
+        <div class="form-group">
+          <p-floatLabel>
+            <input pInputText id="state" formControlName="state" required />
+            <label for="state">Estado</label>
+          </p-floatLabel>
+        </div>
+      </div>
+
+      <!-- Rua e CEP -->
+      <div class="form-row">
+        <div class="form-group espaço-entre-forms">
+          <p-floatLabel>
+            <input pInputText id="street" formControlName="street" required />
+            <label for="street">Rua</label>
+          </p-floatLabel>
+        </div>
+        <div class="form-group espaço-entre-forms">
+          <p-floatLabel>
+            <input pInputText id="postalCode" formControlName="postalCode" required (input)="formatCep()" />
+            <label for="postalCode">CEP</label>
+          </p-floatLabel>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Campo de Função (múltipla escolha) -->
+    <div class="form-group">
+      <p-dropdown 
+        [options]="roles" 
+        formControlName="role" 
+        placeholder="Selecione a função"
+        class="custom-dropdown">
+      </p-dropdown>
+    </div>
+
+    <!-- Botão de envio -->
+    <div class="button-group">
+      <button type="submit">Registrar</button>
+    </div>
+  </form>
+</div>
+
+<p-toast></p-toast>

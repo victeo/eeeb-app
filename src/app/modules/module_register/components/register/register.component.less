@@ -1,3 +1,14 @@
+/* No arquivo CSS do componente (register.component.less ou .css) */
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 0.5rem; /* Ajuste para subir o título */
+  margin-bottom: 0.1rem; /* Ajuste para reduzir o espaço entre o título e o formulário */
+  color: #5a4fcf;
+}
+
+
 .container-form {
     min-height: calc(100vh - 100px); // Altura mínima para preencher a tela sem o footer
     display: flex;
@@ -24,7 +35,7 @@ form {
         margin: 0.4rem auto;
       }
   
-      .together {
+      .espaço-entre-forms {
         width: 100%; // Ocupará 100% da linha
         margin-top: 1rem; // Espaçamento superior entre os campos
         
@@ -42,6 +53,31 @@ form {
         margin-left: 0.5rem;
       }
     }
+/* Alvo: p-dropdown com a classe custom-dropdown */
+.custom-dropdown .p-dropdown {
+  border-radius: 20px !important; /* Borda arredondada */
+  padding: 0.5rem 1rem !important;
+  background-color: #e0d6f5 !important;
+  border: none !important;
+}
+
+/* Estilo do botão de abertura do dropdown */
+.custom-dropdown .p-dropdown-trigger {
+  background: transparent !important;
+  color: #5a4fcf !important;
+  border-top-right-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+}
+
+/* Centralizando e estilizando o texto dentro do p-dropdown */
+.custom-dropdown .p-dropdown-label {
+  color: #5a4fcf !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+}
+
+
+
   
     .button-group {
       display: flex;
