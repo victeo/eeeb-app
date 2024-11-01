@@ -94,37 +94,39 @@ export class FireAuthService {
    * @param registerUser - Um objeto contendo informações adicionais do usuário a serem armazenadas.
    * @throws Lança uma exceção em caso de erro durante o processo de registro.
    */
-  async register(email: string, password: string, registerUser: UserInfo) {
-    await this.signUpWithEmailAndPassword(email, password)
-      .then((user: UserCredential) => {
-        const userInfo = user.user;
+  async register(email: string, password: string, registerUser: UserInfo): Promise<UserCredential> {
+    try {
+      // Aguarda a criação do usuário e retorna o UserCredential diretamente
+      const userCredential: UserCredential = await this.signUpWithEmailAndPassword(email, password);
+      return userCredential;
+    } catch (error) {
+      let errorMessage = '';
 
-      })
-      .catch(error => {
-        let errorMessage: string = ''
-        switch (error.code) {
-          case 'auth/email-already-in-use':
-            errorMessage = `Endereço de email: ${email} já está em uso em outra conta`;
-            break;
-          case 'auth/invalid-email':
-            errorMessage = `O email: ${email} é inválido.`;
-            break;
-          case 'auth/operation-not-allowed':
-            errorMessage = `O email: ${email} não é permitido.`;
-            break;
-          case 'auth/missing-password':
-            errorMessage = `Campo da senha vazio`;
-            break;
-          case 'auth/weak-password':
-            errorMessage = `A senha não é forte o suficiente.`;
-            break;
-          default:
-            console.log(error.message);
-            break;
-        }
-        return errorMessage;
-      })
+      // Trate os erros com base no código do erro
+      switch (error) {
+        case 'auth/email-already-in-use':
+          errorMessage = `Endereço de email: ${email} já está em uso em outra conta`;
+          break;
+        case 'auth/invalid-email':
+          errorMessage = `O email: ${email} é inválido.`;
+          break;
+        case 'auth/operation-not-allowed':
+          errorMessage = `O email: ${email} não é permitido.`;
+          break;
+        case 'auth/missing-password':
+          errorMessage = `Campo da senha vazio`;
+          break;
+        case 'auth/weak-password':
+          errorMessage = `A senha não é forte o suficiente.`;
+          break;
+        default:
+          break;
+      }
 
+      console.log(errorMessage);
+      throw new Error(errorMessage); // Lança o erro para que possa ser capturado onde `register` é chamado
+    }
   }
+
 
 }

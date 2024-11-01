@@ -21,9 +21,9 @@
     <!-- Campo de Senha com Medidor de Força -->
     <div class="form-group">
       <p-floatLabel>
-        <p-password 
-          id="password" 
-          formControlName="password" 
+        <p-password
+          id="password"
+          formControlName="password"
           [feedback]="true"
           [toggleMask]="true"
           promptLabel="Digite uma senha"
@@ -33,12 +33,12 @@
         </p-password>
         <label for="password">Senha</label>
       </p-floatLabel>
-      <div @if="registerForm.get('password')?.hasError('minlength')">
+      <div [@if]="registerForm.get('password')?.hasError('minlength')">
         <small>A senha deve ter pelo menos 8 caracteres.</small>
       </div>
-      <div @if="registerForm.get('password')?.hasError('passwordStrength')">
+      <div [@if]="registerForm.get('password')?.hasError('passwordStrength')">
         <small>A senha deve incluir pelo menos um número, letra maiúscula ou caractere especial.</small>
-      </div>      
+      </div>
     </div>
 
     <!-- Email e WhatsApp -->
@@ -96,9 +96,9 @@
 
     <!-- Campo de Função (múltipla escolha) -->
     <div class="form-group">
-      <p-dropdown 
-        [options]="roles" 
-        formControlName="role" 
+      <p-dropdown
+        [options]="roles"
+        formControlName="role"
         placeholder="Selecione a função"
         class="custom-dropdown">
       </p-dropdown>
