@@ -6,13 +6,13 @@
     <div class="form-row">
       <div class="form-group">
         <p-floatLabel>
-          <input pInputText id="name" formControlName="name" required/>
+          <input pInputText id="name" formControlName="name" required />
           <label for="name">Nome</label>
         </p-floatLabel>
       </div>
       <div class="form-group">
         <p-floatLabel>
-          <input pInputText id="surname" formControlName="surname" required/>
+          <input pInputText id="surname" formControlName="surname" required />
           <label for="surname">Sobrenome</label>
         </p-floatLabel>
       </div>
@@ -21,17 +21,8 @@
     <!-- Campo de Senha com Medidor de Força -->
     <div class="form-group">
       <p-floatLabel>
-        <p-password
-          id="password"
-          class="w-full block"
-          formControlName="password"
-          [feedback]="true"
-          [toggleMask]="true"
-          promptLabel="Digite uma senha"
-          weakLabel="Fraca"
-          mediumLabel="Média"
-          strongLabel="Forte"
-        />
+        <p-password id="password" class="w-full block" formControlName="password" [feedback]="true" [toggleMask]="true"
+          promptLabel="Digite uma senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte" />
         <label for="password">Senha</label>
       </p-floatLabel>
       <div [@if]="registerForm.get('password')?.hasError('minlength')">
@@ -46,13 +37,14 @@
     <div class="form-row">
       <div class="form-group">
         <p-floatLabel>
-          <input pInputText id="email" formControlName="email" required/>
+          <input pInputText id="email" formControlName="email" required />
           <label for="email">Seu email</label>
         </p-floatLabel>
       </div>
       <div class="form-group">
         <p-floatLabel>
-          <input pInputText id="whatsapp" formControlName="whatsapp" required/>
+          <p-inputMask id="whatsapp" formControlName="whatsapp" mask="(99)99999-9999"
+            placeholder="(99)99999-9999" />
           <label for="whatsapp">Whatsapp</label>
         </p-floatLabel>
       </div>
@@ -66,13 +58,13 @@
       <div class="form-row">
         <div class="form-group">
           <p-floatLabel>
-            <input pInputText id="city" formControlName="city" required/>
+            <input pInputText id="city" formControlName="city" required />
             <label for="city">Cidade</label>
           </p-floatLabel>
         </div>
         <div class="form-group">
           <p-floatLabel>
-            <input pInputText id="state" formControlName="state" required/>
+            <input pInputText id="state" formControlName="state" required />
             <label for="state">Estado</label>
           </p-floatLabel>
         </div>
@@ -80,15 +72,15 @@
 
       <!-- Rua e CEP -->
       <div class="form-row">
-        <div class="form-group">
+        <div class="form-group espaço-entre-forms">
           <p-floatLabel>
-            <input pInputText id="street" formControlName="street" required/>
+            <input pInputText id="street" formControlName="street" required />
             <label for="street">Rua</label>
           </p-floatLabel>
         </div>
-        <div class="form-group">
+        <div class="form-group espaço-entre-forms">
           <p-floatLabel>
-            <input pInputText id="postalCode" formControlName="postalCode" required (input)="formatCep()"/>
+            <input pInputText id="postalCode" formControlName="postalCode" required (input)="formatCep()" />
             <label for="postalCode">CEP</label>
           </p-floatLabel>
         </div>
@@ -97,11 +89,7 @@
 
     <!-- Campo de Função (múltipla escolha) -->
     <div class="form-group">
-      <p-dropdown
-        [options]="roles"
-        formControlName="role"
-        placeholder="Selecione a função"
-        class="custom-dropdown">
+      <p-dropdown [options]="roles" formControlName="role" placeholder="Selecione a função" class="custom-dropdown">
       </p-dropdown>
     </div>
 

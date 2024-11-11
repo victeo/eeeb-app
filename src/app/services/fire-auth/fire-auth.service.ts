@@ -74,6 +74,12 @@ export class FireAuthService {
     await this.auth.signOut();
   }
 
+
+  //Método para armazenar o nome do usuário e exibí-lo no TopBar
+  public getUserName(): string | null {
+    return localStorage.getItem('userName');
+  }
+
   /**
    * Envia um email para redefinição de senha para o endereço de email fornecido.
    *

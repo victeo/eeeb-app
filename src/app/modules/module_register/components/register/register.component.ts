@@ -15,8 +15,10 @@ import {FloatLabelModule} from 'primeng/floatlabel';
 import {CommonModule} from '@angular/common';
 import {DropdownModule} from 'primeng/dropdown';
 import {SelectItem} from 'primeng/api';
-import {RegisterService} from '../../services/register.service'; // Importa o serviço de registro
+import {RegisterService} from '../../services/register.service/register.service'; // Importa o serviço de registro
 import {PasswordModule} from 'primeng/password';
+import { InputMaskModule } from 'primeng/inputmask';
+
 
 // Regex para validar o formato do WhatsApp e do Email
 const whatsappRegex = /^\(\d{2}\)9\d{8}$/;
@@ -32,7 +34,8 @@ const CEPRegex = /^\d{5}-\d{3}$/;
     ReactiveFormsModule,
     CommonModule,
     FloatLabelModule,
-    InputTextModule
+    InputTextModule,
+    InputMaskModule
   ],
   providers: [MessageService], // Adicione o MessageService aos provedores
   templateUrl: './register.component.html',
@@ -66,7 +69,7 @@ export class RegisterComponent implements OnInit {
       name: ['', Validators.required],
       surname: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern(emailRegex)]],
-      whatsapp: ['(XX)9', [Validators.required, Validators.pattern(whatsappRegex)]],
+      whatsapp: ['(XX)', [Validators.required, Validators.pattern(whatsappRegex)]],
       password: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
       address: this.formBuilder.group({
         street: ['', Validators.required],
@@ -76,14 +79,14 @@ export class RegisterComponent implements OnInit {
       }),
       role: ['', Validators.required]
     });
-
+  
+    // Defina as opções de "role"
     this.roles = [
-      {label: 'Estudante', value: 'Estudante'},
-      {label: 'Professor', value: 'Professor'},
-      {label: 'Funcionário', value: 'Funcionário'}
+      { label: 'Estudante', value: 'Estudante' },
+      { label: 'Professor', value: 'Professor' },
+      { label: 'Funcionário', value: 'Funcionário' }
     ];
   }
-
   // Função para verificar a força da senha
   private passwordStrengthValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {

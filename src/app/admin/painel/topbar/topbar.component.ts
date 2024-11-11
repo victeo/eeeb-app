@@ -4,8 +4,10 @@ import {Router} from "@angular/router";
 import {ToolbarModule} from "primeng/toolbar";
 import {Button} from "primeng/button";
 import {SplitButtonModule} from "primeng/splitbutton";
+import { CommonModule } from '@angular/common';
 import {LayoutState} from "../../../models/layout-state";
 import {LayoutService} from "../../../services/Layout/layout.service";
+import { FireAuthService } from 'app/services/fire-auth/fire-auth.service';
 
 @Component({
   selector: 'app-topbar',
@@ -22,15 +24,19 @@ import {LayoutService} from "../../../services/Layout/layout.service";
 })
 export class TopbarComponent implements OnInit {
   items: MenuItem[] | undefined;
+  userName: string | null = '';
 
   constructor(
     private router: Router,
     private messageService: MessageService,
     private layoutService: LayoutService,
+    private fireAuthService: FireAuthService
   ) {
   }
 
   ngOnInit() {
+   
+    this.userName = this.fireAuthService.getUserName();
 
     this.items = [
       {

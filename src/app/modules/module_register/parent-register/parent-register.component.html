@@ -1,0 +1,87 @@
+<h1 class="title">Cadastro de Responsável</h1>
+
+<div class="container-form">
+  <form [formGroup]="parentForm" (ngSubmit)="onSubmit()">
+    <!-- Nome e Sobrenome -->
+    <div class="form-row">
+      <div class="form-group" p-floatLabel>
+        <input pInputText id="name" formControlName="name" required />
+        <label for="name">Nome</label>
+      </div>
+      <div class="form-group" p-floatLabel>
+        <input pInputText id="surname" formControlName="surname" required />
+        <label for="surname">Sobrenome</label>
+      </div>
+    </div>
+
+    <!-- CPF e Renda -->
+    <div class="form-row">
+      <div class="form-group" p-floatLabel>
+        <p-inputMask id="cpf" formControlName="cpf" mask="999.999.999-99"></p-inputMask>
+        <label for="cpf">CPF</label>
+      </div>
+      <div class="form-group" p-floatLabel>
+        <input pInputText id="renda" formControlName="renda" type="number" required />
+        <label for="renda">Renda</label>
+      </div>
+    </div>
+
+    <!-- Senha -->
+    <div class="form-group" p-floatLabel>
+      <p-password id="password" formControlName="password" [feedback]="true" [toggleMask]="true"
+        promptLabel="Digite uma senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte">
+      </p-password>
+      <label for="password">Senha</label>
+    </div>
+
+    <!-- Email e WhatsApp -->
+    <div class="form-row">
+      <div class="form-group" p-floatLabel>
+        <input pInputText id="email" formControlName="email" required />
+        <label for="email">E-mail</label>
+      </div>
+      <div class="form-group" p-floatLabel>
+        <p-inputMask id="whatsapp" formControlName="whatsapp" mask="(99) 99999-9999"></p-inputMask>
+        <label for="whatsapp">WhatsApp</label>
+      </div>
+    </div>
+
+    <!-- Gênero -->
+    <div class="form-group">
+        <p-dropdown [options]="genders" formControlName="gender" placeholder="Selecione o gênero" class="custom-dropdown">
+        </p-dropdown>
+      </div>
+
+    <!-- Endereço -->
+    <fieldset formGroupName="address">
+      <legend>Endereço</legend>
+      <div class="form-row">
+        <div class="form-group" p-floatLabel>
+          <input pInputText id="city" formControlName="city" required />
+          <label for="city">Cidade</label>
+        </div>
+        <div class="form-group" p-floatLabel>
+          <input pInputText id="state" formControlName="state" required />
+          <label for="state">Estado</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group espaço-entre-forms" p-floatLabel>
+          <input pInputText id="street" formControlName="street" required />
+          <label for="street">Rua</label>
+        </div>
+        <div class="form-group espaço-entre-forms" p-floatLabel>
+          <input pInputText id="postalCode" formControlName="postalCode" required (input)="formatCep()" />
+          <label for="postalCode">CEP</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Botão de Envio -->
+    <div class="button-group">
+      <button type="submit">Registrar</button>
+    </div>
+  </form>
+</div>
+
+<p-toast></p-toast>
