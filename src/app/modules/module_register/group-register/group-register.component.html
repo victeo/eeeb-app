@@ -1,6 +1,14 @@
 <div class="group-register">
   <h2 class="title">Cadastro em Lotes</h2>
 
+  <div class="cadastro-seletor">
+    <label for="cadastroTipo">Tipo de Cadastro:</label>
+    <select [(ngModel)]="cadastroTipo" id="cadastroTipo">
+      <option value="aluno">Aluno</option>
+      <option value="responsavel">Responsável</option>
+    </select>
+  </div>
+
   <div class="button-container">
     <!-- Botão de Upload de Arquivo -->
     <p-fileUpload
@@ -30,3 +38,4 @@
     </ng-template>
   </p-table>
 </div>
+<p-toast></p-toast>

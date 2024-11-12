@@ -2,7 +2,11 @@ import {Injectable} from '@angular/core';
 import {
   addDoc,
   collection,
+  query,
+  where,
+  getDocs,
   deleteDoc,
+  arrayUnion,
   doc,
   Firestore,
   getDocFromServer,
@@ -32,6 +36,22 @@ export class FirestoreService {
     await setDoc(docReference, data);
   }
 
+  async searchCollection(collectionPath: string, field: string, value: string): Promise<any[]> {
+    const ref = collection(this.firestore, collectionPath);
+    const q = query(ref, where(field, '>=', value), where(field, '<=', value + '\uf8ff')); // Busca aproximada
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  }
+
+  // Método para adicionar ID a um array (sem duplicar)
+  async addIdToArray(docPath: string, field: string, id: string): Promise<void> {
+    const ref = doc(this.firestore, docPath);
+    await updateDoc(ref, {
+      [field]: arrayUnion(id)
+    });
+  }
+  
   /**
    * Adiciona um novo documento à coleção especificada e gera um ID automaticamente.
    *
@@ -71,6 +91,7 @@ export class FirestoreService {
     const docRef = doc(this.firestore, collectionPath);
     await updateDoc(docRef, data);
   }
+  
 
   /**
    * Exclui um documento específico do Firestore pelo caminho fornecido.

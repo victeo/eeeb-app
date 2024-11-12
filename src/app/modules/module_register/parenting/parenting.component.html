@@ -1,0 +1,25 @@
+<div class="search-container">
+    <h3>Buscar Aluno</h3>
+    <input type="text" placeholder="Digite o nome do aluno" [(ngModel)]="searchAluno" (input)="buscarAlunos()">
+    <ul *ngIf="alunosResultados.length > 0">
+      <li *ngFor="let aluno of alunosResultados" (click)="selecionarAluno(aluno)">
+        {{ aluno.nome }} (ID: {{ aluno.id }})
+      </li>
+    </ul>
+  
+    <h3>Buscar Responsável</h3>
+    <input type="text" placeholder="Digite o nome do responsável" [(ngModel)]="searchResponsavel" (input)="buscarResponsaveis()">
+    <ul *ngIf="responsaveisResultados.length > 0">
+      <li *ngFor="let responsavel of responsaveisResultados" (click)="selecionarResponsavel(responsavel)">
+        {{ responsavel.nome }} (ID: {{ responsavel.id }})
+      </li>
+    </ul>
+  </div>
+  
+  <div *ngIf="alunoSelecionado && responsavelSelecionado">
+    <h4>Ligar Aluno e Responsável</h4>
+    <p>Aluno: {{ alunoSelecionado.nome }} (ID: {{ alunoSelecionado.id }})</p>
+    <p>Responsável: {{ responsavelSelecionado.nome }} (ID: {{ responsavelSelecionado.id }})</p>
+    <button (click)="ligarAlunoResponsavel()">Ligar</button>
+  </div>
+  

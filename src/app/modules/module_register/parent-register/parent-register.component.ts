@@ -13,14 +13,16 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
+import { Router } from '@angular/router'; // Importa o Router
 import { SelectItem } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ParentService } from '../services/parent.service/parent.service';
+import { FireAuthService } from 'app/services/fire-auth/fire-auth.service';
 import { Parent } from 'app/models/parent';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
-// Regex para validação
-const whatsappRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
+const whatsappRegex = /^\(\d{2}\)\s?9\d{4}-\d{4}$/;
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const CEPRegex = /^\d{5}-\d{3}$/;
 const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
@@ -34,7 +36,8 @@ const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
     ReactiveFormsModule,
     CommonModule,
     InputTextModule,
-    InputMaskModule
+    InputMaskModule,
+    FloatLabelModule
   ],
   providers: [MessageService],
   templateUrl: './parent-register.component.html',
@@ -44,12 +47,13 @@ export class ParentRegisterComponent implements OnInit {
 
   parentForm!: FormGroup;
   genders: SelectItem[] = [];
-  selectedFile?: File; // Declaração da variável para armazenar o arquivo selecionado
 
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private parentService: ParentService
+    private parentService: ParentService,
+    private fireAuthService: FireAuthService,
+    private router: Router // Adiciona o Router ao construtor
   ) {}
 
   ngOnInit(): void {
@@ -103,19 +107,21 @@ export class ParentRegisterComponent implements OnInit {
 
   async onSubmit(): Promise<void> {
     if (this.parentForm.valid) {
-      const parentData: Parent = this.parentForm.value;
-
+      const { email, password, ...parentData } = this.parentForm.value;
+  
       try {
-        const parentId = await this.parentService.registerParent(parentData);
+        const userCredential = await this.fireAuthService.register<Parent>(email, password, parentData as Parent);
         
+        await this.parentService.saveParentData(userCredential.user.uid, parentData as Parent);
+  
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
           detail: 'Responsável cadastrado com sucesso'
         });
-        
+  
         this.parentForm.reset();
-        this.parentForm.patchValue({ whatsapp: '(XX)9' });
+  
       } catch (error) {
         this.messageService.add({
           severity: 'error',
@@ -124,11 +130,16 @@ export class ParentRegisterComponent implements OnInit {
         });
       }
     } else {
-      const passwordError = this.parentForm.get('password')?.hasError('minlength');
-      const detail = passwordError
-        ? 'A senha deve ter pelo menos 8 caracteres.'
-        : 'Por favor, preencha todos os campos corretamente.';
-      this.messageService.add({ severity: 'error', summary: 'Erro', detail });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Por favor, preencha todos os campos corretamente.'
+      });
     }
+  }
+
+  // Método de navegação para o componente ParentingComponent
+  irParaParenting(): void {
+    this.router.navigate(['/painel/parenting']);
   }
 }

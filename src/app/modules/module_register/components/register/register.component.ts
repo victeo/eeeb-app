@@ -21,7 +21,7 @@ import { InputMaskModule } from 'primeng/inputmask';
 
 
 // Regex para validar o formato do WhatsApp e do Email
-const whatsappRegex = /^\(\d{2}\)9\d{8}$/;
+const whatsappRegex = /^\(\d{2}\)\s?9\d{4}-\d{4}$/;
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const CEPRegex = /^\d{5}-\d{3}$/;
 

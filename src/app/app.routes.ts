@@ -9,6 +9,7 @@ import {ShortLinkComponent} from "./module_short-link/short-link.component";
 // Componentes
 import {HomeComponent} from "./pages/home/home.component";
 import {PainelComponent} from "./admin/painel/painel.component";
+import { ParentingComponent } from './modules/module_register/parenting/parenting.component';
 
 // Services
 import {UserGuard} from "./services/guards/user.guard";
@@ -31,6 +32,10 @@ export const routes: Routes = [
   {
     path: 'painel/parentRegister',
     component: ParentRegisterComponent
+  },
+  {
+    path: 'painel/parenting',
+    component: ParentingComponent
   },
   {
     path: 'painel/groupRegister',
