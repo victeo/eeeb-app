@@ -66,6 +66,7 @@ export class GroupRegisterComponent {
 
             // Condicional para selecionar o tipo de cadastro
             if (this.cadastroTipo === 'aluno') {
+              // Agora direcionando para a coleção "students"
               await this.registerService.registerUser(entryData['Email'], 'senhaPadrao', userInfo);
             } else if (this.cadastroTipo === 'responsavel') {
               await this.registerService.registerResponsavel(entryData['Email'], 'senhaPadrao', userInfo);

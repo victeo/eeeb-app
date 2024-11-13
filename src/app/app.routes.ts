@@ -14,6 +14,8 @@ import { ParentingComponent } from './modules/module_register/parenting/parentin
 // Services
 import {UserGuard} from "./services/guards/user.guard";
 import { ParentRegisterComponent } from './modules/module_register/parent-register/parent-register.component';
+import { ParentsComponent } from './modules/parents/parents.component';
+import { StudentsComponent } from './modules/students/students.component';
 
 export const routes: Routes = [
   {
@@ -32,6 +34,14 @@ export const routes: Routes = [
   {
     path: 'painel/parentRegister',
     component: ParentRegisterComponent
+  },
+  {
+    path: 'painel/responsaveis',
+    component: ParentsComponent
+  },
+  {
+    path: 'painel/alunos',
+    component: StudentsComponent
   },
   {
     path: 'painel/parenting',

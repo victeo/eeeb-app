@@ -6,6 +6,9 @@ import { ShortLinkComponent} from "../../module_short-link/short-link.component"
 import { RegisterComponent as signUp} from "../../modules/module_register/components/register/register.component"
 import { GroupRegisterComponent } from 'app/modules/module_register/group-register/group-register.component';
 import { ParentRegisterComponent } from 'app/modules/module_register/parent-register/parent-register.component';
+import { ParentingComponent } from 'app/modules/module_register/parenting/parenting.component';
+import { StudentsComponent } from 'app/modules/students/students.component';
+import { ParentsComponent } from 'app/modules/parents/parents.component';
 
 const routes: Routes = [
   {
@@ -16,7 +19,10 @@ const routes: Routes = [
       { path: 'novo-usuario', component: RegisterComponent },
       { path: 'register', component: signUp},
       { path: 'groupRegister', component: GroupRegisterComponent},
-      { path: 'parentRegister', component: ParentRegisterComponent}
+      { path: 'parentRegister', component: ParentRegisterComponent},
+      { path: 'parenting', component: ParentingComponent},
+      { path: 'alunos', component: StudentsComponent},
+      { path: 'responsaveis', component: ParentsComponent}
     ]
   }
 ];

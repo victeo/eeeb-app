@@ -1,4 +1,4 @@
-import {Component, OnInit, NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,17 +8,16 @@ import {
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
-import {InputTextModule} from 'primeng/inputtext';
-import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
-import {FloatLabelModule} from 'primeng/floatlabel';
-import {CommonModule} from '@angular/common';
-import {DropdownModule} from 'primeng/dropdown';
-import {SelectItem} from 'primeng/api';
-import {RegisterService} from '../../services/register.service/register.service'; // Importa o serviço de registro
-import {PasswordModule} from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { CommonModule } from '@angular/common';
+import { DropdownModule } from 'primeng/dropdown';
+import { SelectItem } from 'primeng/api';
+import { RegisterService } from '../../services/register.service/register.service'; // Importa o serviço de registro
+import { PasswordModule } from 'primeng/password';
 import { InputMaskModule } from 'primeng/inputmask';
-
 
 // Regex para validar o formato do WhatsApp e do Email
 const whatsappRegex = /^\(\d{2}\)\s?9\d{4}-\d{4}$/;
@@ -37,7 +36,7 @@ const CEPRegex = /^\d{5}-\d{3}$/;
     InputTextModule,
     InputMaskModule
   ],
-  providers: [MessageService], // Adicione o MessageService aos provedores
+  providers: [MessageService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.less']
 })
@@ -45,25 +44,18 @@ export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
   roles: SelectItem[] = [];
-  Users: any[] = [];
+  students: any[] = []; // Mudança de "Users" para "students"
 
-  // Injeção do RegisterService para salvar os dados no Firestore
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private registerService: RegisterService // Injetando o RegisterService
-  ) {
-  }
+    private registerService: RegisterService
+  ) { }
 
   ngOnInit(): void {
-    /** Inicializa os campos de formulário */
-    this.initForm()
+    this.initForm();
   }
 
-  /**
-   *
-   * @private
-   */
   private initForm(): void {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -80,62 +72,52 @@ export class RegisterComponent implements OnInit {
       role: ['', Validators.required]
     });
   
-    // Defina as opções de "role"
     this.roles = [
       { label: 'Estudante', value: 'Estudante' },
       { label: 'Professor', value: 'Professor' },
       { label: 'Funcionário', value: 'Funcionário' }
     ];
   }
-  // Função para verificar a força da senha
+
   private passwordStrengthValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value || '';
+      if (!value) return null;
 
-      if (!value) {
-        return null; // Não valida campo vazio, apenas obrigatório
-      }
-
-      // Critérios de senha "média"
       const hasUpperCase = /[A-Z]+/.test(value);
       const hasNumeric = /[0-9]+/.test(value);
       const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]+/.test(value);
       const isValidLength = value.length >= 8;
-
       const passwordValid = (hasUpperCase || hasNumeric || hasSpecialChar) && isValidLength;
 
-      return !passwordValid ? {passwordStrength: true} : null;
+      return !passwordValid ? { passwordStrength: true } : null;
     };
   }
-
 
   formatCep(): void {
     const postalCodeControl = this.registerForm.get('address.postalCode');
     let value = postalCodeControl?.value;
-
     if (value && value.length === 5 && !value.includes('-')) {
-      postalCodeControl?.setValue(value + '-', {emitEvent: false});
+      postalCodeControl?.setValue(value + '-', { emitEvent: false });
     }
   }
 
   async onSubmit(): Promise<void> {
     if (this.registerForm.valid) {
-      const {email, password, ...registerUser} = this.registerForm.value;
+      const { email, password, ...registerStudent } = this.registerForm.value;
 
       try {
-        const userId = await this.registerService.registerUser(email, password, registerUser);
+        const studentId = await this.registerService.registerUser(email, password, registerStudent);
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: `Usuário ${userId.name} foi cadastrado com sucesso`
+          detail: `Aluno ${studentId.name} foi cadastrado com sucesso`
         });
 
-        // Limpa o formulário e reinicia o valor padrão de whatsapp
         this.registerForm.reset();
-        this.registerForm.patchValue({whatsapp: '(XX)9'});
+        this.registerForm.patchValue({ whatsapp: '(XX)9' });
 
       } catch (error) {
-        // Converte o erro para o tipo `Error` para acessar `message`
         const errorMessage = (error as Error).message;
         this.messageService.add({
           severity: 'error',

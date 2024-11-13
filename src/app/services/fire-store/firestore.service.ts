@@ -36,14 +36,35 @@ export class FirestoreService {
     await setDoc(docReference, data);
   }
 
-  async searchCollection(collectionPath: string, field: string, value: string): Promise<any[]> {
-    const ref = collection(this.firestore, collectionPath);
-    const q = query(ref, where(field, '>=', value), where(field, '<=', value + '\uf8ff')); // Busca aproximada
-    const querySnapshot = await getDocs(q);
-
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  // Método para buscar por nome em uma coleção
+  async searchCollection(collectionPath: string, field?: string, value?: string): Promise<any[]> {
+    try {
+      const ref = collection(this.firestore, collectionPath);
+      
+      let q;
+      if (field && value) {
+        // Usa o campo e valor fornecidos para filtrar
+        q = query(ref, where(field, '>=', value), where(field, '<=', value + '\uf8ff'));
+      } else {
+        // Sem filtros, busca todos os documentos na coleção
+        q = ref;
+      }
+  
+      const querySnapshot = await getDocs(q);
+  
+      if (querySnapshot.empty) {
+        console.warn(`Nenhum resultado encontrado na coleção "${collectionPath}"`);
+        return [];
+      }
+  
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      console.error(`Erro ao buscar na coleção "${collectionPath}":`, error);
+      return [];
+    }
   }
-
+  
+  
   // Método para adicionar ID a um array (sem duplicar)
   async addIdToArray(docPath: string, field: string, id: string): Promise<void> {
     const ref = doc(this.firestore, docPath);

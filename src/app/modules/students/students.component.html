@@ -1,0 +1,24 @@
+<div class="students-container">
+    <h2>Lista de Alunos Cadastrados</h2>
+    <table class="students-table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Data de Nascimento</th>
+          <th>Turma</th>
+          <th>CPF</th>
+          <th>Telefone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students">
+          <td>{{ student.name }}</td>
+          <td>{{ student.birthDate | date:'dd/MM/yyyy' }}</td>
+          <td>{{ student.class }}</td>
+          <td>{{ student.cpf }}</td>
+          <td>{{ student.phone }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

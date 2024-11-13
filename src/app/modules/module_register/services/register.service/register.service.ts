@@ -17,7 +17,7 @@ export class RegisterService {
   ) {}
 
   /**
-   * Registra um novo aluno na coleção "user" e salva as informações adicionais no Firestore.
+   * Registra um novo aluno na coleção "students" e salva as informações adicionais no Firestore.
    *
    * @param email - O email do aluno.
    * @param password - A senha do aluno.
@@ -26,9 +26,9 @@ export class RegisterService {
    */
   async registerUser(email: string, password: string, userInfo: UserInfo): Promise<UserInfo> {
     const userCredential: UserCredential = await this.fireAuthService.register(email, password, userInfo);
-    const userId = userCredential.user.uid;
+    const studentId = userCredential.user.uid;
 
-    await this.firestoreService.createDocument(`user/${userId}`, { ...userInfo, uid: userId });
+    await this.firestoreService.createDocument(`students/${studentId}`, { ...userInfo, uid: studentId });
     return userInfo;
   }
 

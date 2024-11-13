@@ -98,12 +98,14 @@ export class SidebarComponent implements OnInit {
             routerLink: ['/painel/criar-links'],
           },
           {
-            label: 'Desktop',
-            icon: 'pi pi-desktop'
+            label: 'Alunos',
+            icon: 'pi pi-book',
+            routerLink: ['/painel/alunos']
           },
           {
-            label: 'Tablet',
-            icon: 'pi pi-tablet'
+            label: 'Responsáveis',
+            icon: 'pi pi-address-book',
+            routerLink: ['/painel/responsaveis']
           },
           {
             label: 'Cadastro',
