@@ -56,6 +56,11 @@ export class ParentsComponent implements OnInit {
     // Lógica de edição
   }
 
+  /**
+   * 
+   * @param parentId 
+   * @returns 
+   */
   async deleteParent(parentId: string | undefined): Promise<void> {
     if (!parentId) {
       console.error('ID inválido para exclusão.');
