@@ -113,7 +113,7 @@ export class SidebarComponent implements OnInit {
             items: [
 
               {
-                label: 'Cadastro individual',
+                label: 'Cadastro de estudantes',
                 icon: 'pi pi-user',
                 routerLink:['/painel/register']
               },

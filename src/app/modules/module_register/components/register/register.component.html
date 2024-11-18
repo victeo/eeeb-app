@@ -1,97 +1,79 @@
-<h1 class="title">Cadastro de Usuários</h1>
+<h1 class="title">Cadastro de Estudantes</h1>
 
 <div class="container-form">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <!-- Nome e Sobrenome -->
     <div class="form-row">
-      <div class="form-group">
+      <!-- Nome (ocupando mais largura) -->
+      <div class="form-group large-width">
         <p-floatLabel>
           <input pInputText id="name" formControlName="name" required />
           <label for="name">Nome</label>
         </p-floatLabel>
       </div>
+    </div>
+
+    <div class="form-row">
+      <!-- Data de Nascimento com Máscara -->
       <div class="form-group">
         <p-floatLabel>
-          <input pInputText id="surname" formControlName="surname" required />
-          <label for="surname">Sobrenome</label>
+          <p-inputMask id="birthDate" formControlName="birthDate" mask="99/99/9999" placeholder="dd/mm/aaaa" required></p-inputMask>
+          <label for="birthDate">Data de Nascimento</label>
         </p-floatLabel>
+      </div>
+
+      <!-- Turma -->
+      <div class="form-group">
+        <p-dropdown [options]="turmas" formControlName="class" placeholder="Selecione a Turma"></p-dropdown>
       </div>
     </div>
 
-    <!-- Campo de Senha com Medidor de Força -->
+    <div class="form-row">
+      <!-- CPF com Máscara -->
+      <div class="form-group">
+        <p-floatLabel>
+          <p-inputMask id="cpf" formControlName="cpf" mask="999.999.999-99" placeholder="___.___.___-__" required></p-inputMask>
+          <label for="cpf">CPF</label>
+        </p-floatLabel>
+      </div>
+
+          <!-- Telefone com Máscara -->
     <div class="form-group">
       <p-floatLabel>
-        <p-password id="password" class="w-full block" formControlName="password" [feedback]="true" [toggleMask]="true"
-          promptLabel="Digite uma senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte" />
-        <label for="password">Senha</label>
+        <p-inputMask id="phone" formControlName="phone" mask="(99)99999-9999" placeholder="(  )9____-____" required></p-inputMask>
+        <label for="phone">Telefone</label>
       </p-floatLabel>
-      <div [@if]="registerForm.get('password')?.hasError('minlength')">
-        <small>A senha deve ter pelo menos 8 caracteres.</small>
-      </div>
-      <div [@if]="registerForm.get('password')?.hasError('passwordStrength')">
-        <small>A senha deve incluir pelo menos um número, letra maiúscula ou caractere especial.</small>
-      </div>
+      <small *ngIf="registerForm.get('phone')?.hasError('formatoInvalido')" class="text-danger">
+        * O telefone deve estar no formato (XX)9XXXX-XXXX.
+      </small>
     </div>
 
-    <!-- Email e WhatsApp -->
-    <div class="form-row">
-      <div class="form-group">
-        <p-floatLabel>
-          <input pInputText id="email" formControlName="email" required />
-          <label for="email">Seu email</label>
-        </p-floatLabel>
-      </div>
-      <div class="form-group">
-        <p-floatLabel>
-          <p-inputMask id="whatsapp" formControlName="whatsapp" mask="(99)99999-9999"
-            placeholder="(99)99999-9999" />
-          <label for="whatsapp">Whatsapp</label>
-        </p-floatLabel>
-      </div>
     </div>
 
-    <!-- Endereço -->
-    <fieldset formGroupName="address">
-      <legend>Endereço</legend>
+    <!-- Responsáveis (linha única com mais espaçamento e maior largura) -->
+    <fieldset formGroupName="responsaveis" class="full-width">
+      <legend>Responsáveis</legend>
 
-      <!-- Cidade e Estado -->
       <div class="form-row">
-        <div class="form-group">
+        <div class="form-group large-width">
           <p-floatLabel>
-            <input pInputText id="city" formControlName="city" required />
-            <label for="city">Cidade</label>
+            <input pInputText id="responsavel1" formControlName="responsavel1" placeholder="Responsável 1" />
+            <label for="responsavel1">Responsável 1</label>
           </p-floatLabel>
         </div>
-        <div class="form-group">
+
+        <div class="form-group large-width">
           <p-floatLabel>
-            <input pInputText id="state" formControlName="state" required />
-            <label for="state">Estado</label>
+            <input pInputText id="responsavel2" formControlName="responsavel2" placeholder="Responsável 2" />
+            <label for="responsavel2">Responsável 2</label>
           </p-floatLabel>
         </div>
       </div>
 
-      <!-- Rua e CEP -->
-      <div class="form-row">
-        <div class="form-group espaço-entre-forms">
-          <p-floatLabel>
-            <input pInputText id="street" formControlName="street" required />
-            <label for="street">Rua</label>
-          </p-floatLabel>
-        </div>
-        <div class="form-group espaço-entre-forms">
-          <p-floatLabel>
-            <input pInputText id="postalCode" formControlName="postalCode" required (input)="formatCep()" />
-            <label for="postalCode">CEP</label>
-          </p-floatLabel>
-        </div>
-      </div>
+      <!-- Aviso de mínimo um responsável -->
+      <small *ngIf="registerForm.get('responsaveis')?.hasError('minimoUmResponsavel')" class="text-danger">
+        * É necessário preencher no mínimo um responsável.
+      </small>
     </fieldset>
-
-    <!-- Campo de Função (múltipla escolha) -->
-    <div class="form-group">
-      <p-dropdown [options]="roles" formControlName="role" placeholder="Selecione a função" class="custom-dropdown">
-      </p-dropdown>
-    </div>
 
     <!-- Botão de envio -->
     <div class="button-group">

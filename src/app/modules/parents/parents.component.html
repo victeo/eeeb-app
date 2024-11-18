@@ -1,1 +1,51 @@
-<p>parents works!</p>
+<h1 class="title">Lista de Responsáveis</h1>
+
+<div class="search-bar">
+  <p-dropdown 
+    [options]="parentsDropdown"
+    [(ngModel)]="selectedParent"
+    optionLabel="name"
+    [filter]="true"
+    filterBy="name"
+    [showClear]="true"
+    placeholder="Buscar Responsável"
+    (onChange)="filterTable()">
+  </p-dropdown>
+</div>
+
+<div class="container-table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Email</th>
+        <th>Whatsapp</th>
+        <th>Renda</th>
+        <th>Gênero</th>
+        <th>Endereço</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let parent of filteredParents">
+        <td>{{ parent.name }} {{ parent.surname }}</td>
+        <td>{{ parent.cpf }}</td>
+        <td>{{ parent.email || 'Email não disponível' }}</td>
+        <td>{{ parent.whatsapp }}</td>
+        <td>{{ parent.renda | currency:'BRL' }}</td>
+        <td>{{ parent.gender }}</td>
+        <td>
+          <ng-container *ngIf="parent.address; else noAddress">
+            {{ parent.address.street }}, {{ parent.address.city }}, {{ parent.address.state }} - {{ parent.address.postalCode }}
+          </ng-container>
+          <ng-template #noAddress>Endereço não disponível</ng-template>
+        </td>
+        <td>
+          <button class="btn btn-edit" (click)="editParent(parent)">Editar</button>
+          <button class="btn btn-delete" (click)="deleteParent(parent.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

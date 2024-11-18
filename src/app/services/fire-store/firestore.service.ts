@@ -35,6 +35,12 @@ export class FirestoreService {
     const docReference = doc(this.firestore, docPath);
     await setDoc(docReference, data);
   }
+  
+  async getCollection<T>(collectionPath: string): Promise<T[]> {
+    const collectionRef = collection(this.firestore, collectionPath);
+    const querySnapshot = await getDocs(collectionRef);
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
+  }
 
   // Método para buscar por nome em uma coleção
   async searchCollection(collectionPath: string, field?: string, value?: string): Promise<any[]> {

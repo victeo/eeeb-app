@@ -1,34 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  AbstractControl,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-  ReactiveFormsModule
-} from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { ToastModule } from 'primeng/toast';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
-import { SelectItem } from 'primeng/api';
-import { RegisterService } from '../../services/register.service/register.service'; // Importa o serviço de registro
-import { PasswordModule } from 'primeng/password';
+import { ToastModule } from 'primeng/toast';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { RegisterService } from '../../services/register.service/register.service';
 import { InputMaskModule } from 'primeng/inputmask';
-
-// Regex para validar o formato do WhatsApp e do Email
-const whatsappRegex = /^\(\d{2}\)\s?9\d{4}-\d{4}$/;
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const CEPRegex = /^\d{5}-\d{3}$/;
 
 @Component({
   standalone: true,
   imports: [
     DropdownModule,
-    PasswordModule,
     ToastModule,
     ReactiveFormsModule,
     CommonModule,
@@ -43,8 +28,7 @@ const CEPRegex = /^\d{5}-\d{3}$/;
 export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
-  roles: SelectItem[] = [];
-  students: any[] = []; // Mudança de "Users" para "students"
+  turmas: { label: string, value: string }[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,91 +38,82 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.initializeTurmas();
   }
 
   private initForm(): void {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
-      surname: ['', Validators.required],
-      email: ['', [Validators.required, Validators.pattern(emailRegex)]],
-      whatsapp: ['(XX)', [Validators.required, Validators.pattern(whatsappRegex)]],
-      password: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
-      address: this.formBuilder.group({
-        street: ['', Validators.required],
-        city: ['', Validators.required],
-        state: ['', Validators.required],
-        postalCode: ['', [Validators.required, Validators.pattern(CEPRegex)]]
-      }),
-      role: ['', Validators.required]
+      birthDate: ['', Validators.required],
+      class: ['', Validators.required],
+      cpf: ['', Validators.required],
+      phone: ['', [Validators.required, this.telefoneValidator]],
+      responsaveis: this.formBuilder.group({
+        responsavel1: ['', [Validators.pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)]],
+        responsavel2: ['', [Validators.pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)]]
+      }, { validators: this.minimoUmResponsavelValidator }) // Validação personalizada
     });
-  
-    this.roles = [
-      { label: 'Estudante', value: 'Estudante' },
-      { label: 'Professor', value: 'Professor' },
-      { label: 'Funcionário', value: 'Funcionário' }
-    ];
+  }
+  private telefoneValidator(control: AbstractControl): ValidationErrors | null {
+    const telefone = control.value;
+    const telefoneRegex = /^\(\d{2}\)9\d{4}-\d{4}$/; // Formato (XX)9XXXX-XXXX
+    return telefoneRegex.test(telefone) ? null : { formatoInvalido: true };
   }
 
-  private passwordStrengthValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value || '';
-      if (!value) return null;
-
-      const hasUpperCase = /[A-Z]+/.test(value);
-      const hasNumeric = /[0-9]+/.test(value);
-      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]+/.test(value);
-      const isValidLength = value.length >= 8;
-      const passwordValid = (hasUpperCase || hasNumeric || hasSpecialChar) && isValidLength;
-
-      return !passwordValid ? { passwordStrength: true } : null;
-    };
-  }
-
-  formatCep(): void {
-    const postalCodeControl = this.registerForm.get('address.postalCode');
-    let value = postalCodeControl?.value;
-    if (value && value.length === 5 && !value.includes('-')) {
-      postalCodeControl?.setValue(value + '-', { emitEvent: false });
+  private minimoUmResponsavelValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const responsavel1 = control.get('responsavel1')?.value;
+    const responsavel2 = control.get('responsavel2')?.value;
+    if (!responsavel1 && !responsavel2) {
+      return { minimoUmResponsavel: true }; // Erro se ambos os campos estão vazios
     }
+    return null;
+  };
+
+  private initializeTurmas(): void {
+    this.turmas = [
+      { label: 'Pré Escola 1', value: 'pré escola 1' },
+      { label: 'Pré Escola 2', value: 'pré escola 2' },
+      { label: 'Pré Escola 3', value: 'pré escola 3' },
+      { label: '1º Ano', value: '1º ano' },
+      { label: '2º Ano', value: '2º ano' },
+      { label: '3º Ano', value: '3º ano' },
+      { label: '4º Ano', value: '4º ano' },
+      { label: '5º Ano', value: '5º ano' },
+      { label: '6º Ano', value: '6º ano' },
+      { label: '7º Ano', value: '7º ano' },
+      { label: '8º Ano', value: '8º ano' },
+      { label: '9º Ano', value: '9º ano' }
+    ];
   }
 
   async onSubmit(): Promise<void> {
     if (this.registerForm.valid) {
-      const { email, password, ...registerStudent } = this.registerForm.value;
-
+      const registerStudent = this.registerForm.value;
+  
       try {
-        const studentId = await this.registerService.registerUser(email, password, registerStudent);
+        const studentId = await this.registerService.registerStudent(registerStudent);
+        const studentName = registerStudent.name;
+  
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: `Aluno ${studentId.name} foi cadastrado com sucesso`
+          detail: `Aluno ${studentName} foi cadastrado com sucesso`
         });
-
+  
         this.registerForm.reset();
-        this.registerForm.patchValue({ whatsapp: '(XX)9' });
-
       } catch (error) {
-        const errorMessage = (error as Error).message;
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: errorMessage
+          detail: (error as Error).message
         });
       }
     } else {
-      if (this.registerForm.get('password')?.hasError('minlength')) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'A senha deve ter pelo menos 8 caracteres.'
-        });
-      } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Por favor, preencha todos os campos corretamente.'
-        });
-      }
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Por favor, preencha todos os campos corretamente.'
+      });
     }
   }
 }

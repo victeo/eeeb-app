@@ -100,35 +100,42 @@ export class FireAuthService {
  * @param registerUser - Um objeto contendo informações adicionais do usuário a serem armazenadas.
  * @throws Lança uma exceção em caso de erro durante o processo de registro.
  */
-async register<T>(email: string, password: string, registerUser: T): Promise<UserCredential> {
-  try {
-    const userCredential: UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-    return userCredential;
-  } catch (error: any) {
-    let errorMessage = '';
-
-    switch (error.code) {
-      case 'auth/email-already-in-use':
-        errorMessage = `Endereço de email: ${email} já está em uso em outra conta`;
-        break;
-      case 'auth/invalid-email':
-        errorMessage = `O email: ${email} é inválido.`;
-        break;
-      case 'auth/operation-not-allowed':
-        errorMessage = `O email: ${email} não é permitido.`;
-        break;
-      case 'auth/missing-password':
-        errorMessage = `Campo da senha vazio`;
-        break;
-      case 'auth/weak-password':
-        errorMessage = `A senha não é forte o suficiente.`;
-        break;
-      default:
-        errorMessage = 'Erro desconhecido ao registrar o usuário';
+  async register<T>(email: string, password: string, registerUser: T): Promise<UserCredential> {
+    try {
+      const userCredential: UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+  
+      // Adiciona o email ao objeto de dados do usuário
+      const userData = { ...registerUser, email };
+  
+      // Chame o ParentService ou outro serviço para salvar `userData` no Firestore
+      // Se o ParentService não estiver disponível aqui, passe `userData` no componente ou serviço onde o ParentService está sendo chamado.
+      
+      return userCredential;
+    } catch (error: any) {
+      let errorMessage = '';
+  
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          errorMessage = `Endereço de email: ${email} já está em uso em outra conta`;
+          break;
+        case 'auth/invalid-email':
+          errorMessage = `O email: ${email} é inválido.`;
+          break;
+        case 'auth/operation-not-allowed':
+          errorMessage = `O email: ${email} não é permitido.`;
+          break;
+        case 'auth/missing-password':
+          errorMessage = `Campo da senha vazio`;
+          break;
+        case 'auth/weak-password':
+          errorMessage = `A senha não é forte o suficiente.`;
+          break;
+        default:
+          errorMessage = 'Erro desconhecido ao registrar o usuário';
+      }
+  
+      console.error("Erro ao registrar o usuário:", errorMessage);
+      throw new Error(errorMessage);
     }
-
-    console.error("Erro ao registrar o usuário:", errorMessage);
-    throw new Error(errorMessage);
   }
-}
 }

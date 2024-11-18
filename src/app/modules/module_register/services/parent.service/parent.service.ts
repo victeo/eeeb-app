@@ -18,7 +18,11 @@ export class ParentService {
    */
   async saveParentData(userId: string, parentData: Parent): Promise<void> {
     const docPath = `${this.collectionPath}/${userId}`;
-    await this.firestoreService.createDocument(docPath, parentData);
+  
+    await this.firestoreService.createDocument(docPath, {
+      ...parentData,
+      email: parentData.email // Salva o e-mail no Firestore
+    });
   }
 
   /**
@@ -51,5 +55,15 @@ export class ParentService {
   async getParent(parentId: string): Promise<Parent | null> {
     const docPath = `${this.collectionPath}/${parentId}`;
     return await this.firestoreService.getDocument<Parent>(docPath);
+  }
+
+  /**
+   * Obtém todos os responsáveis da coleção "parents" no Firestore.
+   *
+   * @returns Uma lista de todos os responsáveis.
+   */
+  async getAllParents(): Promise<Parent[]> {
+    const collectionData = await this.firestoreService.getCollection<Parent>(this.collectionPath);
+    return collectionData.map(doc => ({ ...doc, id: doc.id ?? '' })); // Adiciona um id vazio se estiver faltando
   }
 }

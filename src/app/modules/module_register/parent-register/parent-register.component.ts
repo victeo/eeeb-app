@@ -108,20 +108,23 @@ export class ParentRegisterComponent implements OnInit {
   async onSubmit(): Promise<void> {
     if (this.parentForm.valid) {
       const { email, password, ...parentData } = this.parentForm.value;
-  
+
       try {
+        // Registra o usuário no Firebase Authentication
         const userCredential = await this.fireAuthService.register<Parent>(email, password, parentData as Parent);
-        
-        await this.parentService.saveParentData(userCredential.user.uid, parentData as Parent);
-  
+        const userId = userCredential.user.uid;
+
+        // Inclui o email nos dados do responsável para salvá-lo no Firestore
+        await this.parentService.saveParentData(userId, { ...parentData, email } as Parent);
+
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
           detail: 'Responsável cadastrado com sucesso'
         });
-  
+
         this.parentForm.reset();
-  
+
       } catch (error) {
         this.messageService.add({
           severity: 'error',

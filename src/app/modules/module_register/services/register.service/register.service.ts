@@ -16,6 +16,12 @@ export class RegisterService {
     private fireStorageService: FireStorageService
   ) {}
 
+  // Método para registrar um aluno sem autenticação de email e senha
+  async registerStudent(studentInfo: any): Promise<string> {
+    // Usa o método addDocument para adicionar o aluno e retorna o ID gerado automaticamente
+    const studentId = await this.firestoreService.addDocument('students', studentInfo);
+    return studentId;
+  }
   /**
    * Registra um novo aluno na coleção "students" e salva as informações adicionais no Firestore.
    *
