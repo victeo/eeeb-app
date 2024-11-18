@@ -21,6 +21,7 @@ export class StudentsComponent implements OnInit {
 
 
 
+
   classOptions = [
     { label: 'Pré Escola 1', value: 'Pré Escola 1' },
     { label: 'Pré Escola 2', value: 'Pré Escola 2' },
@@ -84,6 +85,8 @@ export class StudentsComponent implements OnInit {
       } catch (error) {
         console.error('Erro ao excluir aluno:', error);
         alert('Erro ao excluir aluno.');
+
+        console.log('abc');
       }
     }
   }
