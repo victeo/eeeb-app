@@ -86,7 +86,7 @@ export class StudentsComponent implements OnInit {
         console.error('Erro ao excluir aluno:', error);
         alert('Erro ao excluir aluno.');
 
-        console.log('abc');
+        console.log('teste commits');
       }
     }
   }
