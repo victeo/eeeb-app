@@ -9,19 +9,31 @@
   border-collapse: collapse;
 }
 
-.students-table th,
+.students-table th, .form-group label{
+
+  width: auto;
+}
+
 .students-table td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
 }
 
+.students-table td,
+.students-table th {
+  font-size: 14px; /* Adjust font size */
+  padding: 8px;    /* Adjust padding if needed */
+  text-align: left; /* Align text properly */
+}
+
+
 .students-table th {
   background-color: #f4f4f4;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   margin-bottom: 1rem;
@@ -78,10 +90,22 @@
 .form-group label {
   display: block;
   margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.form-group label[for="name"] {
+  display: inline-block;
+  width: 200px;  /* Set the width of the 'Nome' label */
+  font-size: 14px; /* Adjust the font size if needed */
+  margin-right: 10px;  /* Space between label and input */
+}
+
+body {
+  font-size: 14px; /* Adjust this value to reduce the font size */
 }
 
 .form-group input {
-  width: 100%;
+  width: calc(100% - 200px);
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;

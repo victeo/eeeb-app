@@ -33,8 +33,9 @@ export class ParentService {
    */
   async updateParent(parentId: string, updatedData: Partial<Parent>): Promise<void> {
     const docPath = `${this.collectionPath}/${parentId}`;
+    console.log('Dados enviados para atualização:', updatedData); // Log para depuração
     await this.firestoreService.updateDocument(docPath, updatedData);
-  }
+  }  
 
   /**
    * Exclui um responsável do Firestore.
