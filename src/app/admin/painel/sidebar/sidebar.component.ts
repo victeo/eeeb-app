@@ -50,26 +50,9 @@ export class SidebarComponent implements OnInit {
             routerLink: ['/painel/responsaveis']
           },
           {
-            label: 'Cadastro',
-            icon: 'pi-cloud-upload',
-            items: [
-
-              {
-                label: 'Cadastro de estudantes',
-                icon: 'pi pi-user',
-                routerLink:['/painel/register']
-              },
-              {
-                label: 'Cadastro em Lotes',
-                icon: 'pi pi-users',
-                routerLink: ['/painel/groupRegister']
-              },
-              {
-                label: 'Cadastro de responsáveis',
-                icon: 'pi-face-smile',
-                routerLink: ['/painel/parentRegister']
-              }
-            ]
+            label: 'Cadastro em lotes',
+            icon: 'pi pi-users',
+            routerLink: ['/painel/groupRegister']
           }
         ]
       }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ParentService } from '../module_register/services/parent.service/parent.service';
 import { Parent } from 'app/models/parent';
+import { Router } from '@angular/router';
+import { PrimeIcons } from 'primeng/api';
 import {
   DropdownModule,
 } from 'primeng/dropdown';
@@ -32,7 +34,8 @@ export class ParentsComponent implements OnInit {
 
   constructor(
     private parentService: ParentService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +48,7 @@ export class ParentsComponent implements OnInit {
       surname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       whatsapp: ['', Validators.required],
-      cpf: ['', [Validators.required, this.cpfValidator]],
+      cpf: ['', [Validators.required]],
       renda: ['', Validators.required],
       gender: ['', Validators.required],
       address: this.fb.group({
@@ -61,14 +64,14 @@ export class ParentsComponent implements OnInit {
     this.editForm = this.fb.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      cpf: ['', [Validators.required, this.cpfValidator]],
+      cpf: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      whatsapp: ['', [Validators.required, this.whatsappValidator]],
+      whatsapp: ['', [Validators.required]],
       address: this.fb.group({
         street: [''],
         city: [''],
         state: [''],
-        postalCode: [''],
+        postalCode: ['', Validators.required, this.cepValidator],
       }),
       renda: [0, [Validators.required, Validators.min(0)]],
       gender: ['', Validators.required],
@@ -186,18 +189,86 @@ export class ParentsComponent implements OnInit {
     }
   }
 
-  private cpfValidator(control: AbstractControl): ValidationErrors | null {
-    const cpf = control.value;
-    if (!cpf) {
-      return null;
+  updateWhatsApp(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+  
+    // Remove caracteres inválidos
+    value = value.replace(/[^\d]/g, '');
+  
+    // Adiciona os parênteses automaticamente se houver até 2 dígitos no início
+    if (value.length > 0 && value.length <= 2) {
+      value = `(${value}`;
+    } else if (value.length > 2) {
+      value = `(${value.slice(0, 2)})${value.slice(2)}`;
     }
-    const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
-    return cpfRegex.test(cpf) ? null : { formatoInvalido: true };
+  
+    // Adiciona o traço automaticamente
+    if (value.length > 9) {
+      value = value.replace(
+        /^(\(\d{2}\))(\d{4,5})(\d{0,4})$/,
+        '$1$2-$3'
+      );
+    }
+  
+    // Limita o tamanho máximo a "(XX)XXXXX-XXXX"
+    value = value.substring(0, 14);
+  
+    // Atualiza o valor do campo e do formulário
+    input.value = value;
+    this.editForm.get('whatsapp')?.setValue(value, { emitEvent: false });
+  }  
+  
+  updateCPF(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+  
+    // Garantir o formato "xxx.xxx.xxx-xx"
+    value = value.replace(/[^\d]/g, ''); // Apenas números
+    value = value.replace(/(\d{3})(\d)/, '$1.$2'); // Primeiro ponto
+    value = value.replace(/(\d{3})\.(\d{3})(\d)/, '$1.$2.$3'); // Segundo ponto
+    value = value.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4'); // Traço
+    input.value = value.substring(0, 14); // Limitar o tamanho máximo
+  
+    // Atualizar o valor do formulário
+    this.editForm.get('cpf')?.setValue(input.value, { emitEvent: false });
   }
 
-  private whatsappValidator(control: AbstractControl): ValidationErrors | null {
-    const whatsapp = control.value;
-    const whatsappRegex = /^\(\d{2}\)9\d{4}-\d{4}$/;
-    return whatsappRegex.test(whatsapp) ? null : { formatoInvalido: true };
+  updateCEP(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+  
+    // Remove qualquer caractere que não seja número
+    value = value.replace(/[^\d]/g, '');
+  
+    // Adiciona o traço automaticamente após os 5 primeiros números
+    if (value.length > 5) {
+      value = value.replace(/^(\d{5})(\d{0,3})$/, '$1-$2');
+    }
+  
+    // Limita o tamanho máximo a "xxxxx-xxx"
+    value = value.substring(0, 9);
+  
+    // Atualiza o valor do campo e do formulário
+    input.value = value;
+    this.editForm.get('address.postalCode')?.setValue(value, { emitEvent: false });
+  }
+
+  private cepValidator(control: AbstractControl): ValidationErrors | null {
+    const cep = control.value;
+    if (!cep) return null;
+  
+    // Valida o formato "xxxxx-xxx"
+    const cepRegex = /^\d{5}-\d{3}$/;
+    return cepRegex.test(cep) ? null : { formatoInvalido: true };
+  }
+  
+  goToParentsRegister(): void {
+    this.router.navigate(['/painel/parentRegister']);
+  }
+
+  // Método de navegação para o componente ParentingComponent
+  irParaParenting(): void {
+    this.router.navigate(['/painel/parenting']);
   }
 }

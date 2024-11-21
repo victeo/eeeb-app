@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from 'app/services/fire-store/firestore.service';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
+import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
@@ -20,8 +21,6 @@ export class StudentsComponent implements OnInit {
   editForm!: FormGroup;
 
 
-
-
   classOptions = [
     { label: 'Pré Escola 1', value: 'Pré Escola 1' },
     { label: 'Pré Escola 2', value: 'Pré Escola 2' },
@@ -38,7 +37,8 @@ export class StudentsComponent implements OnInit {
 
   constructor(
     private firestoreService: FirestoreService, 
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router // Adiciona o Router ao construtor
   ) {}
 
   ngOnInit() {
@@ -85,8 +85,6 @@ export class StudentsComponent implements OnInit {
       } catch (error) {
         console.error('Erro ao excluir aluno:', error);
         alert('Erro ao excluir aluno.');
-
-        console.log('teste commits');
       }
     }
   }
@@ -95,12 +93,13 @@ export class StudentsComponent implements OnInit {
     this.isEditing = true;
     this.editForm = this.fb.group({
       name: [student.name, [Validators.required]],
-      birthDate: [student.birthDate, [Validators.required]],
+      birthDate: [student.birthDate, [Validators.required]], // Formatações serão aplicadas no evento input
       class: [student.class, [Validators.required]],
       cpf: [student.cpf, [Validators.required, this.cpfValidator]],
       phone: [student.phone, [Validators.required, this.telefoneValidator]]
     });
   }
+  
   
 
   async saveEdit(): Promise<void> {
@@ -140,7 +139,37 @@ export class StudentsComponent implements OnInit {
   // Validador de Telefone
   private telefoneValidator(control: AbstractControl): ValidationErrors | null {
     const telefone = control.value;
-    const telefoneRegex = /^\(\d{2}\)9\d{4}-\d{4}$/; // Formato (XX)9XXXX-XXXX
+    const telefoneRegex = /^\(\d{2}\)9?\d{4}-\d{4}$/; // Aceita o formato com ou sem o "9" opcional
     return telefoneRegex.test(telefone) ? null : { formatoInvalido: true };
   }
+  
+
+  updateBirthDate(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+  
+    // Remove qualquer caractere que não seja número
+    value = value.replace(/[^\d]/g, '');
+  
+    // Adiciona as barras automaticamente
+    if (value.length > 2) {
+      value = value.replace(/(\d{2})(\d)/, '$1/$2');
+    }
+    if (value.length > 5) {
+      value = value.replace(/(\d{2})\/(\d{2})(\d)/, '$1/$2/$3');
+    }
+  
+    // Limita o tamanho a "xx/xx/xxxx"
+    value = value.substring(0, 10);
+  
+    // Atualiza o valor do campo e do formulário
+    input.value = value;
+    this.editForm.get('birthDate')?.setValue(value, { emitEvent: false });
+  }
+  
+
+  goToRegister(): void {
+    this.router.navigate(['/painel/register']);
+  }
+
 }

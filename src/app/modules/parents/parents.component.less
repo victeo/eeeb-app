@@ -103,16 +103,19 @@ h4 {
 }
 
 .search-bar {
-  margin-bottom: 20px;
+  margin-left: 0; /* Ensure no margin on the left side */
+  margin-right: auto; /* This pushes the element to the left */
   display: flex;
-  justify-content: center;
-  width: 100%; /* Garante que ocupa toda a largura disponível */
+  justify-content: flex-start; /* Align content to the left */
+  margin-bottom: 20px;
+  width: 100%; /* Ensure it takes the full width of the container */
 }
 
 .search-bar p-dropdown {
-  width: 50%; /* Ajusta a largura do dropdown dentro da barra */
-  max-width: 400px; /* Define um limite máximo para não ocupar espaço excessivo */
+  width: 50%; /* Adjust the width of the dropdown inside the search bar */
+  max-width: 400px; /* Set a maximum width to prevent excessive expansion */
 }
+
 
 .container-table {
   max-width: 1200px;
@@ -169,4 +172,29 @@ h4 {
   max-width: 90%;
   max-height: 90%; /* Para o scroll */
   overflow-y: auto; /* Barra de rolagem */
+}
+
+.btn-register {
+  margin-right: 1rem; /* Keep a space to the right */
+  background-color: blue; /* Button background color */
+  min-width: 250px; /* Minimum width of the button */
+  color: white; /* Text color */
+  border: none; /* Remove border */
+  padding: 8px 16px; /* Add padding to the button for a better look */
+  cursor: pointer; /* Change cursor to pointer */
+  min-height: 40px;
+  font-size: 18px;
+  
+  /* Align button to the right */
+  margin-left: auto; 
+  display: block;
+
+   /* Move the button a bit down without affecting other buttons */
+   position: relative;
+   top: 45px; /* Adjust this value to move the button down */
+}
+
+.btn-parenting{
+  top: 30px;
+  background-color: #5a4fcf;
 }

@@ -140,9 +140,7 @@ export class ParentRegisterComponent implements OnInit {
       });
     }
   }
-
-  // Método de navegação para o componente ParentingComponent
-  irParaParenting(): void {
-    this.router.navigate(['/painel/parenting']);
+  goToGroupRegister(): void{
+    this.router.navigate(['painel/groupRegister'])
   }
 }
