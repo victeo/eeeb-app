@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FirestoreService } from 'app/services/fire-store/firestore.service';
+import { DropdownModule } from 'primeng/dropdown'; 
 
 @Component({
   selector: 'app-parenting',
   standalone: true,
   templateUrl: './parenting.component.html',
   styleUrls: ['./parenting.component.less'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, DropdownModule, FormsModule]
 })
 export class ParentingComponent {
   searchAluno = '';
@@ -22,42 +23,38 @@ export class ParentingComponent {
 
   // Método para buscar alunos na coleção "students"
   async buscarAlunos() {
-    if (this.searchAluno.trim()) {
-      try {
-        // Agora buscando na coleção "students"
-        this.alunosResultados = await this.firestoreService.searchCollection('students', 'name', this.searchAluno);
+    try {
+      console.log('Buscando todos os alunos na coleção "students"...');
+      const resultados = await this.firestoreService.getCollection('students');
+      console.log('Resultados retornados:', resultados);
   
-        if (this.alunosResultados.length === 0) {
-          console.warn('Nenhum aluno encontrado para o nome:', this.searchAluno);
-        } else {
-          console.log('Alunos encontrados:', this.alunosResultados);
-        }
-      } catch (error) {
-        console.error('Erro ao buscar alunos:', error);
-      }
-    } else {
-      this.alunosResultados = [];
+      this.alunosResultados = resultados.map((aluno: any) => ({
+        id: aluno.id,
+        name: `${aluno.name} (${aluno.id.slice(0, 5)})`,
+      }));
+      console.log('Resultados formatados para exibição:', this.alunosResultados);
+    } catch (error) {
+      console.error('Erro ao buscar alunos:', error);
     }
   }
   
   // Método para buscar responsáveis na coleção "parents"
   async buscarResponsaveis() {
-    if (this.searchResponsavel.trim()) {
-      try {
-        this.responsaveisResultados = await this.firestoreService.searchCollection('parents', 'name', this.searchResponsavel);
+    try {
+      console.log('Buscando todos os responsáveis na coleção "parents"...');
+      const resultados = await this.firestoreService.getCollection('parents');
+      console.log('Resultados retornados:', resultados);
   
-        if (this.responsaveisResultados.length === 0) {
-          console.warn('Nenhum responsável encontrado para o nome:', this.searchResponsavel);
-        } else {
-          console.log('Responsáveis encontrados:', this.responsaveisResultados);
-        }
-      } catch (error) {
-        console.error('Erro ao buscar responsáveis:', error);
-      }
-    } else {
-      this.responsaveisResultados = [];
+      this.responsaveisResultados = resultados.map((responsavel: any) => ({
+        id: responsavel.id,
+        name: `${responsavel.name} ${responsavel.surname} (${responsavel.id.slice(0, 5)})`,
+      }));
+      console.log('Resultados formatados para exibição:', this.responsaveisResultados);
+    } catch (error) {
+      console.error('Erro ao buscar responsáveis:', error);
     }
   }
+  
   
   selecionarAluno(aluno: any) {
     this.alunoSelecionado = aluno;

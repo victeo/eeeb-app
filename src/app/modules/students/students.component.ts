@@ -3,14 +3,22 @@ import { FirestoreService } from 'app/services/fire-store/firestore.service';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { Router } from '@angular/router';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-students',
   standalone: true,
   imports: [CommonModule, DropdownModule, FormsModule, ReactiveFormsModule],
   templateUrl: './students.component.html',
-  styleUrls: ['./students.component.less']
+  styleUrls: ['./students.component.less'],
 })
 export class StudentsComponent implements OnInit {
   students: any[] = [];
@@ -19,7 +27,6 @@ export class StudentsComponent implements OnInit {
   selectedStudent: any | null = null;
   isEditing: boolean = false;
   editForm!: FormGroup;
-
 
   classOptions = [
     { label: 'Pré Escola 1', value: 'Pré Escola 1' },
@@ -36,22 +43,33 @@ export class StudentsComponent implements OnInit {
   ];
 
   constructor(
-    private firestoreService: FirestoreService, 
+    private firestoreService: FirestoreService,
     private fb: FormBuilder,
-    private router: Router // Adiciona o Router ao construtor
+    private router: Router
   ) {}
 
   ngOnInit() {
+    this.initializeForm();
     this.loadStudents();
+  }
+
+  private initializeForm(): void {
+    this.editForm = this.fb.group({
+      name: ['', [Validators.required]],
+      birthDate: ['', [Validators.required]],
+      class: ['', [Validators.required]],
+      cpf: ['', [Validators.required, this.cpfValidator]],
+      phone: ['', [Validators.required, this.telefoneValidator]],
+    });
   }
 
   async loadStudents() {
     try {
       this.students = await this.firestoreService.searchCollection('students');
       this.filteredStudents = [...this.students];
-      this.studentsDropdown = this.students.map(student => ({
+      this.studentsDropdown = this.students.map((student) => ({
         name: student.name,
-        value: student
+        value: student,
       }));
     } catch (error) {
       console.error('Erro ao carregar alunos:', error);
@@ -65,22 +83,102 @@ export class StudentsComponent implements OnInit {
       this.filteredStudents = [...this.students];
     }
   }
+
+  updateCPF(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+  
+    // Remove caracteres que não sejam números
+    value = value.replace(/\D/g, '');
+  
+    // Adiciona os pontos e o traço automaticamente
+    if (value.length > 3) {
+      value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+    }
+    if (value.length > 6) {
+      value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+    }
+    if (value.length > 9) {
+      value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, '$1.$2.$3-$4');
+    }
+  
+    // Limita o tamanho a 14 caracteres
+    value = value.substring(0, 14);
+  
+    // Atualiza o campo de entrada
+    input.value = value;
+  
+    // Atualiza o controle do formulário
+    this.editForm.get('cpf')?.setValue(value, { emitEvent: false });
+  }
+
+  
+  updateBirthDate(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+  
+    // Remove caracteres que não sejam números
+    value = value.replace(/\D/g, '');
+  
+    // Adiciona as barras automaticamente
+    if (value.length > 2) {
+      value = value.replace(/^(\d{2})(\d)/, '$1/$2');
+    }
+    if (value.length > 5) {
+      value = value.replace(/^(\d{2})\/(\d{2})(\d)/, '$1/$2/$3');
+    }
+  
+    // Limita o tamanho a 10 caracteres
+    value = value.substring(0, 10);
+  
+    // Atualiza o campo de entrada
+    input.value = value;
+  
+    // Atualiza o controle do formulário
+    this.editForm.get('birthDate')?.setValue(value, { emitEvent: false });
+  }
+
+  
+  updatePhone(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+  
+    // Remove caracteres que não sejam números
+    value = value.replace(/\D/g, '');
+  
+    // Adiciona os parênteses automaticamente
+    if (value.length > 0) {
+      value = value.replace(/^(\d{2})(\d)/, '($1)$2');
+    }
+  
+    // Adiciona o traço automaticamente
+    if (value.length > 9) {
+      value = value.replace(/^(\(\d{2}\))(\d{5})(\d)/, '$1$2-$3');
+    }
+  
+    // Limita o tamanho a 14 caracteres
+    value = value.substring(0, 14);
+  
+    // Atualiza o campo de entrada
+    input.value = value;
+  
+    // Atualiza o controle do formulário
+    this.editForm.get('phone')?.setValue(value, { emitEvent: false });
+  }
+  
+
   async deleteStudent(studentId: string | undefined): Promise<void> {
     if (!studentId) {
       console.error('ID inválido ou indefinido.');
       return;
     }
-  
+
     const confirmDelete = confirm('Tem certeza de que deseja excluir este aluno?');
     if (confirmDelete) {
       try {
-        // Remove o documento do Firestore
         await this.firestoreService.deleteDocument(`students/${studentId}`);
-  
-        // Remove o aluno da lista local
         this.students = this.students.filter(student => student.id !== studentId);
         this.filteredStudents = [...this.students];
-  
         alert('Aluno excluído com sucesso.');
       } catch (error) {
         console.error('Erro ao excluir aluno:', error);
@@ -88,18 +186,20 @@ export class StudentsComponent implements OnInit {
       }
     }
   }
-  
+
   editStudent(student: any): void {
+    this.selectedStudent = student; // Define o aluno selecionado
     this.isEditing = true;
-    this.editForm = this.fb.group({
-      name: [student.name, [Validators.required]],
-      birthDate: [student.birthDate, [Validators.required]], // Formatações serão aplicadas no evento input
-      class: [student.class, [Validators.required]],
-      cpf: [student.cpf, [Validators.required, this.cpfValidator]],
-      phone: [student.phone, [Validators.required, this.telefoneValidator]]
+  
+    // Preenche o formulário com os valores do aluno
+    this.editForm.patchValue({
+      name: student.name,
+      birthDate: student.birthDate,
+      class: student.class,
+      cpf: student.cpf,
+      phone: student.phone,
     });
   }
-  
   
 
   async saveEdit(): Promise<void> {
@@ -111,8 +211,11 @@ export class StudentsComponent implements OnInit {
     const updatedStudent = { id: this.selectedStudent.id, ...this.editForm.value };
 
     try {
-      await this.firestoreService.updateDocument(`students/${updatedStudent.id}`, updatedStudent);
-      this.students = this.students.map(student =>
+      await this.firestoreService.updateDocument(
+        `students/${updatedStudent.id}`,
+        updatedStudent
+      );
+      this.students = this.students.map((student) =>
         student.id === updatedStudent.id ? updatedStudent : student
       );
       this.filteredStudents = [...this.students];
@@ -126,50 +229,21 @@ export class StudentsComponent implements OnInit {
 
   cancelEdit(): void {
     this.isEditing = false;
-    //this.editForm = [];
   }
 
-  // Validador de CPF
   private cpfValidator(control: AbstractControl): ValidationErrors | null {
     const cpf = control.value;
-    const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/; // Formato XXX.XXX.XXX-XX
+    const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
     return cpfRegex.test(cpf) ? null : { formatoInvalido: true };
   }
 
-  // Validador de Telefone
   private telefoneValidator(control: AbstractControl): ValidationErrors | null {
     const telefone = control.value;
-    const telefoneRegex = /^\(\d{2}\)9?\d{4}-\d{4}$/; // Aceita o formato com ou sem o "9" opcional
+    const telefoneRegex = /^\(\d{2}\)9?\d{4}-\d{4}$/;
     return telefoneRegex.test(telefone) ? null : { formatoInvalido: true };
   }
-  
-
-  updateBirthDate(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    let value = input.value;
-  
-    // Remove qualquer caractere que não seja número
-    value = value.replace(/[^\d]/g, '');
-  
-    // Adiciona as barras automaticamente
-    if (value.length > 2) {
-      value = value.replace(/(\d{2})(\d)/, '$1/$2');
-    }
-    if (value.length > 5) {
-      value = value.replace(/(\d{2})\/(\d{2})(\d)/, '$1/$2/$3');
-    }
-  
-    // Limita o tamanho a "xx/xx/xxxx"
-    value = value.substring(0, 10);
-  
-    // Atualiza o valor do campo e do formulário
-    input.value = value;
-    this.editForm.get('birthDate')?.setValue(value, { emitEvent: false });
-  }
-  
 
   goToRegister(): void {
     this.router.navigate(['/painel/register']);
   }
-
 }

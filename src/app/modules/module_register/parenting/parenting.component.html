@@ -1,55 +1,48 @@
 <div class="search-container">
+  <h2 class="title">Ligar Aluno e Responsável</h2>
+
   <!-- Seção de Busca e Seleção de Aluno -->
-  <h3>Buscar Aluno</h3>
-  <input
-    type="text"
-    placeholder="Digite o nome do aluno"
-    [(ngModel)]="searchAluno"
-    (input)="buscarAlunos()"
-  />
-  
-  <!-- Lista de Resultados de Aluno -->
-  <ul *ngIf="alunosResultados.length > 0" class="suggestions-list">
-    <li
-      *ngFor="let aluno of alunosResultados"
-      (click)="selecionarAluno(aluno)"
-    >
-      {{ aluno.name }} (ID: {{ aluno.id }})
-    </li>
-  </ul>
+  <div class="form-group">
+    <label for="aluno">Buscar Aluno</label>
+    <p-dropdown
+      [options]="alunosResultados"
+      [(ngModel)]="alunoSelecionado"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      [showClear]="true"
+      placeholder="Digite o nome do aluno"
+      (onFilter)="buscarAlunos()"
+    ></p-dropdown>
+  </div>
 
   <!-- Exibe o aluno selecionado -->
-  <p *ngIf="alunoSelecionado" class="selected-info">
-    Aluno Selecionado: {{ alunoSelecionado.nome }} (ID: {{ alunoSelecionado.id }})
-  </p>
+  <div class="selected-info" *ngIf="alunoSelecionado">
+    Aluno Selecionado: {{ alunoSelecionado.name }}
+  </div>
 
   <!-- Seção de Busca e Seleção de Responsável -->
-  <h3>Buscar Responsável</h3>
-  <input
-    type="text"
-    placeholder="Digite o nome do responsável"
-    [(ngModel)]="searchResponsavel"
-    (input)="buscarResponsaveis()"
-  />
-  
-  <!-- Lista de Resultados de Responsável -->
-  <ul *ngIf="responsaveisResultados.length > 0" class="suggestions-list">
-    <li
-      *ngFor="let responsavel of responsaveisResultados"
-      (click)="selecionarResponsavel(responsavel)"
-    >
-      {{ responsavel.name }} (ID: {{ responsavel.id }})
-    </li>
-  </ul>
+  <div class="form-group">
+    <label for="responsavel">Buscar Responsável</label>
+    <p-dropdown
+      [options]="responsaveisResultados"
+      [(ngModel)]="responsavelSelecionado"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      [showClear]="true"
+      placeholder="Digite o nome do responsável"
+      (onFilter)="buscarResponsaveis()"
+    ></p-dropdown>
+  </div>
 
   <!-- Exibe o responsável selecionado -->
-  <p *ngIf="responsavelSelecionado" class="selected-info">
-    Responsável Selecionado: {{ responsavelSelecionado.nome }} (ID: {{ responsavelSelecionado.id }})
-  </p>
+  <div class="selected-info" *ngIf="responsavelSelecionado">
+    Responsável Selecionado: {{ responsavelSelecionado.name }}
+  </div>
 
-  <!-- Botão sempre visível para ligar aluno e responsável selecionados -->
+  <!-- Botão para ligar aluno e responsável -->
   <div class="link-container">
-    <h4>Ligar Aluno e Responsável</h4>
-    <button (click)="ligarAlunoResponsavel()">Ligar</button>
+    <button class="btn-link" (click)="ligarAlunoResponsavel()">Ligar</button>
   </div>
 </div>

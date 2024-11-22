@@ -68,7 +68,6 @@ export class ParentRegisterComponent implements OnInit {
   private initForm(): void {
     this.parentForm = this.formBuilder.group({
       name: ['', Validators.required],
-      surname: ['', Validators.required],
       cpf: ['', [Validators.required, Validators.pattern(cpfRegex)]],
       email: ['', [Validators.required, Validators.pattern(emailRegex)]],
       whatsapp: ['(XX)', [Validators.required, Validators.pattern(whatsappRegex)]],
