@@ -7,18 +7,20 @@ import {InputGroupModule} from "primeng/inputgroup";
 import {InputGroupAddonModule} from "primeng/inputgroupaddon";
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import {CardModule} from "primeng/card";
 
 @Component({
   selector: 'app-short-link-form',
   standalone: true,
-  imports: [
-    FormsModule,
-    NgIf,
-    InputGroupModule,
-    InputGroupAddonModule,
-    InputTextModule,
-    ButtonModule
-  ],
+    imports: [
+        FormsModule,
+        NgIf,
+        InputGroupModule,
+        InputGroupAddonModule,
+        InputTextModule,
+        ButtonModule,
+        CardModule
+    ],
   templateUrl: './short-link-form.component.html',
   styleUrl: './short-link-form.component.less'
 })

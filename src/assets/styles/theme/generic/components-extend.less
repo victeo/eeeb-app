@@ -32,10 +32,12 @@ body {
       align-items: center;
       height: min-content;
       border-bottom: 1px solid @theme__color__secondary;
-      margin-left: @indent__base;
 
       .page-title-wrapper {
         .mixin-display(flex);
+        .mixin-display-flex-direction(column);
+        margin-left: @indent__base;
+
       }
 
 
