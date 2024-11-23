@@ -9,11 +9,12 @@ import { User as UserInfo } from 'app/models/user';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
+import {CardModule} from "primeng/card";
 
 @Component({
   selector: 'app-group-register',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, ButtonModule, TableModule, FormsModule, ToastModule],
+    imports: [CommonModule, FileUploadModule, ButtonModule, TableModule, FormsModule, ToastModule, CardModule],
   templateUrl: './group-register.component.html',
   styleUrls: ['./group-register.component.less'],
   providers: [MessageService]

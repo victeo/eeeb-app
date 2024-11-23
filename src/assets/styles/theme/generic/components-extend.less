@@ -22,6 +22,8 @@ body {
 }
 
 .card {
+  padding: 20px;
+
   .p-card {
     box-shadow: none;
 
@@ -29,6 +31,13 @@ body {
       justify-content: space-between;
       align-items: center;
       height: min-content;
+      border-bottom: 1px solid @theme__color__secondary;
+      margin-left: @indent__base;
+
+      .page-title-wrapper {
+        .mixin-display(flex);
+      }
+
 
       .courseCreateButton {
         align-items: center;
@@ -53,16 +62,6 @@ body {
 
   }
 
-
-  // Cor da título das páginas
-  .title-box {
-    border-bottom: 1px solid @theme__color__secondary;
-    margin-bottom: @indent__m;
-
-    .page-title-wrapper {
-      .mixin-display(flex);
-    }
-  }
 
 
   .page-title {

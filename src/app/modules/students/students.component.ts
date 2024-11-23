@@ -12,11 +12,12 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
+import {CardModule} from "primeng/card";
 
 @Component({
   selector: 'app-students',
   standalone: true,
-  imports: [CommonModule, DropdownModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, DropdownModule, FormsModule, ReactiveFormsModule, CardModule],
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.less'],
 })
@@ -87,10 +88,10 @@ export class StudentsComponent implements OnInit {
   updateCPF(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value;
-  
+
     // Remove caracteres que não sejam números
     value = value.replace(/\D/g, '');
-  
+
     // Adiciona os pontos e o traço automaticamente
     if (value.length > 3) {
       value = value.replace(/^(\d{3})(\d)/, '$1.$2');
@@ -101,25 +102,25 @@ export class StudentsComponent implements OnInit {
     if (value.length > 9) {
       value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, '$1.$2.$3-$4');
     }
-  
+
     // Limita o tamanho a 14 caracteres
     value = value.substring(0, 14);
-  
+
     // Atualiza o campo de entrada
     input.value = value;
-  
+
     // Atualiza o controle do formulário
     this.editForm.get('cpf')?.setValue(value, { emitEvent: false });
   }
 
-  
+
   updateBirthDate(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value;
-  
+
     // Remove caracteres que não sejam números
     value = value.replace(/\D/g, '');
-  
+
     // Adiciona as barras automaticamente
     if (value.length > 2) {
       value = value.replace(/^(\d{2})(\d)/, '$1/$2');
@@ -127,45 +128,45 @@ export class StudentsComponent implements OnInit {
     if (value.length > 5) {
       value = value.replace(/^(\d{2})\/(\d{2})(\d)/, '$1/$2/$3');
     }
-  
+
     // Limita o tamanho a 10 caracteres
     value = value.substring(0, 10);
-  
+
     // Atualiza o campo de entrada
     input.value = value;
-  
+
     // Atualiza o controle do formulário
     this.editForm.get('birthDate')?.setValue(value, { emitEvent: false });
   }
 
-  
+
   updatePhone(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value;
-  
+
     // Remove caracteres que não sejam números
     value = value.replace(/\D/g, '');
-  
+
     // Adiciona os parênteses automaticamente
     if (value.length > 0) {
       value = value.replace(/^(\d{2})(\d)/, '($1)$2');
     }
-  
+
     // Adiciona o traço automaticamente
     if (value.length > 9) {
       value = value.replace(/^(\(\d{2}\))(\d{5})(\d)/, '$1$2-$3');
     }
-  
+
     // Limita o tamanho a 14 caracteres
     value = value.substring(0, 14);
-  
+
     // Atualiza o campo de entrada
     input.value = value;
-  
+
     // Atualiza o controle do formulário
     this.editForm.get('phone')?.setValue(value, { emitEvent: false });
   }
-  
+
 
   async deleteStudent(studentId: string | undefined): Promise<void> {
     if (!studentId) {
@@ -190,7 +191,7 @@ export class StudentsComponent implements OnInit {
   editStudent(student: any): void {
     this.selectedStudent = student; // Define o aluno selecionado
     this.isEditing = true;
-  
+
     // Preenche o formulário com os valores do aluno
     this.editForm.patchValue({
       name: student.name,
@@ -200,7 +201,7 @@ export class StudentsComponent implements OnInit {
       phone: student.phone,
     });
   }
-  
+
 
   async saveEdit(): Promise<void> {
     if (!this.editForm || this.editForm.invalid) {

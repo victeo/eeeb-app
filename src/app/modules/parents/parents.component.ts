@@ -16,10 +16,11 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {CardModule} from "primeng/card";
 
 @Component({
   standalone: true,
-  imports: [CommonModule, DropdownModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, DropdownModule, FormsModule, ReactiveFormsModule, CardModule],
   selector: 'app-parents',
   templateUrl: './parents.component.html',
   styleUrls: ['./parents.component.less'],
@@ -192,17 +193,17 @@ export class ParentsComponent implements OnInit {
   updateWhatsApp(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value;
-  
+
     // Remove caracteres inválidos
     value = value.replace(/[^\d]/g, '');
-  
+
     // Adiciona os parênteses automaticamente se houver até 2 dígitos no início
     if (value.length > 0 && value.length <= 2) {
       value = `(${value}`;
     } else if (value.length > 2) {
       value = `(${value.slice(0, 2)})${value.slice(2)}`;
     }
-  
+
     // Adiciona o traço automaticamente
     if (value.length > 9) {
       value = value.replace(
@@ -210,26 +211,26 @@ export class ParentsComponent implements OnInit {
         '$1$2-$3'
       );
     }
-  
+
     // Limita o tamanho máximo a "(XX)XXXXX-XXXX"
     value = value.substring(0, 14);
-  
+
     // Atualiza o valor do campo e do formulário
     input.value = value;
     this.editForm.get('whatsapp')?.setValue(value, { emitEvent: false });
-  }  
-  
+  }
+
   updateCPF(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value;
-  
+
     // Garantir o formato "xxx.xxx.xxx-xx"
     value = value.replace(/[^\d]/g, ''); // Apenas números
     value = value.replace(/(\d{3})(\d)/, '$1.$2'); // Primeiro ponto
     value = value.replace(/(\d{3})\.(\d{3})(\d)/, '$1.$2.$3'); // Segundo ponto
     value = value.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4'); // Traço
     input.value = value.substring(0, 14); // Limitar o tamanho máximo
-  
+
     // Atualizar o valor do formulário
     this.editForm.get('cpf')?.setValue(input.value, { emitEvent: false });
   }
@@ -237,18 +238,18 @@ export class ParentsComponent implements OnInit {
   updateCEP(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value;
-  
+
     // Remove qualquer caractere que não seja número
     value = value.replace(/[^\d]/g, '');
-  
+
     // Adiciona o traço automaticamente após os 5 primeiros números
     if (value.length > 5) {
       value = value.replace(/^(\d{5})(\d{0,3})$/, '$1-$2');
     }
-  
+
     // Limita o tamanho máximo a "xxxxx-xxx"
     value = value.substring(0, 9);
-  
+
     // Atualiza o valor do campo e do formulário
     input.value = value;
     this.editForm.get('address.postalCode')?.setValue(value, { emitEvent: false });
@@ -257,12 +258,12 @@ export class ParentsComponent implements OnInit {
   private cepValidator(control: AbstractControl): ValidationErrors | null {
     const cep = control.value;
     if (!cep) return null;
-  
+
     // Valida o formato "xxxxx-xxx"
     const cepRegex = /^\d{5}-\d{3}$/;
     return cepRegex.test(cep) ? null : { formatoInvalido: true };
   }
-  
+
   goToParentsRegister(): void {
     this.router.navigate(['/painel/parentRegister']);
   }
