@@ -1,70 +1,120 @@
 @import "../theme.less";
 
+// Mixin para personalizar botões do PrimeNG
 .mixin-button-styles(
-  @buttons-primary-background-color: @theme__color__primary;
-  @buttons-primary-background-color-hover: @theme__color__secondary;
-  @buttons-primary-color:@theme__color__primary;
-  @buttons-primary-width: auto;
-  @buttons-padding: @buttons-padding;
-  @border-primary: @buttons-border-radius;
-  @buttons-secondary-background-color: @primary__color__lighter;
-  @buttons-secondary-background-color-hover: @primary__color__dark;
-  @buttons-secondary-color: @theme__color__black;
-  @button-text-background-color: transparent;
-  @button-text-color: @theme__color__primary;
-  @button-text-background-hover: rgba(59, 130, 246, 0.04);
-  @button-text-color-hover: @theme__color__primary;
+  @buttons-primary-background-color: @theme__color__primary,
+  @buttons-primary-background-color-hover: @theme__color__secondary,
+  @buttons-primary-color: #ffffff,
+  @buttons-primary-width: auto,
+  @buttons-padding: 0.75rem 1.5rem,
+  @border-primary: @buttons-border-radius,
+  @buttons-secondary-background-color: @primary__color__lighter,
+  @buttons-secondary-background-color-hover: @primary__color__dark,
+  @buttons-secondary-color: @theme__color__black,
+  @button-text-background-color: transparent,
+  @button-text-color: @theme__color__primary,
+  @button-text-background-hover: rgba(59, 130, 246, 0.04),
+  @button-text-color-hover: @theme__color__primary
 ) {
   .p-button {
     border-radius: @border-primary;
     padding: @buttons-padding;
-    border: unset;
+    border: none;
 
     &:not(:disabled) {
-      background: @theme__color__primary;
+      background-color: @theme__color__primary;
+      color: @buttons-primary-color;
+
+      &:hover {
+        background-color: @buttons-primary-background-color-hover;
+        color: @buttons-primary-color;
+      }
 
       &.p-button-text {
         background-color: @button-text-background-color;
-        color: @button-text-color; //#3B82F6
+        color: @button-text-color;
 
         &:hover {
-          background: @button-text-background-hover;
-          color: @button-text-color-hover; // #3B82F6;
-          // border-color: transparent;
+          background-color: @button-text-background-hover;
+          color: @button-text-color-hover;
         }
       }
     }
 
     &.p-button-primary {
-      background: @buttons-primary-background-color;
+      background-color: @buttons-primary-background-color;
+      color: @buttons-primary-color;
       width: @buttons-primary-width;
 
       &:hover {
-        background: @buttons-primary-background-color-hover;
+        background-color: @buttons-primary-background-color-hover;
         color: @buttons-primary-color;
       }
     }
 
     &.p-button-secondary {
       color: @buttons-secondary-color;
-      background: @buttons-secondary-background-color;
-      border: unset;
+      background-color: @buttons-secondary-background-color;
+      border: none;
 
       &:hover {
-        background: @buttons-secondary-background-color-hover;
+        background-color: @buttons-secondary-background-color-hover;
+      }
+    }
+
+    &.p-button-success {
+      background-color: #28a745;
+      &:hover {
+        background-color: darken(#28a745, 10%);
+      }
+    }
+
+    &.p-button-danger {
+      background-color: #dc3545;
+      &:hover {
+        background-color: darken(#dc3545, 10%);
+      }
+    }
+
+    &.p-button-warning {
+      background-color: #ffc107;
+      color: #212529;
+
+      &:hover {
+        background-color: darken(#ffc107, 10%);
+      }
+    }
+
+    &.p-button-info {
+      background-color: #17a2b8;
+
+      &:hover {
+        background-color: darken(#17a2b8, 10%);
+      }
+    }
+
+    &.p-button-help {
+      background-color: #6610f2;
+
+      &:hover {
+        background-color: darken(#6610f2, 10%);
+      }
+    }
+
+    &.p-button-contrast {
+      background-color: #343a40;
+      color: #ffffff;
+
+      &:hover {
+        background-color: darken(#343a40, 10%);
       }
     }
 
     &.p-button-height-default {
       height: 3rem;
     }
-
-    &.p-dialog, &.p-dialog-header, &.p-dialog-header-icon {
-      background: transparent;
-    }
   }
 }
 
+// Chamada do mixin para aplicar os estilos
 .mixin-button-styles();
-
-

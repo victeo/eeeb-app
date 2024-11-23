@@ -7,24 +7,26 @@
   </div>
 
   <div class="students-container">
-    <button class="btn btn-register" (click)="goToRegister()">
-      <i class="pi pi-plus"></i> Adicionar Alunos
-    </button>
+    <div class="flex">
 
-    <!-- Barra de pesquisa -->
-    <div class="search-bar">
-      <p-dropdown
-        [options]="studentsDropdown"
-        [(ngModel)]="selectedStudent"
-        optionLabel="name"
-        [filter]="true"
-        filterBy="name"
-        [showClear]="true"
-        placeholder="Buscar Aluno"
-        (onChange)="filterTable()">
-      </p-dropdown>
+      <!-- Barra de pesquisa -->
+      <div class="search-bar">
+        <p-dropdown
+          [options]="studentsDropdown"
+          [(ngModel)]="selectedStudent"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          placeholder="Buscar Aluno"
+          (onChange)="filterTable()">
+        </p-dropdown>
+
+      </div>
+
+      <p-button icon="pi pi-plus" label="Adicionar Alunos" (click)="goToRegister()"/>
+
     </div>
-
     <!-- Tabela de alunos -->
     <table class="students-table">
       <thead>
@@ -44,9 +46,9 @@
         <td>{{ student.class }}</td>
         <td>{{ student.cpf }}</td>
         <td>{{ student.phone }}</td>
-        <td>
-          <button class="btn btn-edit" (click)="editStudent(student)">Editar</button>
-          <button class="btn btn-delete" (click)="deleteStudent(student.id)">Excluir</button>
+        <td class="action">
+          <p-button icon="pi pi-pencil" size="small" (click)="editStudent(student)" tooltipPosition="Editar"/>
+          <p-button icon="pi pi-trash" size="small" severity="danger" (click)="deleteStudent(student.id)"/>
         </td>
       </tr>
       </tbody>
@@ -79,7 +81,7 @@
         </div>
 
         <div class="form-group">
-          <label for="class">Turma:</label>
+          <label>Turma:</label>
           <p-dropdown [options]="classOptions" formControlName="class" placeholder="Selecione a Turma"></p-dropdown>
         </div>
         <div class="form-group">
@@ -114,3 +116,4 @@
     </div>
   </div>
 </p-card>
+

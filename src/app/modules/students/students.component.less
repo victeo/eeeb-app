@@ -1,43 +1,50 @@
+@import "@style/_global.less";
+
 .students-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+
+  .flex{
+    .mixin-display-flex-box-align();
+  }
 }
 
 .students-table {
   width: 100%;
   border-collapse: collapse;
-}
 
-/* Set a specific width for the "Nome" column in the table */
-.students-table th:nth-child(1), /* This targets the first column header */
-.students-table td:nth-child(1) { /* This targets the first column cells */
-  min-width: 200px; /* Adjust the width to your needs */
-  max-width: 500px; /* Set a max width to prevent it from expanding too much */
-  word-wrap: break-word; /* Ensure text wraps inside the cell */
-}
+  tbody{
+    td{
+      &.action{
+        .mixin-display(flex);
+        .mixin-gap(@indent__xxs)
+      }
+    }
+  }
 
-.students-table th, .form-group label{
+  th:nth-child(1),
+  td:nth-child(1) {
+    min-width: 200px;
+    max-width: 500px;
+    word-wrap: break-word;
+  }
 
-  width: auto;
-}
+  th,
+  td {
+    font-size: 14px;
+    padding: 8px;
+    text-align: left;
+  }
 
-.students-table td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: left;
-}
+  th {
+    background-color: #f4f4f4;
+  }
 
-.students-table td,
-.students-table th {
-  font-size: 14px; /* Adjust font size */
-  padding: 8px;    /* Adjust padding if needed */
-  text-align: left; /* Align text properly */
-}
-
-
-.students-table th {
-  background-color: #f4f4f4;
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
 }
 
 .title {
@@ -48,30 +55,76 @@
 }
 
 .search-bar {
-  margin-left: 0; /* Ensure no margin on the left side */
-  margin-right: auto; /* This pushes the element to the left */
+  margin-left: 0;
+  margin-right: auto;
   display: flex;
-  justify-content: flex-start; /* Align content to the left */
+  justify-content: flex-start;
   margin-bottom: 20px;
-  width: 100%; /* Ensure it takes the full width of the container */
-}
+  width: 100%;
 
-.search-bar p-dropdown {
-  width: 50%; /* Adjust the width of the dropdown inside the search bar */
-  max-width: 400px; /* Set a maximum width to prevent excessive expansion */
+  p-dropdown {
+    width: 50%;
+    max-width: 400px;
+  }
 }
 
 .btn {
-  display: inline-block;
-  padding: 8px 12px; /* Espaçamento interno */
-  font-size: 14px;
-  text-align: center;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 80px; /* Define uma largura fixa */
-  box-sizing: border-box;
+
+  &-save {
+    background-color: #4caf50;
+    color: white;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  &-cancel {
+    background-color: #f44336;
+    color: white;
+
+    &:hover {
+      background-color: #e53935;
+    }
+  }
+
+  &-edit {
+    background-color: #4caf50;
+    color: white;
+    padding: 5px 10px;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  &-delete {
+    background-color: #f44336;
+    color: white;
+    margin-top: 0.1rem;
+    padding: 5px 10px;
+
+    &:hover {
+      background-color: #e53935;
+    }
+  }
+
+  &-register {
+    margin-right: 1rem;
+    background-color: blue;
+    min-width: 225px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    min-height: 40px;
+    font-size: 18px;
+    margin-left: auto;
+    display: block;
+    position: relative;
+    top: 45px;
+  }
 }
+
 .modal {
   position: fixed;
   top: 0;
@@ -82,45 +135,39 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  &-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .form-group {
   margin-bottom: 15px;
-}
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 12px;
-}
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
 
+    &[for="name"] {
+      display: inline-block;
+      width: 300px;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+  }
 
-
-.form-group label[for="name"] {
-  display: inline-block;
-  width: 300px;  /* Set the width of the 'Nome' label */
-  font-size: 14px; /* Adjust the font size if needed */
-  margin-right: 10px;  /* Space between label and input */
-}
-
-body {
-  font-size: 14px; /* Adjust this value to reduce the font size */
-}
-
-.form-group input {
-  width: calc(100% - 200px);
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  input {
+    width: calc(100% - 200px);
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
 }
 
 .form-actions {
@@ -129,67 +176,3 @@ body {
   gap: 10px;
 }
 
-.btn-save {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.btn-save:hover {
-  background-color: #45a049;
-}
-
-.btn-cancel {
-  background-color: #f44336;
-  color: white;
-}
-
-.btn-cancel:hover {
-  background-color: #e53935;
-}
-
-.btn-edit {
-  background-color: #4CAF50; /* Verde */
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-edit:hover {
-  background-color: #45a049;
-}
-
-.btn-delete {
-  background-color: #f44336; /* Vermelho */
-  color: white;
-  border: none;
-  margin-top: 0.1rem;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-delete:hover {
-  background-color: #e53935;
-}
-
-.btn-register {
-  margin-right: 1rem; /* Keep a space to the right */
-  background-color: blue; /* Button background color */
-  min-width: 225px; /* Minimum width of the button */
-  color: white; /* Text color */
-  border: none; /* Remove border */
-  padding: 8px 16px; /* Add padding to the button for a better look */
-  cursor: pointer; /* Change cursor to pointer */
-  min-height: 40px;
-  font-size: 18px;
-
-  /* Align button to the right */
-  margin-left: auto;
-  display: block;
-
-   /* Move the button a bit down without affecting other buttons */
-   position: relative;
-   top: 45px; /* Adjust this value to move the button down */
-}

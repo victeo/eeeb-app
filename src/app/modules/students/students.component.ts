@@ -13,11 +13,21 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import {CardModule} from "primeng/card";
+import {Button} from "primeng/button";
+import { TooltipModule } from 'primeng/tooltip';
+
 
 @Component({
   selector: 'app-students',
   standalone: true,
-    imports: [CommonModule, DropdownModule, FormsModule, ReactiveFormsModule, CardModule],
+  imports: [CommonModule,
+    DropdownModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CardModule,
+    Button,
+    TooltipModule
+  ],
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.less'],
 })
