@@ -49,6 +49,15 @@
         <td class="action">
           <p-button icon="pi pi-pencil" size="small" (click)="editStudent(student)" tooltipPosition="Editar"/>
           <p-button icon="pi pi-trash" size="small" severity="danger" (click)="deleteStudent(student.id)"/>
+          <p-button icon="pi pi-eye"  size="small" styleClass="btn-responsaveis"  (click)="toggleResponsaveis(student)"></p-button>
+
+          <div *ngIf="activeStudent === student" class="responsaveis-popup">
+            <ul>
+              <li *ngFor="let responsavel of responsaveisExibidos">
+                {{ responsavel }}
+              </li>
+            </ul>
+          </div>
         </td>
       </tr>
       </tbody>

@@ -53,4 +53,14 @@ export class RegisterService {
     await this.firestoreService.createDocument(`parents/${responsavelId}`, { ...userInfo, uid: responsavelId });
     return userInfo;
   }
+  
+  //const userInfo: User = {
+  //  name: 'Maria Souza',
+  //  email: 'maria@example.com',
+  //  role: 'admin', // Se não for fornecido, será "user" por padrão
+  //};
+  
+  //await this.fireAuthService.register(email, password, userInfo);
+  
+
 }

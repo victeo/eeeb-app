@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from 'app/services/fire-store/firestore.service';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
+import { Parent } from 'app/models/parent';
 import { Router } from '@angular/router';
 import {
   FormsModule,
@@ -257,4 +258,43 @@ export class StudentsComponent implements OnInit {
   goToRegister(): void {
     this.router.navigate(['/painel/register']);
   }
+
+  activeStudent: any = null; // Aluno ativo para exibição dos responsáveis
+responsaveisExibidos: string[] = []; // Responsáveis a serem exibidos
+
+async toggleResponsaveis(student: any): Promise<void> {
+  if (this.activeStudent === student) {
+    // Fecha a janela se já estiver aberta
+    this.activeStudent = null;
+    this.responsaveisExibidos = [];
+    return;
+  }
+
+  if (!student.responsaveis || student.responsaveis.length === 0) {
+    this.responsaveisExibidos = ['Nenhum responsável encontrado'];
+    this.activeStudent = student;
+    return;
+  }
+
+  try {
+    // Busca os detalhes dos responsáveis com base nos IDs
+    this.responsaveisExibidos = await Promise.all(
+      student.responsaveis.map(async (responsavelId: string) => {
+        const responsavel = await this.firestoreService.getDocument<Parent>(
+          `parents/${responsavelId}`
+        );
+        return responsavel
+          ? `${responsavel.name} ${responsavel.surname}`
+          : 'Responsável não encontrado';
+      })
+    );
+
+    // Define o aluno ativo para abrir a janela
+    this.activeStudent = student;
+  } catch (error) {
+    console.error('Erro ao buscar responsáveis:', error);
+    this.responsaveisExibidos = ['Erro ao carregar responsáveis'];
+    this.activeStudent = student;
+  }
+}
 }

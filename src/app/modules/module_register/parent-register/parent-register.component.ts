@@ -110,7 +110,8 @@ export class ParentRegisterComponent implements OnInit {
 
       try {
         // Registra o usuário no Firebase Authentication
-        const userCredential = await this.fireAuthService.register<Parent>(email, password, parentData as Parent);
+        const userCredential = await this.fireAuthService.register(email, password, parentData);
+
         const userId = userCredential.user.uid;
 
         // Inclui o email nos dados do responsável para salvá-lo no Firestore
