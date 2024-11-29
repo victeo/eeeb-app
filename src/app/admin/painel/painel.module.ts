@@ -9,6 +9,7 @@ import { ParentRegisterComponent } from 'app/modules/module_register/parent-regi
 import { ParentingComponent } from 'app/modules/module_register/parenting/parenting.component';
 import { StudentsComponent } from 'app/modules/students/students.component';
 import { ParentsComponent } from 'app/modules/parents/parents.component';
+import { HomepageComponent } from 'app/pages/homepage/homepage.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,13 @@ const routes: Routes = [
       { path: 'parenting', component: ParentingComponent},
       { path: 'alunos', component: StudentsComponent},
       { path: 'responsaveis', component: ParentsComponent}
+    ]
+  },
+  {
+    path: "home",
+    component: HomepageComponent,
+    children:[
+      //adicionar funcionalidades para usuário
     ]
   }
 ];

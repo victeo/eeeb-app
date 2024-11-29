@@ -6,11 +6,12 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  updateProfile,
   User,
   UserCredential
 } from '@angular/fire/auth';
+import { AuthService } from '../auth/auth.service';
 import { FirestoreService } from '../fire-store/firestore.service';
-
 import { User as UserInfo } from "../../models/user";
 
 interface RegisterUser {
@@ -19,7 +20,7 @@ interface RegisterUser {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FireAuthService {
   private user: User | null = null;
@@ -27,13 +28,17 @@ export class FireAuthService {
 
   constructor(
     private auth: Auth,
-    private firestoreService: FirestoreService 
+    private firestoreService: FirestoreService,
+    private authService: AuthService,
   ) {
     // this.listenToAuthStateChanges();
   }
 
   
-
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  }
+  
   /**
    * Escuta as mudanças no estado de autenticação do usuário.
    */
@@ -72,12 +77,25 @@ export class FireAuthService {
   public async signInWithEmailAndPassword(email: string, password: string): Promise<UserCredential> {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      const uid = userCredential.user.uid;
   
-      // Obtém o papel do usuário após o login
-      const userRole = await this.getUserRole(userCredential.user.uid);
+      // Busca os dados do Firestore
+      const userDataFromDb = await this.fetchUserData(uid);
   
-      // Armazena o papel no localStorage para facilitar a verificação de permissões
-      localStorage.setItem('userRole', userRole);
+      // Atualiza o displayName no Firebase Auth e localStorage
+      if (userDataFromDb?.name) {
+        await this.updateUserProfile(userDataFromDb.name);
+  
+        const userData = {
+          uid,
+          email: userCredential.user.email,
+          displayName: userDataFromDb.name,
+          role: userDataFromDb.role,
+        };
+  
+        localStorage.setItem('user', JSON.stringify(userData));
+        console.log('Dados atualizados no localStorage:', userData);
+      }
   
       return userCredential;
     } catch (error) {
@@ -90,10 +108,11 @@ export class FireAuthService {
    * Faz logout do usuário autenticado.
    */
   public async signOut(): Promise<void> {
-    localStorage.removeItem('userRole'); // Remove o papel do usuário do localStorage
+    localStorage.removeItem('user'); // Remova as informações do usuário
+    localStorage.removeItem('userRole'); // Caso tenha outro item relacionado ao papel
     await this.auth.signOut();
   }
-
+  
   /**
    * Obtém o papel do usuário logado (admin ou user).
    * 
@@ -103,17 +122,18 @@ export class FireAuthService {
   private async getUserRole(userId: string): Promise<string> {
     try {
       const userData = await this.firestoreService.getDocument<{ role: string }>(`users/${userId}`);
-      if (userData && userData.role) {
+      if (userData?.role) {
+        console.log(`Usuário ${userId} possui o papel: ${userData.role}`);
         return userData.role;
       } else {
-        console.warn(`Usuário com ID ${userId} não possui um papel definido no Firestore.`);
-        return 'user'; // Retorna "user" por padrão
+        console.warn(`Usuário ${userId} não possui um papel definido. Retornando 'user' como padrão.`);
+        return 'user';
       }
     } catch (error) {
-      console.error('Erro ao obter a função do usuário:', error);
-      return 'user'; // Retorna "user" em caso de erro
+      console.error(`Erro ao buscar o papel do usuário ${userId}:`, error);
+      return 'user'; // Retorna 'user' em caso de erro
     }
-  }
+  }  
 
   /**
    * Verifica se o usuário atual é admin.
@@ -135,14 +155,61 @@ export class FireAuthService {
     return userRole === 'user';
   }
 
+  public async updateUserProfile(name: string): Promise<void> {
+    const user = this.auth.currentUser; // Obtém o usuário autenticado atual
+    if (user) {
+      // Atualiza o displayName no Firebase Auth
+      await updateProfile(user, { displayName: name });
+
+      // Atualize os dados no localStorage
+      const updatedUserData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: name,
+      };
+
+      localStorage.setItem('user', JSON.stringify(updatedUserData));
+      console.log('Perfil e localStorage atualizados:', updatedUserData);
+    } else {
+      console.error('Nenhum usuário autenticado encontrado.');
+    }
+  }
+
   /**
    * Obtém o nome do usuário armazenado no localStorage.
    * 
    * @returns O nome do usuário ou null.
    */
-  public getUserName(): string | null {
-    return localStorage.getItem('userName');
+  getUserName(): string | null {
+    if (this.isBrowser()) {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          return user.displayName || null; // Certifique-se de buscar o displayName corretamente
+        } catch (error) {
+          console.error('Erro ao parsear os dados do usuário no localStorage:', error);
+        }
+      }
+    }
+    return null;
   }
+
+  public async fetchUserData(uid: string): Promise<any> {
+    try {
+      const userDataFromDb = await this.firestoreService.getDocument<{ name: string; role: string }>(`users/${uid}`);
+      if (userDataFromDb) {
+        console.log('Dados do Firestore:', userDataFromDb);
+        return userDataFromDb; // Retorna os dados do Firestore
+      } else {
+        console.warn('Nenhum dado encontrado para o UID:', uid);
+        return null;
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados do Firestore:', error);
+      throw error;
+    }
+  }  
 
   /**
    * Envia um email para redefinição de senha.
@@ -164,14 +231,14 @@ export class FireAuthService {
     try {
       const userCredential: UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
   
-      // Adiciona role "user" como padrão
+      // Inclui o papel como "user"
       const userData = {
         ...registerUser,
         email,
-        role: (registerUser as any)?.role || 'user', // Define "user" como padrão
+        role: 'user', // Certifique-se de que o campo role está aqui
       };
   
-      console.log('Dados enviados para o Firestore:', userData); // Log para verificar
+      console.log('Dados enviados para o Firestore:', userData);
   
       // Salva no Firestore
       await this.firestoreService.createDocument(`users/${userCredential.user.uid}`, userData);
@@ -182,7 +249,7 @@ export class FireAuthService {
   
       switch (error.code) {
         case 'auth/email-already-in-use':
-          errorMessage = `Endereço de email: ${email} já está em uso em outra conta`;
+          errorMessage = `Endereço de email: ${email} já está em uso em outra conta.`;
           break;
         case 'auth/invalid-email':
           errorMessage = `O email: ${email} é inválido.`;
@@ -197,10 +264,10 @@ export class FireAuthService {
           errorMessage = `A senha não é forte o suficiente.`;
           break;
         default:
-          errorMessage = 'Erro desconhecido ao registrar o usuário';
+          errorMessage = 'Erro desconhecido ao registrar o usuário.';
       }
   
-      console.error("Erro ao registrar o usuário:", errorMessage);
+      console.error('Erro ao registrar o usuário:', errorMessage);
       throw new Error(errorMessage);
     }
   }

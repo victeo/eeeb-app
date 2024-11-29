@@ -17,6 +17,7 @@ import { AdminGuard } from "./services/guards/admin.guard";
 import { ParentRegisterComponent } from './modules/module_register/parent-register/parent-register.component';
 import { ParentsComponent } from './modules/parents/parents.component';
 import { StudentsComponent } from './modules/students/students.component';
+import { HomepageComponent } from './pages/homepage/homepage.component';
 
 export const routes: Routes = [
   {
@@ -24,14 +25,19 @@ export const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: "home",
+    component: HomepageComponent,
+    canActivate: [AdminGuard]
+  },
+  {
     path: "painel",
     loadChildren: () => import('./admin/painel/painel.module').then(m => m.PainelModule),
-    canActivate: [UserGuard] // Protege com UserGuard para todos os usuários autenticados
+    canActivate: [UserGuard], // Protege com UserGuard para todos os usuários autenticados
   },
   {
     path: 'painel/register',
     component: RegisterComponent,
-    canActivate: [AdminGuard] // Apenas admins podem acessar o cadastro principal
+    canActivate: [AdminGuard], // Apenas admins podem acessar o cadastro principal
   },
   {
     path: 'painel/parentRegister',

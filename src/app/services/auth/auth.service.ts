@@ -19,38 +19,50 @@ export class AuthService {
     return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
   // Salva os dados do usuário logado
-  saveUserData(user: UserCredential): void {
+  saveUserData(user: UserCredential, userName: any, role: string = 'user'): void {
     const userData = {
-      uid: user.user?.uid,
-      email: user.user?.email,
-      displayName: user.user?.displayName,
-      role: 'admin'
+      uid: user.user?.uid || null,
+      email: user.user?.email || null,
+      displayName: userName || "Usuario", // O nome do usuário obtido do Firestore ou um valor padrão
+      role, // Papel do usuário (ex.: 'user', 'admin')
     };
-
-    this.loggedInUserData = user;
+  
+    this.loggedInUserData = userData;
     this.isLoggedInSubject.next(true);
-
-    if (this.isBrowser()) { // Verifica se o localStorage está disponível
+  
+    if (this.isBrowser()) {
       localStorage.setItem('user', JSON.stringify(userData));
     }
   }
+  
 
   // Retorna os dados do usuário logado
   getUserData(): any {
+    // Retorna diretamente os dados do usuário, se já estiverem carregados na memória
     if (this.loggedInUserData) {
       return this.loggedInUserData;
     }
-
-    if (this.isBrowser()) { // Verifica se o localStorage está disponível
+  
+    // Verifica se está no navegador e se o localStorage está disponível
+    if (this.isBrowser()) {
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
-        this.loggedInUserData = JSON.parse(storedUser);
-        this.isLoggedInSubject.next(true);
+        try {
+          // Tenta parsear o JSON e carregar os dados do usuário
+          this.loggedInUserData = JSON.parse(storedUser);
+          this.isLoggedInSubject.next(true);
+        } catch (error) {
+          console.error('Erro ao parsear os dados do usuário no localStorage:', error);
+          // Caso o JSON esteja corrompido ou inválido, limpa o localStorage para evitar problemas
+          localStorage.removeItem('user');
+          this.loggedInUserData = null;
+        }
       }
     }
-
+  
+    // Retorna os dados do usuário (ou null, caso não estejam disponíveis)
     return this.loggedInUserData;
-  }
+  }  
 
   // Verifica se o usuário está logado
   isLoggedIn(): boolean {

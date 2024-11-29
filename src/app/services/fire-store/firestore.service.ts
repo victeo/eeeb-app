@@ -31,10 +31,17 @@ export class FirestoreService {
    * @param docPath O caminho completo do documento (por exemplo, 'collection/documentID').
    * @param data Os dados que serão salvos no documento.
    * @returns Retorna uma Promise que será resolvida quando o documento for criado.
-   */   async createDocument(docPath: string, data: any): Promise<void> {
-    const docReference = doc(this.firestore, docPath);
-    await setDoc(docReference, data);
+   */   
+  
+  async createDocument(docPath: string, data: any): Promise<void> {
+  if (data.role && data.role === 'admin') {
+    throw new Error('A criação de administradores não é permitida pelo frontend.');
   }
+
+  const docReference = doc(this.firestore, docPath);
+  await setDoc(docReference, data);
+}
+
   
   async getCollection<T>(collectionPath: string): Promise<T[]> {
     const collectionRef = collection(this.firestore, collectionPath);

@@ -68,6 +68,7 @@ export class ParentRegisterComponent implements OnInit {
   private initForm(): void {
     this.parentForm = this.formBuilder.group({
       name: ['', Validators.required],
+      surname: ['', Validators.required],
       cpf: ['', [Validators.required, Validators.pattern(cpfRegex)]],
       email: ['', [Validators.required, Validators.pattern(emailRegex)]],
       whatsapp: ['(XX)', [Validators.required, Validators.pattern(whatsappRegex)]],
@@ -113,6 +114,8 @@ export class ParentRegisterComponent implements OnInit {
         const userCredential = await this.fireAuthService.register(email, password, parentData);
 
         const userId = userCredential.user.uid;
+
+         role: 'user'
 
         // Inclui o email nos dados do responsável para salvá-lo no Firestore
         await this.parentService.saveParentData(userId, { ...parentData, email } as Parent);

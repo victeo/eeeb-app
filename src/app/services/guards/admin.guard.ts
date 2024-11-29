@@ -1,27 +1,23 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from "../auth/auth.service";
+import { CanActivate, Router } from '@angular/router';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AdminGuard implements CanActivate {
-  constructor(
-    private _userService: AuthService,
-    private _router: Router
-  ) {}
+  constructor(private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
-    const identity = this._userService.getUserData();
-
-    // Verifica se o usuário possui o papel de admin
-    if (identity?.roles && Array.isArray(identity.roles) && identity.roles.includes('admin')) {
+  canActivate(): boolean {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log('AdminGuard - Usuário atual:', user);
+  
+    if (user.role === 'admin') {
+      console.log('AdminGuard - Acesso permitido.');
       return true;
     }
-
-    // Redireciona para a página inicial caso não seja admin
-    this._router.navigate(['/']);
+  
+    console.warn('AdminGuard - Acesso negado. Redirecionando...');
+    this.router.navigate(['/']);
     return false;
   }
 }

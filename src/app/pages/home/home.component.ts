@@ -37,6 +37,7 @@ import {Router} from "@angular/router";
   providers: [MessageService],
 
 })
+// Este componente "Home" se trata, na verdade, da página de login. A página "home" será "HomePage" mas o a url será "/home" para acesso de usuários.
 export class HomeComponent implements OnInit {
   formControl!: FormGroup;
 
@@ -76,9 +77,9 @@ export class HomeComponent implements OnInit {
 
       this.fireAuthService.signInWithEmailAndPassword(login.email, login.password)
         .then((user: UserCredential) => {
-          console.log('Login bem-sucedido:', user);
+          console.log('Login bem-sucedido:', user.user.displayName);
 
-          this.authService.saveUserData(user)
+          this.authService.saveUserData(user, user.user.displayName)
 
           this.messageService.add({
             severity: 'success',
