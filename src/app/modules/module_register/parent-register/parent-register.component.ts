@@ -115,8 +115,6 @@ export class ParentRegisterComponent implements OnInit {
 
         const userId = userCredential.user.uid;
 
-         role: 'user'
-
         // Inclui o email nos dados do responsável para salvá-lo no Firestore
         await this.parentService.saveParentData(userId, { ...parentData, email } as Parent);
 

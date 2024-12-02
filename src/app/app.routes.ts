@@ -18,6 +18,7 @@ import { ParentRegisterComponent } from './modules/module_register/parent-regist
 import { ParentsComponent } from './modules/parents/parents.component';
 import { StudentsComponent } from './modules/students/students.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
+import { SistemaComponent } from './admin/sistema/sistema.component';
 
 export const routes: Routes = [
   {
@@ -33,6 +34,11 @@ export const routes: Routes = [
     path: "painel",
     loadChildren: () => import('./admin/painel/painel.module').then(m => m.PainelModule),
     canActivate: [UserGuard], // Protege com UserGuard para todos os usuários autenticados
+  },
+  {
+    path: "sistema",
+    component: SistemaComponent,
+    canActivate: [UserGuard]
   },
   {
     path: 'painel/register',

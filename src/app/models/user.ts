@@ -10,5 +10,5 @@ export interface User {
     state: string;
     postalCode: string;
   };
-  Role: string,
+  role: 'admin' | 'coordenação' | 'professor' | 'parent';
 }
