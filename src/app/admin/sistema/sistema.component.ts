@@ -59,11 +59,20 @@ export class SistemaComponent implements OnInit {
   }
   
   createUser() {
-    this.sistemaService.createUser(this.newUser).subscribe(() => {
+    // Simule a criação de um UID caso não exista
+    const uid = this.generateUID(); // Pode substituir pela lógica correta para obter o UID
+  
+    this.sistemaService.createUser({ ...this.newUser, uid }).subscribe(() => {
       this.loadUsers(); // Atualiza a lista de usuários
       this.newUser = { name: '', email: '', role: 'professor' }; // Limpa o formulário
     });
   }
+  
+  // Método para gerar um UID (caso necessário)
+  generateUID(): string {
+    return Math.random().toString(36).substr(2, 9); // Apenas para simulação
+  }
+  
 
   updateUserRole(userId: string, newRole: string) {
     this.sistemaService.updateUserRole(userId, newRole).subscribe(() => {

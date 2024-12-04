@@ -11,6 +11,7 @@ import {
   UserCredential
 } from '@angular/fire/auth';
 import { AuthService } from '../auth/auth.service';
+import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { FirestoreService } from '../fire-store/firestore.service';
 import { User as UserInfo } from "../../models/user";
 
@@ -30,6 +31,7 @@ export class FireAuthService {
     private auth: Auth,
     private firestoreService: FirestoreService,
     private authService: AuthService,
+    private firestore: Firestore,
   ) {
     // this.listenToAuthStateChanges();
   }
@@ -66,6 +68,35 @@ export class FireAuthService {
     }
     return cred;
   }
+
+  async signIn(email: string, password: string): Promise<void> {
+    try {
+      const userCredential: UserCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      const uid = userCredential.user.uid;
+  
+      await this.fetchAndUpdateUserRole(uid); // Atualiza os dados do usuário e da role no localStorage
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      throw error;
+    }
+  }  
+
+  async updateUserRoleInFirestore(uid: string, role: string): Promise<void> {
+    try {
+      const validRoles = ['admin', 'user', 'professor', 'coordination']; // Validação de roles permitidas
+      if (!validRoles.includes(role)) {
+        throw new Error(`Role inválida: ${role}`);
+      }
+  
+      const userDocRef = doc(this.firestore, `users/${uid}`);
+      await updateDoc(userDocRef, { role });
+      console.log(`Role do usuário ${uid} atualizada para: ${role}`);
+    } catch (error: any) {
+      console.error('Erro ao atualizar role no Firestore:', error.message || error);
+      throw error;
+    }
+  }
+  
 
   /**
    * Faz login de um usuário existente com email e senha.
@@ -156,24 +187,19 @@ export class FireAuthService {
   }
 
   public async updateUserProfile(name: string): Promise<void> {
-    const user = this.auth.currentUser; // Obtém o usuário autenticado atual
+    const user = this.auth.currentUser;
     if (user) {
-      // Atualiza o displayName no Firebase Auth
-      await updateProfile(user, { displayName: name });
-
-      // Atualize os dados no localStorage
-      const updatedUserData = {
-        uid: user.uid,
-        email: user.email,
-        displayName: name,
-      };
-
-      localStorage.setItem('user', JSON.stringify(updatedUserData));
-      console.log('Perfil e localStorage atualizados:', updatedUserData);
+      try {
+        await updateProfile(user, { displayName: name });
+        console.log(`DisplayName atualizado para: ${name}`);
+      } catch (error) {
+        console.error('Erro ao atualizar displayName:', error);
+      }
     } else {
-      console.error('Nenhum usuário autenticado encontrado.');
+      console.error('Nenhum usuário autenticado encontrado para atualizar displayName.');
     }
   }
+  
 
   /**
    * Obtém o nome do usuário armazenado no localStorage.
@@ -227,22 +253,23 @@ export class FireAuthService {
    * @param password A senha do usuário.
    * @param registerUser Dados adicionais do usuário.
    */
-  public async register<T>(email: string, password: string, registerUser: T): Promise<UserCredential> {
+  public async register<T extends { name: string; role?: string }>(
+    email: string,
+    password: string,
+    registerUser: T
+  ): Promise<UserCredential> {
     try {
       const userCredential: UserCredential = await createUserWithEmailAndPassword(this.auth, email, password);
   
-      // Inclui o papel como "user"
       const userData = {
         ...registerUser,
         email,
-        role: 'user', // Certifique-se de que o campo role está aqui
+        role: registerUser.role || 'user', // Define a role com base nos dados passados
       };
   
       console.log('Dados enviados para o Firestore:', userData);
   
-      // Salva no Firestore
       await this.firestoreService.createDocument(`users/${userCredential.user.uid}`, userData);
-  
       return userCredential;
     } catch (error: any) {
       let errorMessage = '';
@@ -271,4 +298,27 @@ export class FireAuthService {
       throw new Error(errorMessage);
     }
   }
+  async fetchAndUpdateUserRole(uid: string): Promise<void> {
+    try {
+      const userDocRef = doc(this.firestore, `users/${uid}`);
+      const userSnapshot = await getDoc(userDocRef);
+  
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.data();
+        const updatedUser = {
+          uid,
+          email: this.auth.currentUser?.email || '',
+          displayName: userData['name'] || 'Usuário',
+          role: userData['role'] || 'user',
+        };
+  
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        console.log('Dados do usuário atualizados no localStorage:', updatedUser);
+      } else {
+        console.error('Usuário não encontrado no Firestore.');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar ou atualizar role no Firestore:', error);
+    }
+  }  
 }
