@@ -22,7 +22,7 @@ export class SistemaComponent implements OnInit {
     this.loadUsers();
   }
 
-  createAdmin() {
+ /**  createAdmin() {
     const email = 'anaclaralimaduartx@gmail.com';
     const name = 'Anc Clara Lima Limão';
     const password = '20566834123g'; // Defina uma senha segura ou gere automaticamente.
@@ -32,7 +32,7 @@ export class SistemaComponent implements OnInit {
     }).catch((error) => {
       console.error('Erro ao criar usuário admin:', error);
     });
-  }
+  } */
 
   changeRole(userId: string, newRole: string) {
     this.sistemaService.updateUserRole(userId, newRole).subscribe(() => {

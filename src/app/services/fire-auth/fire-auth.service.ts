@@ -11,6 +11,7 @@ import {
   UserCredential
 } from '@angular/fire/auth';
 import { AuthService } from '../auth/auth.service';
+import { environment } from 'environments/environment';
 import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { FirestoreService } from '../fire-store/firestore.service';
 import { User as UserInfo } from "../../models/user";
@@ -33,8 +34,23 @@ export class FireAuthService {
     private authService: AuthService,
     private firestore: Firestore,
   ) {
+    this.overrideLocalStorageSetItem()
     // this.listenToAuthStateChanges();
   }
+
+  // Salva a função original do setItem
+  private overrideLocalStorageSetItem(): void {
+    if (environment.production) return; // Apenas em desenvolvimento
+  
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function (key: string, value: string): void {
+      console.log(`localStorage.setItem called with key: ${key}, value: ${value}`);
+      if (key === 'role') {
+        console.trace('Setting role in localStorage');
+      }
+      originalSetItem.apply(localStorage, [key, value]);
+    };
+  }  
 
   
   private isBrowser(): boolean {
@@ -115,15 +131,17 @@ export class FireAuthService {
   
       // Atualiza o displayName no Firebase Auth e localStorage
       if (userDataFromDb?.name) {
-        await this.updateUserProfile(userDataFromDb.name);
+        await this.updateUserProfile(userDataFromDb.role, userDataFromDb.name);
   
         const userData = {
           uid,
           email: userCredential.user.email,
           displayName: userDataFromDb.name,
-          role: userDataFromDb.role,
+          role: userDataFromDb.role || 'user', // Define 'user' como role default
         };
-  
+
+        console.log('AAAAAAAAAAAAAAAAAAAA Role retornada do Firestore:', userDataFromDb.role);
+
         localStorage.setItem('user', JSON.stringify(userData));
         console.log('Dados atualizados no localStorage:', userData);
       }
@@ -172,7 +190,7 @@ export class FireAuthService {
    * @returns Verdadeiro se for admin, falso caso contrário.
    */
   public isAdmin(): boolean {
-    const userRole = localStorage.getItem('userRole');
+    const userRole = localStorage.getItem('role');
     return userRole === 'admin';
   }
 
@@ -182,11 +200,13 @@ export class FireAuthService {
    * @returns Verdadeiro se for user, falso caso contrário.
    */
   public isUser(): boolean {
-    const userRole = localStorage.getItem('userRole');
+    const userRole = localStorage.getItem('role');
     return userRole === 'user';
   }
 
-  public async updateUserProfile(name: string): Promise<void> {
+  
+
+  public async updateUserProfile( role: string, name: string): Promise<void> {
     const user = this.auth.currentUser;
     if (user) {
       try {
@@ -198,7 +218,14 @@ export class FireAuthService {
     } else {
       console.error('Nenhum usuário autenticado encontrado para atualizar displayName.');
     }
-  }
+
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+      if (currentUser.role === 'admin') {
+        console.warn('Tentativa de sobrescrever role de admin!');
+        return; // Bloqueia a sobrescrita
+      }
+    }
+
   
 
   /**

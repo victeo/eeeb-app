@@ -69,13 +69,5 @@ export const routes: Routes = [
     path: 'painel/groupRegister',
     component: GroupRegisterComponent,
     canActivate: [AdminGuard] // Apenas admins podem registrar grupos
-  },
-  {
-    path: ':slug',
-    component: RedirectComponent
-  },
-  {
-    path: '**',
-    redirectTo: '' // Redireciona rotas inválidas para a página principal
   }
 ];

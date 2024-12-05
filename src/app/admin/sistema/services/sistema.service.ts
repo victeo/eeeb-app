@@ -96,6 +96,8 @@ export class SistemaService {
     return from(updateDoc(userDocRef, { role: newRole })); // Atualiza a role no Firestore
   }
   
+
+  
   async saveUserToSpecificCollection(
     uid: string,
     data: { name: string; email: string; role: string }
