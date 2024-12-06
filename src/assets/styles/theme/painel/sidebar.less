@@ -35,7 +35,13 @@
     }
 
     .p-panelmenu {
+
       .p-panelmenu-header {
+        &:not(.p-highlight):not(.p-disabled):hover .p-panelmenu-header-content {
+          background-color: @theme__color__primary;
+
+        }
+
         .p-panelmenu-header-content {
 
           .p-menuitem-text {
@@ -58,7 +64,6 @@
         }
       }
     }
-
 
     &:hover {
 
@@ -102,9 +107,9 @@
     }
 
     .p-panelmenu-content {
-      background-color: @color-purple-light;
-      border-radius: unset;
-      border: unset;
+      //background-color: @color-purple-light;
+      //border-radius: unset;
+      //border: unset;
 
       .p-panelmenu-root-list {
         padding: 0 0 0 @indent__x + 6;
@@ -112,12 +117,14 @@
 
       .p-menuitem {
         &:not(.p-highlight):not(.p-disabled) {
-
+          &.p-focus > .p-menuitem-content{
+            background-color: @theme__color__secondary;
+            color: @theme__color__primary;
+          }
           & > .p-menuitem-content {
-            background-color: unset;
 
             &:hover {
-              background-color: unset;
+              //background-color: @theme__color__primary;
 
             }
           }
@@ -158,7 +165,7 @@
 
     .p-panelmenu-header {
       &:hover {
-        background-color: @color-purple-light;
+        color: @theme__color__primary;
 
         .p-panelmenu-header-content {
 
@@ -169,14 +176,14 @@
       }
 
       .p-panelmenu-header-content {
-        background-color: unset;
-        border: unset;
-        border-radius: unset;
+        //background-color: unset;
+        //border: unset;
+        //border-radius: unset;
         padding: 0 0 0 @indent__xxs;
 
         .p-panelmenu-header-action {
           .mixin-display(grid);
-          color: @theme__color__primary;
+          color: @color-purple-medium;
           grid-template-columns: auto auto 1fr;
           grid-template-rows: 1fr;
           grid-column-gap: 0px;
@@ -203,7 +210,8 @@
 
       &.p-highlight {
         .p-panelmenu-header-content {
-          background-color: @color-purple-light;
+          //background-color: @color-purple-light;
+          //color: @color-purple;
 
           .p-panelmenu-header-action {
             color: @color-black;

@@ -1,0 +1,91 @@
+.homepage-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--surface-50);
+  
+    app-sidebar {
+      width: 20rem;
+      background-color: var(--surface-card);
+      box-shadow: var(--elevation-2);
+    }
+  
+    .homepage-content {
+      flex: 1;
+      padding: 2rem;
+  
+      .welcome-section {
+        background-color: var(--surface-card);
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: var(--elevation-1);
+        text-align: center;
+  
+        h1 {
+          font-size: 2rem;
+          color: var(--text-color-primary);
+        }
+  
+        p {
+          margin-top: 0.5rem;
+          color: var(--text-color-secondary);
+        }
+      }
+  
+      .quick-actions {
+        margin-top: 2rem;
+  
+        h2 {
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+          color: var(--text-color-primary);
+        }
+  
+        .actions-grid {
+          display: flex;
+          gap: 1rem;
+  
+          .quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            width: 10rem;
+            height: 10rem;
+            background-color: var(--surface-card);
+            box-shadow: var(--elevation-1);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+  
+            i {
+              font-size: 2rem;
+              margin-bottom: 0.5rem;
+              color: var(--primary-color);
+            }
+  
+            span {
+              font-size: 1rem;
+              color: var(--text-color-primary);
+            }
+  
+            &:hover {
+              transform: scale(1.05);
+              box-shadow: var(--elevation-3);
+            }
+            .pi.pi-book{
+                color: blue;
+            }
+            .pi.pi-address-book{
+                color: blue;
+            }
+            .pi.pi-users{
+                color: blue;
+            }
+          }
+        }
+      }
+    }
+  }
+  

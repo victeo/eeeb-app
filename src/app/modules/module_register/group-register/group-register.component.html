@@ -1,0 +1,50 @@
+<p-card class="card register">
+
+  <div class="flex title-box">
+    <div class="page-title-wrapper">
+      <h1 class="page-title">Cadastro em Lotes</h1>
+    </div>
+  </div>
+  <div class="group-register">
+
+    <div class="cadastro-seletor">
+      <label for="cadastroTipo">Tipo de Cadastro:</label>
+      <select [(ngModel)]="cadastroTipo" id="cadastroTipo">
+        <option value="aluno">Aluno</option>
+        <option value="responsavel">Responsável</option>
+      </select>
+    </div>
+
+    <div class="button-container">
+      <!-- Botão de Upload de Arquivo -->
+      <p-fileUpload
+        name="file"
+        mode="basic"
+        (onSelect)="onFileSelected($event)"
+        accept=".xlsx, .xls, .csv"
+        chooseLabel="Escolher Arquivo"
+        class="file-upload">
+      </p-fileUpload>
+
+      <!-- Botão para Enviar o Arquivo -->
+      <p-button label="Enviar Arquivo" (onClick)="uploadFile()" icon="pi pi-upload"
+                styleClass="p-button-success send-button"></p-button>
+    </div>
+
+    <!-- Tabela de pré-visualização dos dados -->
+    <p-table [value]="fileData" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let col of tableColumns">{{ col }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr>
+          <td *ngFor="let col of tableColumns">{{ rowData[col] }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-toast></p-toast>
+
+</p-card>

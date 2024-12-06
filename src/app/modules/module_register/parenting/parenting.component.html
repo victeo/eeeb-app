@@ -1,0 +1,48 @@
+<div class="search-container">
+  <h2 class="title">Ligar Aluno e Responsável</h2>
+
+  <!-- Seção de Busca e Seleção de Aluno -->
+  <div class="form-group">
+    <label for="aluno">Buscar Aluno</label>
+    <p-dropdown
+      [options]="alunosResultados"
+      [(ngModel)]="alunoSelecionado"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      [showClear]="true"
+      placeholder="Digite o nome do aluno"
+      (onFilter)="buscarAlunos()"
+    ></p-dropdown>
+  </div>
+
+  <!-- Exibe o aluno selecionado -->
+  <div class="selected-info" *ngIf="alunoSelecionado">
+    Aluno Selecionado: {{ alunoSelecionado.name }}
+  </div>
+
+  <!-- Seção de Busca e Seleção de Responsável -->
+  <div class="form-group">
+    <label for="responsavel">Buscar Responsável</label>
+    <p-dropdown
+      [options]="responsaveisResultados"
+      [(ngModel)]="responsavelSelecionado"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      [showClear]="true"
+      placeholder="Digite o nome do responsável"
+      (onFilter)="buscarResponsaveis()"
+    ></p-dropdown>
+  </div>
+
+  <!-- Exibe o responsável selecionado -->
+  <div class="selected-info" *ngIf="responsavelSelecionado">
+    Responsável Selecionado: {{ responsavelSelecionado.name }}
+  </div>
+
+  <!-- Botão para ligar aluno e responsável -->
+  <div class="link-container">
+    <button class="btn-link" (click)="ligarAlunoResponsavel()">Ligar</button>
+  </div>
+</div>

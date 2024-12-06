@@ -1,0 +1,238 @@
+@import "@style/_global.less";
+
+.students-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  .flex{
+    .mixin-display-flex-box-align();
+  }
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  tbody{
+    td{
+      &.action{
+        .mixin-display(flex);
+        .mixin-gap(@indent__xxs)
+      }
+    }
+  }
+
+  th:nth-child(1),
+  td:nth-child(1) {
+    min-width: 100px;
+    max-width: 200px;
+    word-wrap: break-word;
+  }
+
+  th:nth-child(2) {
+    max-width: 100px; /* Limita o tamanho do título "Data de Nascimento" */
+    word-wrap: break-word;
+  }
+ 
+  th:nth-child(3),
+  td:nth-child(3) {
+    min-width: 50px;
+    max-width: 80px;
+    word-wrap: break-word;
+    text-align: left;
+  }
+
+
+  th,
+  td {
+    font-size: 14px;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th:nth-child(1), td:nth-child(1) { width: 25%; } /* Nome */
+  th:nth-child(2), td:nth-child(2) { width: 13%; } /* Data de Nascimento */
+  th:nth-child(3), td:nth-child(3) { width: 15%; } /* Turma */
+  th:nth-child(4), td:nth-child(4) { width: 15%; } /* CPF */
+  th:nth-child(5), td:nth-child(5) { width: 15%; } /* Telefone */
+  th:nth-child(6), td:nth-child(6) { width: 15%; } /* Ações */
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.btn-responsaveis {
+  background-color: blue !important;
+  color: white;
+
+  &:hover {
+    background-color: blue; /* Azul mais escuro */
+  }
+}
+
+.search-bar {
+  margin-left: 0;
+  margin-right: auto;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  width: 100%;
+
+  p-dropdown {
+    width: 50%;
+    max-width: 400px;
+  }
+}
+
+.btn {
+
+  &-save {
+    background-color: #4caf50;
+    color: white;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  &-cancel {
+    background-color: #f44336;
+    color: white;
+
+    &:hover {
+      background-color: #e53935;
+    }
+  }
+
+  &-edit {
+    background-color: #4caf50;
+    color: white;
+    padding: 5px 10px;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  &-delete {
+    background-color: #f44336;
+    color: white;
+    margin-top: 0.1rem;
+    padding: 5px 10px;
+
+    &:hover {
+      background-color: #e53935;
+    }
+  }
+
+  &-register {
+    margin-right: 1rem;
+    background-color: blue;
+    min-width: 225px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    min-height: 40px;
+    font-size: 18px;
+    margin-left: auto;
+    display: block;
+    position: relative;
+    top: 45px;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.form-group {
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+
+    &[for="name"] {
+      display: inline-block;
+      width: 300px;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+  }
+
+  input {
+    width: calc(100% - 200px);
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.action {
+  position: relative; /* Necessário para o posicionamento absoluto do popup */
+}
+
+.responsaveis-popup {
+  position: absolute;
+  top: -50px; /* Ajuste para a altura desejada */
+  left: 75%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 10;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 5px 0;
+      font-size: 14px;
+      color: #333;
+    }
+  }
+}
+
