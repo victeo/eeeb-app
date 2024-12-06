@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
 
       this.fireAuthService.signInWithEmailAndPassword(login.email, login.password)
   .then((user: UserCredential) => {
-    const userDataFromDb = { role: 'Admin', name: '' }; // Simulação do Firestore
+    const userDataFromDb = { role: 'admin', name: '' }; // Simulação do Firestore
 
     console.log('Role retornada do Firestore:', userDataFromDb.role);
 

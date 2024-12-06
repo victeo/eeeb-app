@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
+import { Auth, authState, User } from '@angular/fire/auth';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
-import { Observable, from, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of, from } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -12,38 +12,51 @@ export class AdminGuard implements CanActivate {
   constructor(private auth: Auth, private firestore: Firestore, private router: Router) {}
 
   canActivate(): Observable<boolean> {
-    const user = this.auth.currentUser;
+    return authState(this.auth).pipe(
+      switchMap((user: User | null) => {
+        if (user) {
+          console.log('AdminGuard - Usuário autenticado:', user);
 
-    if (user) {
-      console.log(`AdminGuard - Usuário autenticado: UID = ${user.uid}`);
-      
-      const userDocRef = doc(this.firestore, `users/${user.uid}`);
-      return from(getDoc(userDocRef)).pipe(
-        map((snapshot) => {
-          if (snapshot.exists()) {
-            const userData = snapshot.data();
-            console.log('AdminGuard - Dados do usuário recuperados:', userData);
+          const userDocRef = doc(this.firestore, `users/${user.uid}`);
+          return from(getDoc(userDocRef)).pipe(
+            map((snapshot) => {
+              console.log('AdminGuard - Documento Firestore encontrado:', snapshot.exists());
 
-            if (userData && userData['role'] === 'admin') {
-              console.log('AdminGuard - Acesso permitido: role = admin');
-              return true;
-            }
-          }
+              if (snapshot.exists()) {
+                const userData = snapshot.data() as { role: string };
+                console.log('AdminGuard - Dados do usuário:', userData);
 
-          console.warn('AdminGuard - Acesso negado: role não é admin ou usuário não encontrado.');
-          this.router.navigate(['/']);
-          return false;
-        }),
-        catchError((error) => {
-          console.error('AdminGuard - Erro ao acessar Firestore:', error);
-          this.router.navigate(['/']);
-          return of(false);
-        })
-      );
-    } else {
-      console.warn('AdminGuard - Usuário não autenticado. Redirecionando para login...');
-      this.router.navigate(['/login']);
-      return of(false);
-    }
+                // Verificação de role
+                if (userData.role === 'admin') {
+                  console.log('AdminGuard - Acesso permitido (role = admin)');
+                  return true;
+                } else {
+                  console.warn(`AdminGuard - Acesso negado. Role atual: ${userData.role}`);
+                }
+              } else {
+                console.warn('AdminGuard - Documento do usuário não encontrado no Firestore.');
+              }
+
+              this.router.navigate(['/']);
+              return false;
+            }),
+            catchError((error) => {
+              console.error('AdminGuard - Erro ao acessar Firestore:', error);
+              this.router.navigate(['/']);
+              return of(false); // Retorna um Observable que emite false
+            })
+          );
+        } else {
+          console.warn('AdminGuard - Usuário não autenticado.');
+          this.router.navigate(['/login']);
+          return of(false); // Retorna um Observable que emite false
+        }
+      }),
+      catchError((error) => {
+        console.error('AdminGuard - Erro inesperado:', error);
+        this.router.navigate(['/']);
+        return of(false); // Retorna um Observable que emite false
+      })
+    );
   }
 }
