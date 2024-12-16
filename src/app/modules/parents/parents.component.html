@@ -1,0 +1,136 @@
+<p-card class="card register">
+
+  <div class="flex title-box">
+    <div class="page-title-wrapper">
+      <h1 class="page-title">Lista de Responsáveis</h1>
+    </div>
+  </div>
+
+  <button class="btn btn-parenting btn-register" (click)="irParaParenting()">Ligar Aluno e Responsável</button>
+
+  <button class="btn btn-register" (click)="goToParentsRegister()">
+    <i class="pi pi-plus"></i> Adicionar Responsáveis
+  </button>
+
+  <div class="search-bar">
+    <p-dropdown [options]="parentsDropdown" [(ngModel)]="selectedParent" optionLabel="name" [filter]="true"
+                filterBy="name" [showClear]="true" placeholder="Buscar Responsável" (onChange)="filterTable()">
+    </p-dropdown>
+  </div>
+
+  <div class="container-table">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Whatsapp</th>
+        <th>Endereço</th>
+        <th>Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let parent of filteredParents">
+        <td>{{ parent.name }} {{ parent.surname }}</td>
+        <td>{{ parent.email || 'Email não disponível' }}</td>
+        <td>{{ parent.whatsapp }}</td>
+        <td>{{ parent.address.street }}, {{ parent.address.city }}</td>
+        <td>
+          <button class="btn btn-edit" (click)="editParent(parent)">Editar</button>
+          <button class="btn btn-delete" (click)="deleteParent(parent.id)">Excluir</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para editar -->
+  <div class="modal" *ngIf="isEditing && editForm">
+    <div class="modal-content">
+      <h3>Editar Responsável</h3>
+      <form [formGroup]="editForm" (ngSubmit)="saveEdit()">
+        <div class="form-group">
+          <label for="name">Nome:</label>
+          <input id="name" type="text" formControlName="name"/>
+        </div>
+        <div class="form-group">
+          <label for="surname">Sobrenome:</label>
+          <input type="text" id="surname" formControlName="surname"/>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" formControlName="email"/>
+        </div>
+        <div class="form-group">
+          <label for="whatsapp">Whatsapp:</label>
+          <input
+            type="text"
+            id="whatsapp"
+            formControlName="whatsapp"
+            (input)="updateWhatsApp($event)"
+          />
+          <div *ngIf="editForm.get('whatsapp')?.errors?.['formatoInvalido']">
+            WhatsApp inválido. Use o formato (XX)9XXXX-XXXX.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cpf">CPF:</label>
+          <input
+            type="text"
+            id="cpf"
+            formControlName="cpf"
+            (input)="updateCPF($event)"
+          />
+          <div *ngIf="editForm.get('cpf')?.errors?.['formatoInvalido']">
+            CPF inválido. Use o formato XXX.XXX.XXX-XX.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="renda">Renda:</label>
+          <input type="number" id="renda" formControlName="renda"/>
+        </div>
+        <div class="form-group">
+          <label for="gender">Gênero:</label>
+          <select id="gender" formControlName="gender">
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+        <div formGroupName="address">
+          <div class="form-group">
+            <label for="street">Rua:</label>
+            <input type="text" id="street" formControlName="street"/>
+          </div>
+
+          <div class="form-group">
+            <label for="city">Cidade:</label>
+            <input type="text" id="city" formControlName="city"/>
+          </div>
+
+          <div class="form-group">
+            <label for="state">Estado:</label>
+            <input type="text" id="state" formControlName="state"/>
+          </div>
+
+          <div class="form-group">
+            <label for="postalCode">CEP:</label>
+            <input
+              type="text"
+              id="postalCode"
+              formControlName="postalCode"
+              (input)="updateCEP($event)"
+            />
+            <div *ngIf="editForm.get('address.postalCode')?.errors?.['formatoInvalido']">
+              CEP inválido. Use o formato XXXXX-XXX.
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-save" [disabled]="editForm.invalid">Salvar</button>
+          <button type="button" class="btn btn-cancel" (click)="cancelEdit()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</p-card>

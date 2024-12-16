@@ -1,8 +1,16 @@
-<main class="home-component">
+<main
+  class="home-component flex flex align-items-center justify-content-around flex-column"
+>
   <p-card class="box">
-    <div class="box-info">
+    <div
+      class="box-info flex align-items-center justify-content-around flex-column"
+    >
       <h2 class="box-info_title">Identifique-se</h2>
-      <img src="/assets/img/login.png" alt="imagem de login">
+      <img
+        src="/assets/img/login.png"
+        alt="imagem de login"
+        class="box-info_icon"
+      />
     </div>
     <div class="field">
       <form
@@ -11,20 +19,34 @@
         class="matriculation_form formGroup"
       >
         <p-toast />
+        <div
+          class="flex flex align-items-center justify-content-around flex-column gap-4"
+        >
+          <p-floatLabel class="w-full">
+            <input
+              id="username"
+              type="email"
+              pInputText
+              formControlName="email"
+              class="w-full"
+            />
+            <label for="username">Email de acesso</label>
+          </p-floatLabel>
 
-        <p-floatLabel>
-          <input id="username" type="email" pInputText formControlName="email"/>
-          <label for="username">Email de acesso</label>
-        </p-floatLabel>
-        <div class="mt-4">
-          <p-floatLabel>
-            <p-password id="password" [toggleMask]="true" [feedback]="false" formControlName="password"/>
+          <p-floatLabel class="w-full">
+            <p-password
+              id="password"
+              [toggleMask]="true"
+              [feedback]="false"
+              formControlName="password"
+              class="w-full"
+            />
             <label for="password">Password</label>
           </p-floatLabel>
         </div>
+
         <div class="button_login">
           <p-button
-
             label="Acessar"
             icon="pi pi-save"
             size="small"
@@ -33,8 +55,6 @@
           ></p-button>
         </div>
       </form>
-
     </div>
-
   </p-card>
 </main>

@@ -1,0 +1,27 @@
+<app-topbar></app-topbar>
+<div class="homepage-layout">
+  <app-sidebar></app-sidebar>
+  <main class="homepage-content">
+    <section class="welcome-section">
+      <h1>Bem-vindo(a), {{ userName }}!</h1>
+      <p>Escolha uma das opções disponíveis no menu ao lado para começar.</p>
+    </section>
+    <section class="quick-actions">
+      <h2>Ações Rápidas</h2>
+      <div class="actions-grid">
+        <button class="quick-action" routerLink="/painel/alunos">
+          <i class="pi pi-book"></i>
+          <span>Visualizar Avisos</span>
+        </button>
+        <button class="quick-action" routerLink="/painel/responsaveis">
+          <i class="pi pi-address-book"></i>
+          <span>Gerenciar Documentos</span>
+        </button>
+        <button class="quick-action" routerLink="/painel/groupRegister">
+          <i class="pi pi-users"></i>
+          <span>Convocações</span>
+        </button>
+      </div>
+    </section>
+  </main>
+</div>

@@ -2,7 +2,11 @@ import {Injectable} from '@angular/core';
 import {
   addDoc,
   collection,
+  query,
+  where,
+  getDocs,
   deleteDoc,
+  arrayUnion,
   doc,
   Firestore,
   getDocFromServer,
@@ -27,11 +31,60 @@ export class FirestoreService {
    * @param docPath O caminho completo do documento (por exemplo, 'collection/documentID').
    * @param data Os dados que serão salvos no documento.
    * @returns Retorna uma Promise que será resolvida quando o documento for criado.
-   */   async createDocument(docPath: string, data: any): Promise<void> {
-    const docReference = doc(this.firestore, docPath);
-    await setDoc(docReference, data);
+   */   
+  
+  async createDocument(docPath: string, data: any): Promise<void> {
+  if (data.role && data.role === 'admin') {
+    throw new Error('A criação de administradores não é permitida pelo frontend.');
   }
 
+  const docReference = doc(this.firestore, docPath);
+  await setDoc(docReference, data);
+}
+
+  
+  async getCollection<T>(collectionPath: string): Promise<T[]> {
+    const collectionRef = collection(this.firestore, collectionPath);
+    const querySnapshot = await getDocs(collectionRef);
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
+  }
+
+  // Método para buscar por nome em uma coleção
+  async searchCollection(collectionPath: string, field?: string, value?: string): Promise<any[]> {
+    try {
+      const ref = collection(this.firestore, collectionPath);
+      console.log(`Iniciando busca na coleção: "${collectionPath}" com o filtro: "${field} >= ${value}"`);
+  
+      let q;
+      if (field && value) {
+        q = query(ref, where(field, '>=', value), where(field, '<=', value + '\uf8ff'));
+      } else {
+        q = ref;
+      }
+  
+      const querySnapshot = await getDocs(q);
+      console.log('Documentos encontrados:', querySnapshot.docs.map((doc) => doc.data()));
+  
+      if (querySnapshot.empty) {
+        console.warn(`Nenhum resultado encontrado na coleção "${collectionPath}"`);
+        return [];
+      }
+  
+      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      console.error(`Erro ao buscar na coleção "${collectionPath}":`, error);
+      return [];
+    }
+  }
+  
+  // Método para adicionar ID a um array (sem duplicar)
+  async addIdToArray(docPath: string, field: string, id: string): Promise<void> {
+    const ref = doc(this.firestore, docPath);
+    await updateDoc(ref, {
+      [field]: arrayUnion(id)
+    });
+  }
+  
   /**
    * Adiciona um novo documento à coleção especificada e gera um ID automaticamente.
    *
@@ -71,6 +124,7 @@ export class FirestoreService {
     const docRef = doc(this.firestore, collectionPath);
     await updateDoc(docRef, data);
   }
+  
 
   /**
    * Exclui um documento específico do Firestore pelo caminho fornecido.

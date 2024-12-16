@@ -1,11 +1,14 @@
+import { AuthService } from './../../../services/auth/auth.service';
 import {Component, OnInit} from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {ToolbarModule} from "primeng/toolbar";
 import {Button} from "primeng/button";
 import {SplitButtonModule} from "primeng/splitbutton";
+import { CommonModule } from '@angular/common';
 import {LayoutState} from "../../../models/layout-state";
 import {LayoutService} from "../../../services/Layout/layout.service";
+import { FireAuthService } from 'app/services/fire-auth/fire-auth.service';
 
 @Component({
   selector: 'app-topbar',
@@ -22,32 +25,37 @@ import {LayoutService} from "../../../services/Layout/layout.service";
 })
 export class TopbarComponent implements OnInit {
   items: MenuItem[] | undefined;
+  userName: string | null = '';
 
   constructor(
     private router: Router,
     private messageService: MessageService,
     private layoutService: LayoutService,
+    private fireAuthService: FireAuthService,
+    private authService : AuthService
   ) {
   }
 
   ngOnInit() {
+  
+    const name = this.fireAuthService.getUserName();
+    this.userName = name || 'Usuário';
+    
+    const user = this.authService.getUserData();
+  if (user?.displayName) {
+    this.userName = user.displayName.split(' ')[0]; // Exibe apenas o primeiro nome
+  } else {
+    this.userName = 'Usuário'; // Valor padrão
+  }
 
     this.items = [
       {
-        label: 'Update',
+        label: 'Sair',
         command: () => {
-          this.update();
+          this.logout();
         }
       },
-      {
-        label: 'Delete',
-        command: () => {
-          this.delete();
-        }
-      },
-      {label: 'Angular Website', url: 'http://angular.io'},
-      {separator: true},
-      {label: 'Upload', routerLink: ['/fileupload']}
+      //adicionar mais opções aqui
     ];
   }
 
@@ -55,15 +63,9 @@ export class TopbarComponent implements OnInit {
     this.layoutService.toggleClassState();
   }
 
-  save(severity: string) {
-    this.messageService.add({severity: severity, summary: 'Success', detail: 'Data Saved'});
+  logout() {
+    this.fireAuthService.signOut();
+    this.router.navigate(['/']); // Redireciona para a página inicial ou login
   }
 
-  update() {
-    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Data Updated'});
-  }
-
-  delete() {
-    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Data Deleted'});
-  }
 }

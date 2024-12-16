@@ -1,21 +1,28 @@
 @import "@style/_global.less";
+.layout-wrapper{
+  min-height: 100vh; /* Garante que a altura mínima seja igual à altura da janela */
+  display: flex; /* Importante se você deseja trabalhar com flexbox */
+  flex-direction: column; /* Configuração comum para layouts verticais */
+  .dashboard {
+    .mixin-display(flex);
+    .mixin-gap(@indent__sx);
+    .mixin-display-flex-direction(row);
+    //height: calc(100% - 150px); /* 100% da viewport menos a altura do footer */
+    flex: 1;
+    .sidebar{
+      background-color: @theme__color__primary-alt;
+      border-right: solid 1px #ede4ff;;
+    }
+    .content {
+      flex: 1; /* O conteúdo expande para preencher o espaço restante */
+      padding: @indent__m;
+      background-color: @color-white;
+    }
+    .main-content{
+      padding: @indent__m;
+      width: 100%;
+      flex: 1;
+    }
+  }
+}
 
-.dashboard {
-  .mixin-display(flex);
-  .mixin-gap(@indent__sx);
-  .mixin-display-flex-direction(row);
-  height: calc(100vh - 150px); /* 100% da viewport menos a altura do footer */
-.sidebar{
-  background-color: @theme__color__primary-alt;
-  border-right: solid 1px #ede4ff;;
-}
-  .content {
-    flex: 1; /* O conteúdo expande para preencher o espaço restante */
-    padding: @indent__m;
-    background-color: @color-white;
-  }
-  .main-content{
-    padding: @indent__m;
-    width: 100%;
-  }
-}

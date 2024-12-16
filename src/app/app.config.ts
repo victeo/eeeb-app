@@ -14,6 +14,7 @@ import {getStorage, provideStorage} from "@angular/fire/storage";
 
 import {UserGuard} from "./services/guards/user.guard";
 import {AdminGuard} from "./services/guards/admin.guard";
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [UserGuard, AdminGuard,
@@ -26,7 +27,9 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
     provideStorage(() => getStorage()),
-    provideAnimations()
+    provideAnimations(),
+    provideHttpClient(withFetch())
+
   ],
 };
 
